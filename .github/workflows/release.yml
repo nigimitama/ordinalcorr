@@ -1,0 +1,41 @@
+# release to PyPI
+name: release
+
+on:
+  workflow_run:
+    workflows: ["test"] # NOTE: set the same value as the name of test.yml
+    types:
+      - completed
+
+permissions:
+  id-token: write # for OIDC with PyPI
+  contents: read
+
+jobs:
+  release:
+    # This job will only run if the test job was successful and the branch is "main"
+    if: >-
+      github.event.workflow_run.conclusion == 'success' &&
+      github.event.workflow_run.head_branch == 'main'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy
+        run: echo "🚀 Deploying to production!"
+
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.12"
+
+      - name: Install packages for build a package
+        run: |
+          python -m pip install --upgrade build twine
+
+      - name: Build
+        run: python -m build
+
+      - name: Upload to PyPI
+        run: python -m twine upload --repository ordinalcorr dist/*
