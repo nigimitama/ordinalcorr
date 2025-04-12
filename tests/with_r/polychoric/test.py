@@ -1,7 +1,7 @@
 import pandas as pd
 from pathlib import Path
 
-from ordinalcorr.polytomous import polychoric_corr
+from ordinalcorr import polychoric_corr
 from semopy.polycorr import polychoric_corr as semopy_corr
 
 

@@ -1,4 +1,3 @@
-install.packages("polycor")
 library(polycor)
 
 csv_paths <- list.files(path = "./data", pattern = "\\.csv$", full.names = TRUE)

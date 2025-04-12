@@ -4,7 +4,6 @@ from scipy.stats import multivariate_normal
 from pathlib import Path
 
 data_dir = Path("./data")
-data_dir.mkdir()
 
 
 def generate_data(rho=0.5):
@@ -22,6 +21,8 @@ def generate_data(rho=0.5):
 
 
 if __name__ == "__main__":
+    data_dir.mkdir()
+
     for rho_10x in list(range(0, 11, 1)):
         rho = rho_10x / 10
         df = generate_data(rho=rho)
