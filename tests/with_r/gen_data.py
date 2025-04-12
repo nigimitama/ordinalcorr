@@ -7,8 +7,8 @@ data_dir = Path("./data")
 data_dir.mkdir()
 
 
-# 標準正規分布
 def generate_data(rho=0.5):
+    # Generate data by standard normal distribution
     n = 1000
     mean = [0, 0]
     std = [1, 1]
