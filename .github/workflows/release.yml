@@ -38,4 +38,4 @@ jobs:
         run: python -m build
 
       - name: Upload to PyPI
-        run: python -m twine upload --repository ordinalcorr dist/*
+        run: python -m twine upload --repository pypi dist/*
