@@ -1,14 +1,8 @@
 import unittest
 import numpy as np
-import sys
-from pathlib import Path
 import pandas as pd
 from scipy.stats import multivariate_normal
-
-project_root = Path(__file__).parent.parent.absolute()
-sys.path.append(project_root)
-
-from ordinalcorr.polytomous import polychoric_corr
+from ordinalcorr import polychoric_corr  # Assuming this package is installed
 
 
 class TestPolychoricCorr(unittest.TestCase):
