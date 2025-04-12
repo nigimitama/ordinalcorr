@@ -12,6 +12,7 @@ description = "A Python package for correlation analysis between ordinal variabl
 readme = "README.md"
 requires-python = ">=3.10"
 license = "MIT"
+license-files = ["LICEN[CS]E*"]
 keywords = ["statistics", "correlation", "ordinal", "discrete"]
 classifiers = [
     "Programming Language :: Python :: 3",
