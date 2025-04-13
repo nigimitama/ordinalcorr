@@ -3,7 +3,7 @@
 ordinalcorr
 ===========
 
-A Python package for computing correlation coefficients designed for ordinal-scale data. 
+`ordinalcorr` is a Python package for computing correlation coefficients designed for ordinal-scale data.
 
 
 Installation
