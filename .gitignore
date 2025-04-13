@@ -1,3 +1,5 @@
 __pycache__/
 notebooks/
 venv/
+docs/_build/
+
