@@ -1,4 +1,5 @@
-from typing import Union, Sequence
+from typing import Union, Sequence, TypeAlias, TypeVar
 import numpy as np
 
-ArrayLike = Union[Sequence[float], np.ndarray]
+T = TypeVar("T", int, float)
+ArrayLike: TypeAlias = Union[Sequence[T], np.ndarray[T]]
