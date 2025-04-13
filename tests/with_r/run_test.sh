@@ -19,4 +19,14 @@ docker run -it --rm test bash -c "
     python3 -u compare.py
 " 
 
+# polyserial
+docker run -it --rm test bash -c "
+    cd polyserial && \
+    python3 -u gen_data.py && \
+    Rscript test.R && \
+    python3 -u test.py && \
+    python3 -u compare.py
+" 
+
+
 rm -r "$THIS_DIR/ordinalcorr" "$THIS_DIR/pyproject.toml" "$THIS_DIR/README.md"

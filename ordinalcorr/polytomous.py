@@ -1,7 +1,9 @@
+import warnings
 import numpy as np
 from scipy.stats import norm, multivariate_normal
 from scipy.optimize import minimize_scalar
-from ordinalcorr.validation import check_if_zero_variance
+from ordinalcorr.validation import ValidationError, check_if_zero_variance
+from ordinalcorr.types import ArrayLike
 
 
 def univariate_cdf(lower, upper):
@@ -39,15 +41,22 @@ def estimate_thresholds(values):
     return np.concatenate(([-inf], thresholds, [inf]))
 
 
-def polychoric_corr(x: np.ndarray, y: np.ndarray) -> float:
+def normalize_ordinal(x: np.ndarray[int]) -> np.ndarray[int]:
+    """Normalize ordinal variable to be integer-coded starting from 0."""
+    unique_values = np.unique(x)
+    value_to_code = {value: code for code, value in enumerate(unique_values)}
+    return np.vectorize(value_to_code.get)(x)
+
+
+def polychoric_corr(x: ArrayLike, y: ArrayLike) -> float:
     """
     Estimate the polychoric correlation coefficient between two ordinal variables.
 
     Parameters
     ----------
-    x : np.ndarray
+    x : array_like
         Ordinal variable X (integer-coded).
-    y : np.ndarray
+    y : array_like
         Ordinal variable Y (integer-coded).
 
     Returns
@@ -60,8 +69,12 @@ def polychoric_corr(x: np.ndarray, y: np.ndarray) -> float:
     x = np.asarray(x)
     y = np.asarray(y)
 
-    x = check_if_zero_variance(x)
-    y = check_if_zero_variance(y)
+    try:
+        check_if_zero_variance(x)
+        check_if_zero_variance(y)
+    except ValidationError as e:
+        warnings.warn(str(e))
+        return np.nan
 
     # Step 2: Identify unique ordinal levels
     x_levels = np.sort(np.unique(x))
@@ -83,9 +96,6 @@ def polychoric_corr(x: np.ndarray, y: np.ndarray) -> float:
 
     # Step 5: Define negative log-likelihood function based on P_ij = Φ₂(τ_i, τ_j; ρ)
     def neg_log_likelihood(rho):
-        if not (-0.999 < rho < 0.999):
-            return np.inf
-
         log_likelihood = 0.0
         for i in range(len(tau_x) - 1):
             for j in range(len(tau_y) - 1):
@@ -103,9 +113,63 @@ def polychoric_corr(x: np.ndarray, y: np.ndarray) -> float:
 
                 log_likelihood += contingency[i, j] * np.log(p_ij)
 
-        return -log_likelihood  # minimize negative log-likelihood
+        return -log_likelihood
 
     # Step 6: Optimize to find MLE for rho
+    eps = 1e-10
+    result = minimize_scalar(
+        neg_log_likelihood, bounds=(-1 + eps, 1 - eps), method="bounded"
+    )
+    return result.x
+
+
+def polyserial_corr(x: ArrayLike, y: np.ndarray) -> float:
+    """
+    Estimate the polyserial correlation coefficient between a continuous variable x
+    and an ordinal variable y using maximum likelihood estimation.
+
+    Parameters
+    ----------
+    x : array_like
+        Continuous variable (standardized recommended).
+    y : array_like
+        Ordinal variable (integer-coded, ordered categories).
+
+    Returns
+    -------
+    float
+        Estimated polyserial correlation coefficient (rho).
+    """
+    x = np.asarray(x)
+    y = np.asarray(y)
+
+    try:
+        check_if_zero_variance(x)
+        check_if_zero_variance(y)
+    except ValidationError as e:
+        warnings.warn(str(e))
+        return np.nan
+
+    z = (x - np.mean(x)) / np.std(x, ddof=0)
+    y = normalize_ordinal(y)
+    tau = estimate_thresholds(y)
+
+    def neg_log_likelihood(rho):
+        log_likelihood = 0.0
+        for i in range(len(z)):
+            j = y[i]
+            tau_lower = (tau[j] - rho * z[i]) / np.sqrt(1 - rho**2)
+            tau_upper = (tau[j + 1] - rho * z[i]) / np.sqrt(1 - rho**2)
+            p_i = univariate_cdf(tau_lower, tau_upper)
+
+            p_i = max(p_i, 1e-6)  # soft clipping
+            if np.isnan(p_i):
+                continue
+
+            log_likelihood += np.log(p_i)
+
+        return -log_likelihood
+
     eps = 1e-10
     result = minimize_scalar(
         neg_log_likelihood, bounds=(-1 + eps, 1 - eps), method="bounded"
