@@ -12,11 +12,21 @@ A Python package for computing correlation coefficients designed for **ordinal-s
 pip install ordinalcorr
 ```
 
-## 📘 Features
+## ✨ Features
 
-### Polychoric correlation
+This package provides several correlation coefficients for many types of variables
 
-Compute correlation coefficient between two ordinal variables
+| Variable X | Variable Y                           | Method                     | Function              |
+| ---------- | ------------------------------------ | -------------------------- | --------------------- |
+| binary     | binary                               | Tetrachoric correlation    | `tetrachoric_corr`    |
+| ordinal    | ordinal                              | Polychoric correlation     | `polychoric_corr`     |
+| continuous | ordinal                              | Polyserial correlation     | `polyserial_corr`     |
+| continuous | binary (discretized from continuous) | Biserial correlation       | `biserial_corr`       |
+| continuous | binary                               | Point-Biserial correlation | `point_biserial_corr` |
+
+### Example
+
+Here is an example for computing correlation coefficient between two ordinal variables
 
 ```python
 from ordinalcorr import polychoric_corr
@@ -28,16 +38,10 @@ rho = polychoric_corr(x, y)
 print(f"Polychoric correlation: {rho:.3f}")
 ```
 
-### Polyserial correlation
+## 📒 Document
 
-Compute correlation coefficient between continuous variable and ordinal variable
+[Full document is here](https://nigimitama.github.io/ordinalcorr/index.html)
 
-```python
-from ordinalcorr import polyserial_corr
+## ⚖️ License
 
-x = [0.1, 0.1, 0.2, 0.2, 0.3, 0.3]
-y = [0, 0, 0, 1, 1, 2]
-
-rho = polyserial_corr(x, y)
-print(f"Polyserial correlation: {rho:.3f}")
-```
+[MIT License](./LICENSE)
