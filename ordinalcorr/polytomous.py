@@ -48,21 +48,34 @@ def normalize_ordinal(x: np.ndarray[int]) -> np.ndarray[int]:
     return np.vectorize(value_to_code.get)(x)
 
 
-def polychoric_corr(x: ArrayLike, y: ArrayLike) -> float:
+def polychoric_corr(x: ArrayLike[int], y: ArrayLike[int]) -> float:
     """
     Estimate the polychoric correlation coefficient between two ordinal variables.
 
     Parameters
     ----------
-    x : array_like
-        Ordinal variable X (integer-coded).
-    y : array_like
-        Ordinal variable Y (integer-coded).
+    x : array_like (int)
+        Ordinal variable.
+    y : array_like (int)
+        Ordinal variable.
 
     Returns
     -------
     float
-        Estimated polychoric correlation coefficient (rho).
+        Estimated polychoric correlation coefficient.
+
+    Examples
+    --------
+    >>> import numpy as np
+    >>> from ordinalcorr import polychoric_corr
+    >>> x = np.random.randint(0, 3, 100)
+    >>> y = np.random.randint(0, 3, 100)
+    >>> polychoric_corr(x, y)
+
+    References
+    ----------
+    .. [1] Olsson, U. (1979). Maximum likelihood estimation of the polychoric correlation coefficient. Psychometrika, 44(4), 443-460.
+    .. [2] Drasgow, F. (1986). Polychoric and polyserial correlations In: Kotz S, Johnson N, editors. The Encyclopedia of Statistics.
     """
 
     # Step 1: Ensure inputs are numpy arrays and integer-coded
@@ -123,22 +136,34 @@ def polychoric_corr(x: ArrayLike, y: ArrayLike) -> float:
     return result.x
 
 
-def polyserial_corr(x: ArrayLike, y: np.ndarray) -> float:
+def polyserial_corr(x: ArrayLike[float | int], y: ArrayLike[int]) -> float:
     """
     Estimate the polyserial correlation coefficient between a continuous variable x
-    and an ordinal variable y using maximum likelihood estimation.
+    and an ordinal variable y using the two-step maximum likelihood estimation.
 
     Parameters
     ----------
-    x : array_like
-        Continuous variable (standardized recommended).
-    y : array_like
-        Ordinal variable (integer-coded, ordered categories).
+    x : array_like (float | int)
+        Continuous variable.
+    y : array_like (int)
+        Ordinal variable.
 
     Returns
     -------
     float
-        Estimated polyserial correlation coefficient (rho).
+        Estimated polyserial correlation coefficient.
+
+    Examples
+    --------
+    >>> import numpy as np
+    >>> from ordinalcorr import polyserial_corr
+    >>> x = np.random.randn(100)
+    >>> y = np.random.randint(0, 3, 100)
+    >>> polyserial_corr(x, y)
+
+    References
+    ----------
+    .. [1] Drasgow, F. (1986). Polychoric and polyserial correlations In: Kotz S, Johnson N, editors. The Encyclopedia of Statistics.
     """
     x = np.asarray(x)
     y = np.asarray(y)
