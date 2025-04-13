@@ -35,5 +35,5 @@ html_static_path = ["_static"]
 import sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path("..", "ordinalcorr").resolve()))
+sys.path.insert(0, str(Path("..").resolve()))
 autodoc_default_options = {"members": True}

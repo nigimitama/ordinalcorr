@@ -66,10 +66,9 @@ def polychoric_corr(x: ArrayLike[int], y: ArrayLike[int]) -> float:
 
     Examples
     --------
-    >>> import numpy as np
     >>> from ordinalcorr import polychoric_corr
-    >>> x = np.random.randint(0, 3, 100)
-    >>> y = np.random.randint(0, 3, 100)
+    >>> x = [1, 1, 2, 2, 3, 3]
+    >>> y = [0, 0, 0, 1, 1, 1]
     >>> polychoric_corr(x, y)
 
     References
@@ -155,10 +154,9 @@ def polyserial_corr(x: ArrayLike[float | int], y: ArrayLike[int]) -> float:
 
     Examples
     --------
-    >>> import numpy as np
     >>> from ordinalcorr import polyserial_corr
-    >>> x = np.random.randn(100)
-    >>> y = np.random.randint(0, 3, 100)
+    >>> x = [0.1, 0.1, 0.2, 0.2, 0.3, 0.3]
+    >>> y = [0, 0, 0, 1, 1, 2]
     >>> polyserial_corr(x, y)
 
     References
