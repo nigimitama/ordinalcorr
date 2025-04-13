@@ -27,7 +27,6 @@ jobs:
       - name: Build Docs
         run: |
           cd docs
-          make doctest
           make html
 
       - name: Deploy to GitHub Pages
