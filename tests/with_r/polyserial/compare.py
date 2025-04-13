@@ -10,7 +10,7 @@ results["is_close"] = np.isclose(results["rho_r"], results["rho_py"], atol=0.001
 print(
     f"""
 # ----------------------------------------
-# Polychoric
+# Polyserial
 # ----------------------------------------
 R vs Python results:
 
