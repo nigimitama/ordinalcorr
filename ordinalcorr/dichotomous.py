@@ -3,7 +3,7 @@ from scipy.stats import norm
 from ordinalcorr.types import ArrayLike
 
 
-def biserial_corr(x: ArrayLike, y: ArrayLike) -> float:
+def biserial_corr(x: ArrayLike[float | int], y: ArrayLike[int]) -> float:
     """
     Compute the biserial correlation coefficient between a continuous variable x
     and a dichotomized variable y (0 or 1), assuming y was split from a latent normal variable.
