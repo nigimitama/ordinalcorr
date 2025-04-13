@@ -16,7 +16,7 @@ pip install ordinalcorr
 
 ### Polychoric correlation
 
-Compute polychoric correlation coefficient between two ordinal variables
+Compute correlation coefficient between two ordinal variables
 
 ```python
 from ordinalcorr import polychoric_corr
@@ -26,4 +26,18 @@ y = [0, 0, 0, 1, 1, 1]
 
 rho = polychoric_corr(x, y)
 print(f"Polychoric correlation: {rho:.3f}")
+```
+
+### Polyserial correlation
+
+Compute correlation coefficient between continuous variable and ordinal variable
+
+```python
+from ordinalcorr import polyserial_corr
+
+x = [0.1, 0.1, 0.2, 0.2, 0.3, 0.3]
+y = [0, 0, 0, 1, 1, 2]
+
+rho = polyserial_corr(x, y)
+print(f"Polyserial correlation: {rho:.3f}")
 ```
