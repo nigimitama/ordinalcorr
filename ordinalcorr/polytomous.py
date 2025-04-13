@@ -1,7 +1,8 @@
+import warnings
 import numpy as np
 from scipy.stats import norm, multivariate_normal
 from scipy.optimize import minimize_scalar
-from ordinalcorr.validation import check_if_zero_variance
+from ordinalcorr.validation import ValidationError, check_if_zero_variance
 from ordinalcorr.types import ArrayLike
 
 
@@ -40,6 +41,13 @@ def estimate_thresholds(values):
     return np.concatenate(([-inf], thresholds, [inf]))
 
 
+def normalize_ordinal(x: np.ndarray[int]) -> np.ndarray[int]:
+    """Normalize ordinal variable to be integer-coded starting from 0."""
+    unique_values = np.unique(x)
+    value_to_code = {value: code for code, value in enumerate(unique_values)}
+    return np.vectorize(value_to_code.get)(x)
+
+
 def polychoric_corr(x: ArrayLike, y: ArrayLike) -> float:
     """
     Estimate the polychoric correlation coefficient between two ordinal variables.
@@ -61,8 +69,12 @@ def polychoric_corr(x: ArrayLike, y: ArrayLike) -> float:
     x = np.asarray(x)
     y = np.asarray(y)
 
-    x = check_if_zero_variance(x)
-    y = check_if_zero_variance(y)
+    try:
+        check_if_zero_variance(x)
+        check_if_zero_variance(y)
+    except ValidationError as e:
+        warnings.warn(str(e))
+        return np.nan
 
     # Step 2: Identify unique ordinal levels
     x_levels = np.sort(np.unique(x))
@@ -131,17 +143,23 @@ def polyserial_corr(x: ArrayLike, y: np.ndarray) -> float:
     x = np.asarray(x)
     y = np.asarray(y)
 
-    x = check_if_zero_variance(x)
-    y = check_if_zero_variance(y)
+    try:
+        check_if_zero_variance(x)
+        check_if_zero_variance(y)
+    except ValidationError as e:
+        warnings.warn(str(e))
+        return np.nan
 
-    z = (x - np.mean(x)) / np.std(x)
+    z = (x - np.mean(x)) / np.std(x, ddof=0)
+    y = normalize_ordinal(y)
     tau = estimate_thresholds(y)
 
     def neg_log_likelihood(rho):
         log_likelihood = 0.0
-        for zi, yi in zip(z, y):
-            tau_lower = (tau[yi] - rho * zi) / np.sqrt(1 - rho**2)
-            tau_upper = (tau[yi + 1] - rho * zi) / np.sqrt(1 - rho**2)
+        for i in range(len(z)):
+            j = y[i]
+            tau_lower = (tau[j] - rho * z[i]) / np.sqrt(1 - rho**2)
+            tau_upper = (tau[j + 1] - rho * z[i]) / np.sqrt(1 - rho**2)
             p_i = univariate_cdf(tau_lower, tau_upper)
 
             p_i = max(p_i, 1e-6)  # soft clipping
@@ -149,6 +167,7 @@ def polyserial_corr(x: ArrayLike, y: np.ndarray) -> float:
                 continue
 
             log_likelihood += np.log(p_i)
+
         return -log_likelihood
 
     eps = 1e-10

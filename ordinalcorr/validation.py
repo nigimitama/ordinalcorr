@@ -1,13 +1,9 @@
-import warnings
-import numpy as np
+class ValidationError(Exception):
+    pass
 
 
 def check_if_zero_variance(x):
     if len(set(x)) == 1:
-        warnings.warn(
-            "all elements in the input are the same and zero variance", UserWarning
+        raise ValidationError(
+            "all elements in the input are the same and zero variance"
         )
-        return np.nan
-
-    # if x is OK, return x
-    return x
