@@ -29,8 +29,8 @@ def biserial_corr(x: ArrayLike[float | int], y: ArrayLike[int]) -> float:
     Examples
     --------
     >>> from ordinalcorr import biserial_corr
-    >>> x = np.array([0.1, 0.2, 0.3, 0.4, 0.5])
-    >>> y = np.array([0, 0, 1, 1, 1])
+    >>> x = [0.1, 0.2, 0.3, 0.4, 0.5]
+    >>> y = [0, 0, 1, 1, 1]
     >>> biserial_corr(x, y)
 
     """
@@ -85,8 +85,8 @@ def point_biserial_corr(x: ArrayLike, y: ArrayLike) -> float:
     Examples
     --------
     >>> from ordinalcorr import point_biserial_corr
-    >>> x = np.array([0.1, 0.2, 0.3, 0.4, 0.5])
-    >>> y = np.array([0, 0, 1, 1, 1])
+    >>> x = [0.1, 0.2, 0.3, 0.4, 0.5]
+    >>> y = [0, 0, 1, 1, 1]
     >>> point_biserial_corr(x, y)
 
     References
