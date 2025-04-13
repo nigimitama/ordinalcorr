@@ -1,7 +1,9 @@
 .. This file should at least contain the root `toctree` directive.
 
-ordinalcorr documentation
-=========================
+ordinalcorr
+===========
+
+A Python package for computing correlation coefficients designed for ordinal-scale data. 
 
 
 Installation
