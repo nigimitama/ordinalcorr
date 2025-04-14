@@ -3,7 +3,7 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="prev" title="User Guide" href="user_guide.html" />
+<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="ordinalcorr.biserial_corr" href="generated/ordinalcorr.biserial_corr.html" /><link rel="prev" title="User Guide" href="user_guide.html" />
 
     <!-- Generated with Sphinx 8.1.3 and Furo 2024.08.06 -->
         <title>API Reference - ordinalcorr documentation</title>
@@ -201,7 +201,11 @@
   <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="user_guide.html">User Guide</a></li>
-<li class="toctree-l1 current has-children current-page"><a class="current reference internal" href="#">API Reference</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of API Reference</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="simple">
+<li class="toctree-l1 current has-children current-page"><a class="current reference internal" href="#">API Reference</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of API Reference</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="generated/ordinalcorr.biserial_corr.html">ordinalcorr.biserial_corr</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/ordinalcorr.point_biserial_corr.html">ordinalcorr.point_biserial_corr</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/ordinalcorr.polychoric_corr.html">ordinalcorr.polychoric_corr</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/ordinalcorr.polyserial_corr.html">ordinalcorr.polyserial_corr</a></li>
 </ul>
 </li>
 </ul>
@@ -248,147 +252,38 @@
 <h1>API Reference<a class="headerlink" href="#api-reference" title="Link to this heading">¶</a></h1>
 <div class="toctree-wrapper compound">
 </div>
-<p id="module-ordinalcorr">ordinalcorr - A Python package for ordinal correlation analysis</p>
-<dl class="py function">
-<dt class="sig sig-object py" id="ordinalcorr.biserial_corr">
-<span class="sig-prename descclassname"><span class="pre">ordinalcorr.</span></span><span class="sig-name descname"><span class="pre">biserial_corr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="_modules/ordinalcorr/dichotomous.html#biserial_corr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ordinalcorr.biserial_corr" title="Link to this definition">¶</a></dt>
-<dd><p>Compute the biserial correlation coefficient between a continuous variable x
-and a dichotomized variable y (0 or 1), assuming y was split from a latent continuous variable.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>x</strong> (<em>array-like</em>) – Continuous variable.</p></li>
-<li><p><strong>y</strong> (<em>array-like</em>) – Dichotomous variable (0 and 1), assumed to be derived from a latent continuous variable.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Biserial correlation coefficient.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>float</p>
-</dd>
-</dl>
-<p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">ordinalcorr</span><span class="w"> </span><span class="kn">import</span> <span class="n">biserial_corr</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">biserial_corr</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
-</pre></div>
+<section id="dichotomous-variables">
+<h2>Dichotomous variables<a class="headerlink" href="#dichotomous-variables" title="Link to this heading">¶</a></h2>
+<p>correlation coefficients for dichotomous (binary) variables</p>
+<div class="table-wrapper autosummary longtable docutils container">
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/ordinalcorr.biserial_corr.html#ordinalcorr.biserial_corr" title="ordinalcorr.biserial_corr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ordinalcorr.biserial_corr</span></code></a>(x, y)</p></td>
+<td><p>Compute the biserial correlation coefficient between a continuous variable x and a dichotomized variable y (0 or 1), assuming y was split from a latent continuous variable.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/ordinalcorr.point_biserial_corr.html#ordinalcorr.point_biserial_corr" title="ordinalcorr.point_biserial_corr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ordinalcorr.point_biserial_corr</span></code></a>(x, y)</p></td>
+<td><p>Compute the point-biserial correlation between a continuous variable x and a dichotomous variable y (0 or 1), assuming y is a true dichotomous variable.</p></td>
+</tr>
+</tbody>
+</table>
 </div>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="ordinalcorr.point_biserial_corr">
-<span class="sig-prename descclassname"><span class="pre">ordinalcorr.</span></span><span class="sig-name descname"><span class="pre">point_biserial_corr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">T</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">[</span></span><span class="pre">T</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">T</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">[</span></span><span class="pre">T</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="_modules/ordinalcorr/dichotomous.html#point_biserial_corr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ordinalcorr.point_biserial_corr" title="Link to this definition">¶</a></dt>
-<dd><p>Compute the point-biserial correlation between a continuous variable x
-and a dichotomous variable y (0 or 1), assuming y is a true dichotomous variable.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>x</strong> (<em>array-like</em>) – Continuous variable.</p></li>
-<li><p><strong>y</strong> (<em>array-like</em>) – Dichotomous variable (0 and 1).</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Point-biserial correlation coefficient.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>float</p>
-</dd>
-</dl>
-<p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">ordinalcorr</span><span class="w"> </span><span class="kn">import</span> <span class="n">point_biserial_corr</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">point_biserial_corr</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
-</pre></div>
+</section>
+<section id="polytomous-variables">
+<h2>Polytomous variables<a class="headerlink" href="#polytomous-variables" title="Link to this heading">¶</a></h2>
+<p>correlation coefficients for polytomous (ordered categorical) variables</p>
+<div class="table-wrapper autosummary longtable docutils container">
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/ordinalcorr.polychoric_corr.html#ordinalcorr.polychoric_corr" title="ordinalcorr.polychoric_corr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ordinalcorr.polychoric_corr</span></code></a>(x, y)</p></td>
+<td><p>Estimate the polychoric correlation coefficient between two ordinal variables.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/ordinalcorr.polyserial_corr.html#ordinalcorr.polyserial_corr" title="ordinalcorr.polyserial_corr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ordinalcorr.polyserial_corr</span></code></a>(x, y)</p></td>
+<td><p>Estimate the polyserial correlation coefficient between a continuous variable x and an ordinal variable y using the two-step maximum likelihood estimation.</p></td>
+</tr>
+</tbody>
+</table>
 </div>
-<p class="rubric">References</p>
-<aside class="footnote-list brackets">
-<aside class="footnote brackets" id="id1" role="doc-footnote">
-<span class="label"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></span>
-<p>Lev, J. (1949). The point biserial coefficient of correlation. The Annals of Mathematical Statistics, 20(1), 125-126.</p>
-</aside>
-<aside class="footnote brackets" id="id2" role="doc-footnote">
-<span class="label"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></span>
-<p>Kornbrot, D. (2014). Point biserial correlation. Wiley StatsRef: Statistics Reference Online.</p>
-</aside>
-</aside>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="ordinalcorr.polychoric_corr">
-<span class="sig-prename descclassname"><span class="pre">ordinalcorr.</span></span><span class="sig-name descname"><span class="pre">polychoric_corr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="_modules/ordinalcorr/polytomous.html#polychoric_corr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ordinalcorr.polychoric_corr" title="Link to this definition">¶</a></dt>
-<dd><p>Estimate the polychoric correlation coefficient between two ordinal variables.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>x</strong> (<em>array_like</em><em> (</em><em>int</em><em>)</em>) – Ordinal variable.</p></li>
-<li><p><strong>y</strong> (<em>array_like</em><em> (</em><em>int</em><em>)</em>) – Ordinal variable.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Estimated polychoric correlation coefficient.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>float</p>
-</dd>
-</dl>
-<p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">ordinalcorr</span><span class="w"> </span><span class="kn">import</span> <span class="n">polychoric_corr</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">polychoric_corr</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
-</pre></div>
-</div>
-<p class="rubric">References</p>
-<aside class="footnote-list brackets">
-<aside class="footnote brackets" id="id3" role="doc-footnote">
-<span class="label"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></span>
-<p>Olsson, U. (1979). Maximum likelihood estimation of the polychoric correlation coefficient. Psychometrika, 44(4), 443-460.</p>
-</aside>
-<aside class="footnote brackets" id="id4" role="doc-footnote">
-<span class="label"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></span>
-<p>Drasgow, F. (1986). Polychoric and polyserial correlations In: Kotz S, Johnson N, editors. The Encyclopedia of Statistics.</p>
-</aside>
-</aside>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="ordinalcorr.polyserial_corr">
-<span class="sig-prename descclassname"><span class="pre">ordinalcorr.</span></span><span class="sig-name descname"><span class="pre">polyserial_corr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="_modules/ordinalcorr/polytomous.html#polyserial_corr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ordinalcorr.polyserial_corr" title="Link to this definition">¶</a></dt>
-<dd><p>Estimate the polyserial correlation coefficient between a continuous variable x
-and an ordinal variable y using the two-step maximum likelihood estimation.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>x</strong> (<em>array_like</em><em> (</em><em>float</em><em> | </em><em>int</em><em>)</em>) – Continuous variable.</p></li>
-<li><p><strong>y</strong> (<em>array_like</em><em> (</em><em>int</em><em>)</em>) – Ordinal variable.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Estimated polyserial correlation coefficient.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>float</p>
-</dd>
-</dl>
-<p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">ordinalcorr</span><span class="w"> </span><span class="kn">import</span> <span class="n">polyserial_corr</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">polyserial_corr</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
-</pre></div>
-</div>
-<p class="rubric">References</p>
-<aside class="footnote-list brackets">
-<aside class="footnote brackets" id="id5" role="doc-footnote">
-<span class="label"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></span>
-<p>Drasgow, F. (1986). Polychoric and polyserial correlations In: Kotz S, Johnson N, editors. The Encyclopedia of Statistics.</p>
-</aside>
-</aside>
-</dd></dl>
-
+</section>
 </section>
 
         </article>
@@ -396,7 +291,15 @@ and an ordinal variable y using the two-step maximum likelihood estimation.</p>
       <footer>
         
         <div class="related-pages">
-          
+          <a class="next-page" href="generated/ordinalcorr.biserial_corr.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">ordinalcorr.biserial_corr</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
           <a class="prev-page" href="user_guide.html">
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
@@ -439,10 +342,8 @@ and an ordinal variable y using the two-step maximum likelihood estimation.</p>
           <div class="toc-tree">
             <ul>
 <li><a class="reference internal" href="#">API Reference</a><ul>
-<li><a class="reference internal" href="#ordinalcorr.biserial_corr"><code class="docutils literal notranslate"><span class="pre">biserial_corr()</span></code></a></li>
-<li><a class="reference internal" href="#ordinalcorr.point_biserial_corr"><code class="docutils literal notranslate"><span class="pre">point_biserial_corr()</span></code></a></li>
-<li><a class="reference internal" href="#ordinalcorr.polychoric_corr"><code class="docutils literal notranslate"><span class="pre">polychoric_corr()</span></code></a></li>
-<li><a class="reference internal" href="#ordinalcorr.polyserial_corr"><code class="docutils literal notranslate"><span class="pre">polyserial_corr()</span></code></a></li>
+<li><a class="reference internal" href="#dichotomous-variables">Dichotomous variables</a></li>
+<li><a class="reference internal" href="#polytomous-variables">Polytomous variables</a></li>
 </ul>
 </li>
 </ul>
