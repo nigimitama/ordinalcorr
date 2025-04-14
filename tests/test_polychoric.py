@@ -15,7 +15,7 @@ class TestPolychoricCorr(unittest.TestCase):
 
     def test_inverse_correlation(self):
         x = np.tile([1, 2, 3], 10)
-        y = np.tile([3, 2, 1], 10)
+        y = np.tile([6, 4, 2], 10)
         rho = polychoric_corr(x, y)
         self.assertTrue(-1.0 < rho < -0.9, f"Expected strong negative rho, got {rho}")
 
