@@ -17,6 +17,7 @@ correlation coefficients for dichotomous (binary) variables
 
    ordinalcorr.biserial_corr
    ordinalcorr.point_biserial_corr
+   ordinalcorr.tetrachoric_corr
 
 
 Polytomous variables
