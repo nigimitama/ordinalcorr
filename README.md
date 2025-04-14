@@ -17,13 +17,13 @@ pip install ordinalcorr
 
 This package provides several correlation coefficients for many types of variables
 
-| Variable X | Variable Y                           | Method                     | Function              |
-| ---------- | ------------------------------------ | -------------------------- | --------------------- |
-| binary     | binary                               | Tetrachoric correlation    | `tetrachoric_corr`    |
-| ordinal    | ordinal                              | Polychoric correlation     | `polychoric_corr`     |
-| continuous | ordinal                              | Polyserial correlation     | `polyserial_corr`     |
-| continuous | binary (discretized from continuous) | Biserial correlation       | `biserial_corr`       |
-| continuous | binary                               | Point-Biserial correlation | `point_biserial_corr` |
+| Variable X            | Variable Y            | Method                     | Function              |
+| --------------------- | --------------------- | -------------------------- | --------------------- |
+| binary (discretized)  | binary (discretized)  | Tetrachoric correlation    | `tetrachoric_corr`    |
+| ordinal (discretized) | ordinal (discretized) | Polychoric correlation     | `polychoric_corr`     |
+| continuous            | ordinal (discretized) | Polyserial correlation     | `polyserial_corr`     |
+| continuous            | binary (discretized)  | Biserial correlation       | `biserial_corr`       |
+| continuous            | binary                | Point-Biserial correlation | `point_biserial_corr` |
 
 ### Example
 
