@@ -1,7 +1,6 @@
 import unittest
 import numpy as np
-from ordinalcorr import tetrachoric_corr
-from ordinalcorr.validation import ValidationError  # Assuming this package is installed
+from ordinalcorr import tetrachoric_corr, polychoric_corr
 
 
 class TestTetrachoricCorr(unittest.TestCase):
@@ -50,6 +49,19 @@ class TestTetrachoricCorr(unittest.TestCase):
             np.isnan(rho),
             f"Expected undefined or near-zero rho, got {rho}",
         )
+
+    def test_tetrachoric_polychoric_equivalence(self):
+        test_cases = [
+            (np.repeat([0, 1], 10), np.repeat([0, 1], 10)),
+            (np.repeat([0, 1], 10), np.repeat([1, 0], 10)),
+            (np.repeat([1, 0], 10), np.repeat([0, 1], 10)),
+            (np.repeat([1, 0], 10), np.repeat([1, 0], 10)),
+        ]
+        for x, y in test_cases:
+            with self.subTest(x=x, y=y):
+                rho_tetrachoric = tetrachoric_corr(x, y)
+                rho_polychoric = polychoric_corr(x, y)
+                self.assertAlmostEqual(rho_tetrachoric, rho_polychoric)
 
 
 if __name__ == "__main__":
