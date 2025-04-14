@@ -11,6 +11,7 @@ RUN pip3 install scipy==1.9.0 semopy pandas
 # setup R
 RUN Rscript -e "install.packages('polycor')"
 RUN Rscript -e "install.packages('psych')"
+RUN Rscript -e "install.packages('ltm')"
 
 WORKDIR /
 COPY . /

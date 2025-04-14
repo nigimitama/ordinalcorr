@@ -10,6 +10,15 @@ cp "$PROJECT_ROOT_DIR/README.md" $THIS_DIR
 
 docker build -t test .
 
+# point biserial
+docker run -it --rm test bash -c "
+    cd point_biserial && \
+    python3 -u gen_data.py && \
+    Rscript test.R && \
+    python3 -u test.py && \
+    python3 -u compare.py
+" 
+
 # polychoric
 docker run -it --rm test bash -c "
     cd polychoric && \
