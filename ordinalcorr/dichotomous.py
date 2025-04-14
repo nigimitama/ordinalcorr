@@ -131,6 +131,7 @@ def tetrachoric_corr(x: ArrayLike[int], y: ArrayLike[int]) -> float:
     try:
         check_if_zero_variance(x)
         check_if_zero_variance(y)
+        check_if_data_is_dichotomous(x)
         check_if_data_is_dichotomous(y)
     except ValidationError as e:
         warnings.warn(str(e))
@@ -158,7 +159,7 @@ def tetrachoric_corr(x: ArrayLike[int], y: ArrayLike[int]) -> float:
         probs = np.array([p00, p01, p10, p11])
         counts = np.array([n00, n01, n10, n11])
 
-        assert np.all(probs >= 0)
+        assert np.all(probs >= 0), f"{probs=}"
 
         return -(counts @ np.log(probs))
 
