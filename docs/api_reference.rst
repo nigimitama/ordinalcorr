@@ -6,7 +6,27 @@ API Reference
    :caption: Contents:
 
 
-.. automodule:: ordinalcorr
-   :members:
-   :undoc-members:
-   :show-inheritance:
+Dichotomous variables
+---------------------
+
+correlation coefficients for dichotomous (binary) variables
+
+.. autosummary::
+   :toctree: generated
+   :recursive:
+
+   ordinalcorr.biserial_corr
+   ordinalcorr.point_biserial_corr
+
+
+Polytomous variables
+--------------------
+
+correlation coefficients for polytomous (ordered categorical) variables
+
+.. autosummary::
+   :toctree: generated
+   :recursive:
+
+   ordinalcorr.polychoric_corr
+   ordinalcorr.polyserial_corr

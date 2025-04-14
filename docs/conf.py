@@ -15,7 +15,8 @@ author = "Masayoshi Mita"
 
 extensions = [
     "sphinx.ext.autodoc",
-    "sphinx.ext.doctest",
+    "sphinx.ext.autosummary",
+    # "sphinx.ext.doctest",
     "sphinx.ext.napoleon",
     "sphinx.ext.viewcode",
     "sphinx.ext.githubpages",
