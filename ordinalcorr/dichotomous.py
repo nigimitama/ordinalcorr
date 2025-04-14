@@ -116,7 +116,7 @@ def point_biserial_corr(x: ArrayLike, y: ArrayLike) -> float:
 
     M1 = np.mean(x1)
     M0 = np.mean(x0)
-    s = np.std(x, ddof=1)
+    s = np.std(x, ddof=0)
 
     p = np.mean(y)
     q = 1 - p
