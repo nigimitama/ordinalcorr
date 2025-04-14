@@ -149,6 +149,8 @@ def tetrachoric_corr(x: ArrayLike[int], y: ArrayLike[int]) -> float:
     >>> tetrachoric_corr(x, y)
 
     """
+    # NOTE: The estimation is the same as polyserial_corr with dichotomous variables.
+    # However, this is a bit smaller computational complexity and faster than polyserial_corr.
     x = np.asarray(x)
     y = np.asarray(y)
 
@@ -174,11 +176,14 @@ def tetrachoric_corr(x: ArrayLike[int], y: ArrayLike[int]) -> float:
     tau_y = norm.ppf(py0)
 
     def neg_log_likelihood(rho):
+        phi_x = norm.cdf(tau_x)
+        phi_y = norm.cdf(tau_y)
+
         cov = np.array([[1, rho], [rho, 1]])
         p00 = multivariate_normal.cdf([tau_x, tau_y], mean=[0, 0], cov=cov)
-        p01 = norm.cdf(tau_x) - p00
-        p10 = norm.cdf(tau_y) - p00
-        p11 = 1 - norm.cdf(tau_x) - norm.cdf(tau_y) + p00
+        p01 = phi_x - p00
+        p10 = phi_y - p00
+        p11 = 1 - phi_x - phi_y + p00
 
         probs = np.array([p00, p01, p10, p11])
         counts = np.array([n00, n01, n10, n11])
