@@ -203,6 +203,7 @@
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../api_reference.html">API Reference</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of API Reference</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../generated/ordinalcorr.biserial_corr.html">ordinalcorr.biserial_corr</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../generated/ordinalcorr.point_biserial_corr.html">ordinalcorr.point_biserial_corr</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../generated/ordinalcorr.tetrachoric_corr.html">ordinalcorr.tetrachoric_corr</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../generated/ordinalcorr.polychoric_corr.html">ordinalcorr.polychoric_corr</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../generated/ordinalcorr.polyserial_corr.html">ordinalcorr.polyserial_corr</a></li>
 </ul>
@@ -244,7 +245,8 @@
           <h1>Source code for ordinalcorr.dichotomous</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.stats</span><span class="w"> </span><span class="kn">import</span> <span class="n">norm</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.stats</span><span class="w"> </span><span class="kn">import</span> <span class="n">norm</span><span class="p">,</span> <span class="n">multivariate_normal</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.optimize</span><span class="w"> </span><span class="kn">import</span> <span class="n">minimize_scalar</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">ordinalcorr.types</span><span class="w"> </span><span class="kn">import</span> <span class="n">ArrayLike</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">ordinalcorr.validation</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">ValidationError</span><span class="p">,</span>
@@ -370,6 +372,79 @@
     <span class="n">q</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">p</span>
 
     <span class="k">return</span> <span class="p">(</span><span class="n">M1</span> <span class="o">-</span> <span class="n">M0</span><span class="p">)</span> <span class="o">/</span> <span class="n">s</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">p</span> <span class="o">*</span> <span class="n">q</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="tetrachoric_corr">
+<a class="viewcode-back" href="../../generated/ordinalcorr.tetrachoric_corr.html#ordinalcorr.tetrachoric_corr">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">tetrachoric_corr</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">y</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">[</span><span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute the tetrachoric correlation coefficient between two dichotomous variables.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    x : array-like</span>
+<span class="sd">        Dichotomous variable (consisting of 0 and 1).</span>
+<span class="sd">    y : array-like</span>
+<span class="sd">        Dichotomous variable (consisting of 0 and 1).</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    float</span>
+<span class="sd">        Tetrachoric correlation coefficient.</span>
+
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; from ordinalcorr import tetrachoric_corr</span>
+<span class="sd">    &gt;&gt;&gt; x = [0, 0, 1, 1, 1]</span>
+<span class="sd">    &gt;&gt;&gt; y = [0, 1, 0, 1, 1]</span>
+<span class="sd">    &gt;&gt;&gt; tetrachoric_corr(x, y)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">check_if_zero_variance</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">check_if_zero_variance</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+        <span class="n">check_if_data_is_dichotomous</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">check_if_data_is_dichotomous</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+    <span class="k">except</span> <span class="n">ValidationError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+
+    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">n00</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">x</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">y</span> <span class="o">==</span> <span class="mi">0</span><span class="p">))</span>
+    <span class="n">n01</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">x</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">y</span> <span class="o">==</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="n">n10</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">x</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">y</span> <span class="o">==</span> <span class="mi">0</span><span class="p">))</span>
+    <span class="n">n11</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">x</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">y</span> <span class="o">==</span> <span class="mi">1</span><span class="p">))</span>
+
+    <span class="n">px0</span> <span class="o">=</span> <span class="p">(</span><span class="n">n00</span> <span class="o">+</span> <span class="n">n01</span><span class="p">)</span> <span class="o">/</span> <span class="n">n</span>
+    <span class="n">py0</span> <span class="o">=</span> <span class="p">(</span><span class="n">n00</span> <span class="o">+</span> <span class="n">n10</span><span class="p">)</span> <span class="o">/</span> <span class="n">n</span>
+
+    <span class="n">tau_x</span> <span class="o">=</span> <span class="n">norm</span><span class="o">.</span><span class="n">ppf</span><span class="p">(</span><span class="n">px0</span><span class="p">)</span>
+    <span class="n">tau_y</span> <span class="o">=</span> <span class="n">norm</span><span class="o">.</span><span class="n">ppf</span><span class="p">(</span><span class="n">py0</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">neg_log_likelihood</span><span class="p">(</span><span class="n">rho</span><span class="p">):</span>
+        <span class="n">cov</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="n">rho</span><span class="p">],</span> <span class="p">[</span><span class="n">rho</span><span class="p">,</span> <span class="mi">1</span><span class="p">]])</span>
+        <span class="n">p00</span> <span class="o">=</span> <span class="n">multivariate_normal</span><span class="o">.</span><span class="n">cdf</span><span class="p">([</span><span class="n">tau_x</span><span class="p">,</span> <span class="n">tau_y</span><span class="p">],</span> <span class="n">mean</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">cov</span><span class="o">=</span><span class="n">cov</span><span class="p">)</span>
+        <span class="n">p01</span> <span class="o">=</span> <span class="n">norm</span><span class="o">.</span><span class="n">cdf</span><span class="p">(</span><span class="n">tau_x</span><span class="p">)</span> <span class="o">-</span> <span class="n">p00</span>
+        <span class="n">p10</span> <span class="o">=</span> <span class="n">norm</span><span class="o">.</span><span class="n">cdf</span><span class="p">(</span><span class="n">tau_y</span><span class="p">)</span> <span class="o">-</span> <span class="n">p00</span>
+        <span class="n">p11</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">norm</span><span class="o">.</span><span class="n">cdf</span><span class="p">(</span><span class="n">tau_x</span><span class="p">)</span> <span class="o">-</span> <span class="n">norm</span><span class="o">.</span><span class="n">cdf</span><span class="p">(</span><span class="n">tau_y</span><span class="p">)</span> <span class="o">+</span> <span class="n">p00</span>
+
+        <span class="n">probs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">p00</span><span class="p">,</span> <span class="n">p01</span><span class="p">,</span> <span class="n">p10</span><span class="p">,</span> <span class="n">p11</span><span class="p">])</span>
+        <span class="n">counts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">n00</span><span class="p">,</span> <span class="n">n01</span><span class="p">,</span> <span class="n">n10</span><span class="p">,</span> <span class="n">n11</span><span class="p">])</span>
+
+        <span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">probs</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">probs</span><span class="si">=}</span><span class="s2">&quot;</span>
+
+        <span class="k">return</span> <span class="o">-</span><span class="p">(</span><span class="n">counts</span> <span class="o">@</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">probs</span><span class="p">))</span>
+
+    <span class="n">eps</span> <span class="o">=</span> <span class="mf">1e-10</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">minimize_scalar</span><span class="p">(</span>
+        <span class="n">neg_log_likelihood</span><span class="p">,</span> <span class="n">bounds</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span> <span class="o">+</span> <span class="n">eps</span><span class="p">,</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">eps</span><span class="p">),</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;bounded&quot;</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">result</span><span class="o">.</span><span class="n">x</span></div>
 
 </pre></div>
         </article>
