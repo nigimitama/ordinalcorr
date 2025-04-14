@@ -265,29 +265,35 @@
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p>ordinal</p></td>
-<td><p>ordinal</p></td>
+<tr class="row-even"><td><p>dichotomous (discretized)</p></td>
+<td><p>dichotomous (discretized)</p></td>
+<td><p><a class="reference internal" href="generated/ordinalcorr.tetrachoric_corr.html#ordinalcorr.tetrachoric_corr" title="ordinalcorr.tetrachoric_corr"><code class="xref py py-func docutils literal notranslate"><span class="pre">ordinalcorr.tetrachoric_corr()</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><p>polytomous (discretized)</p></td>
+<td><p>polytomous (discretized)</p></td>
 <td><p><a class="reference internal" href="generated/ordinalcorr.polychoric_corr.html#ordinalcorr.polychoric_corr" title="ordinalcorr.polychoric_corr"><code class="xref py py-func docutils literal notranslate"><span class="pre">ordinalcorr.polychoric_corr()</span></code></a></p></td>
 </tr>
-<tr class="row-odd"><td><p>continuous</p></td>
-<td><p>ordinal</p></td>
+<tr class="row-even"><td><p>continuous</p></td>
+<td><p>polytomous (discretized)</p></td>
 <td><p><a class="reference internal" href="generated/ordinalcorr.polyserial_corr.html#ordinalcorr.polyserial_corr" title="ordinalcorr.polyserial_corr"><code class="xref py py-func docutils literal notranslate"><span class="pre">ordinalcorr.polyserial_corr()</span></code></a></p></td>
 </tr>
-<tr class="row-even"><td><p>continuous</p></td>
-<td><p>binary (discretized from continuous)</p></td>
+<tr class="row-odd"><td><p>continuous</p></td>
+<td><p>dichotomous (discretized)</p></td>
 <td><p><a class="reference internal" href="generated/ordinalcorr.biserial_corr.html#ordinalcorr.biserial_corr" title="ordinalcorr.biserial_corr"><code class="xref py py-func docutils literal notranslate"><span class="pre">ordinalcorr.biserial_corr()</span></code></a></p></td>
 </tr>
-<tr class="row-odd"><td><p>continuous</p></td>
-<td><p>binary</p></td>
+<tr class="row-even"><td><p>continuous</p></td>
+<td><p>dichotomous</p></td>
 <td><p><a class="reference internal" href="generated/ordinalcorr.point_biserial_corr.html#ordinalcorr.point_biserial_corr" title="ordinalcorr.point_biserial_corr"><code class="xref py py-func docutils literal notranslate"><span class="pre">ordinalcorr.point_biserial_corr()</span></code></a></p></td>
-</tr>
-<tr class="row-even"><td><p>binary</p></td>
-<td><p>binary</p></td>
-<td><p><a class="reference internal" href="generated/ordinalcorr.tetrachoric_corr.html#ordinalcorr.tetrachoric_corr" title="ordinalcorr.tetrachoric_corr"><code class="xref py py-func docutils literal notranslate"><span class="pre">ordinalcorr.tetrachoric_corr()</span></code></a></p></td>
 </tr>
 </tbody>
 </table>
 </div>
+<p>Where:</p>
+<ul class="simple">
+<li><p><strong>dichotomous</strong> variable: An ordinal variable with exactly two categories (e.g., Yes/No, 0/1).</p></li>
+<li><p><strong>polytomous</strong> variable: An ordinal variable with more than two categories (e.g., Likert scale with 5 options).</p></li>
+<li><p><strong>discretized</strong>: Indicates that the variable is assumed to originate from an underlying continuous latent distribution, and that observed categories result from applying thresholds to this latent variable.</p></li>
+</ul>
 </section>
 </section>
 
