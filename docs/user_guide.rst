@@ -21,3 +21,5 @@ The following table shows which correlation method to use based on your variable
 +----------------+--------------------------------------+-----------------------------------------------+
 | continuous     | binary                               | :py:func:`ordinalcorr.point_biserial_corr`    |
 +----------------+--------------------------------------+-----------------------------------------------+
+| binary         | binary                               | :py:func:`ordinalcorr.tetrachoric_corr`       |
++----------------+--------------------------------------+-----------------------------------------------+

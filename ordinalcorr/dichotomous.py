@@ -125,6 +125,30 @@ def point_biserial_corr(x: ArrayLike, y: ArrayLike) -> float:
 
 
 def tetrachoric_corr(x: ArrayLike[int], y: ArrayLike[int]) -> float:
+    """
+    Compute the tetrachoric correlation coefficient between two dichotomous variables.
+
+    Parameters
+    ----------
+    x : array-like
+        Dichotomous variable (consisting of 0 and 1).
+    y : array-like
+        Dichotomous variable (consisting of 0 and 1).
+
+    Returns
+    -------
+    float
+        Tetrachoric correlation coefficient.
+
+
+    Examples
+    --------
+    >>> from ordinalcorr import tetrachoric_corr
+    >>> x = [0, 0, 1, 1, 1]
+    >>> y = [0, 1, 0, 1, 1]
+    >>> tetrachoric_corr(x, y)
+
+    """
     x = np.asarray(x)
     y = np.asarray(y)
 
