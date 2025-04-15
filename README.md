@@ -41,11 +41,12 @@ ordinalcorr is available at the [PyPI](https://pypi.org/project/ordinalcorr/)
 pip install ordinalcorr
 ```
 
-### Dependencies
+### Requirements
 
-- Python >= 3.10
-- numpy >= 1.23.0
-- scipy >= 1.8.0
+- Python 3.10 or later
+- Dependencies:
+  - numpy >= 1.23.0
+  - scipy >= 1.8.0
 
 ## 📒 Documentation
 

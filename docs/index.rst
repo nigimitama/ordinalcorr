@@ -9,9 +9,20 @@ ordinalcorr
 Installation
 ------------
 
+ordinalcorr is available at the `PyPI <https://pypi.org/project/ordinalcorr/>`_
+
 .. code-block:: bash
 
    pip install ordinalcorr
+
+
+Requirements
+~~~~~~~~~~~~
+
+- Python 3.10 or later
+- Dependencies:
+   - numpy >= 1.23.0
+   - scipy >= 1.8.0
 
 
 Example
