@@ -201,11 +201,11 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../user_guide.html">User Guide</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../api_reference.html">API Reference</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of API Reference</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../generated/ordinalcorr.biserial_corr.html">ordinalcorr.biserial_corr</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../generated/ordinalcorr.point_biserial_corr.html">ordinalcorr.point_biserial_corr</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../generated/ordinalcorr.tetrachoric_corr.html">ordinalcorr.tetrachoric_corr</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../generated/ordinalcorr.polychoric_corr.html">ordinalcorr.polychoric_corr</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../generated/ordinalcorr.polyserial_corr.html">ordinalcorr.polyserial_corr</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../generated/ordinalcorr.biserial.html">ordinalcorr.biserial</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../generated/ordinalcorr.point_biserial.html">ordinalcorr.point_biserial</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../generated/ordinalcorr.tetrachoric.html">ordinalcorr.tetrachoric</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../generated/ordinalcorr.polychoric.html">ordinalcorr.polychoric</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../generated/ordinalcorr.polyserial.html">ordinalcorr.polyserial</a></li>
 </ul>
 </li>
 </ul>
@@ -256,9 +256,9 @@
 <span class="p">)</span>
 
 
-<div class="viewcode-block" id="biserial_corr">
-<a class="viewcode-back" href="../../generated/ordinalcorr.biserial_corr.html#ordinalcorr.biserial_corr">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">biserial_corr</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">[</span><span class="nb">float</span> <span class="o">|</span> <span class="nb">int</span><span class="p">],</span> <span class="n">y</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">[</span><span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<div class="viewcode-block" id="biserial">
+<a class="viewcode-back" href="../../generated/ordinalcorr.biserial_corr.html#ordinalcorr.biserial">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">biserial</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">[</span><span class="nb">float</span> <span class="o">|</span> <span class="nb">int</span><span class="p">],</span> <span class="n">y</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">[</span><span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Compute the biserial correlation coefficient between a continuous variable x</span>
 <span class="sd">    and a dichotomized variable y (0 or 1), assuming y was split from a latent continuous variable.</span>
@@ -277,47 +277,28 @@
 
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
-<span class="sd">    &gt;&gt;&gt; from ordinalcorr import biserial_corr</span>
+<span class="sd">    &gt;&gt;&gt; from ordinalcorr import biserial</span>
 <span class="sd">    &gt;&gt;&gt; x = [0.1, 0.2, 0.3, 0.4, 0.5]</span>
 <span class="sd">    &gt;&gt;&gt; y = [0, 0, 1, 1, 1]</span>
-<span class="sd">    &gt;&gt;&gt; biserial_corr(x, y)</span>
+<span class="sd">    &gt;&gt;&gt; biserial(x, y)</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-    <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
-
-    <span class="k">try</span><span class="p">:</span>
-        <span class="n">check_length_are_same</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
-        <span class="n">check_if_zero_variance</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-        <span class="n">check_if_zero_variance</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
-    <span class="k">except</span> <span class="n">ValidationError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+    <span class="n">rho_pbi</span> <span class="o">=</span> <span class="n">point_biserial</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">rho_pbi</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
 
-    <span class="k">try</span><span class="p">:</span>
-        <span class="n">check_if_data_is_dichotomous</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
-    <span class="k">except</span> <span class="n">ValidationError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
-        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
-
-    <span class="n">x1</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="n">y</span> <span class="o">==</span> <span class="mi">1</span><span class="p">]</span>
-    <span class="n">x0</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="n">y</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span>
-    <span class="n">M1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">x1</span><span class="p">)</span>
-    <span class="n">M0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">x0</span><span class="p">)</span>
-    <span class="n">s</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">ddof</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-
+    <span class="c1"># calculate the correction factor</span>
     <span class="n">p</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
     <span class="n">q</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">p</span>
     <span class="n">z</span> <span class="o">=</span> <span class="n">norm</span><span class="o">.</span><span class="n">ppf</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
-    <span class="n">phi</span> <span class="o">=</span> <span class="n">norm</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
-
-    <span class="k">return</span> <span class="p">(</span><span class="n">M1</span> <span class="o">-</span> <span class="n">M0</span><span class="p">)</span> <span class="o">/</span> <span class="n">s</span> <span class="o">*</span> <span class="p">(</span><span class="n">p</span> <span class="o">*</span> <span class="n">q</span><span class="p">)</span> <span class="o">/</span> <span class="n">phi</span></div>
-
+    <span class="n">c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">p</span> <span class="o">*</span> <span class="n">q</span><span class="p">)</span> <span class="o">/</span> <span class="n">norm</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">rho_pbi</span> <span class="o">*</span> <span class="n">c</span></div>
 
 
-<div class="viewcode-block" id="point_biserial_corr">
-<a class="viewcode-back" href="../../generated/ordinalcorr.point_biserial_corr.html#ordinalcorr.point_biserial_corr">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">point_biserial_corr</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+
+<div class="viewcode-block" id="point_biserial">
+<a class="viewcode-back" href="../../generated/ordinalcorr.point_biserial_corr.html#ordinalcorr.point_biserial">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">point_biserial</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Compute the point-biserial correlation between a continuous variable x</span>
 <span class="sd">    and a dichotomous variable y (0 or 1), assuming y is a true dichotomous variable.</span>
@@ -337,10 +318,10 @@
 
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
-<span class="sd">    &gt;&gt;&gt; from ordinalcorr import point_biserial_corr</span>
+<span class="sd">    &gt;&gt;&gt; from ordinalcorr import point_biserial</span>
 <span class="sd">    &gt;&gt;&gt; x = [0.1, 0.2, 0.3, 0.4, 0.5]</span>
 <span class="sd">    &gt;&gt;&gt; y = [0, 0, 1, 1, 1]</span>
-<span class="sd">    &gt;&gt;&gt; point_biserial_corr(x, y)</span>
+<span class="sd">    &gt;&gt;&gt; point_biserial(x, y)</span>
 
 <span class="sd">    References</span>
 <span class="sd">    ----------</span>
@@ -378,9 +359,9 @@
 
 
 
-<div class="viewcode-block" id="tetrachoric_corr">
-<a class="viewcode-back" href="../../generated/ordinalcorr.tetrachoric_corr.html#ordinalcorr.tetrachoric_corr">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">tetrachoric_corr</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">y</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">[</span><span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<div class="viewcode-block" id="tetrachoric">
+<a class="viewcode-back" href="../../generated/ordinalcorr.tetrachoric_corr.html#ordinalcorr.tetrachoric">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">tetrachoric</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">y</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">[</span><span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Compute the tetrachoric correlation coefficient between two dichotomous variables.</span>
 
@@ -399,14 +380,14 @@
 
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
-<span class="sd">    &gt;&gt;&gt; from ordinalcorr import tetrachoric_corr</span>
+<span class="sd">    &gt;&gt;&gt; from ordinalcorr import tetrachoric</span>
 <span class="sd">    &gt;&gt;&gt; x = [0, 0, 1, 1, 1]</span>
 <span class="sd">    &gt;&gt;&gt; y = [0, 1, 0, 1, 1]</span>
-<span class="sd">    &gt;&gt;&gt; tetrachoric_corr(x, y)</span>
+<span class="sd">    &gt;&gt;&gt; tetrachoric(x, y)</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c1"># NOTE: The estimation is the same as polyserial_corr with dichotomous variables.</span>
-    <span class="c1"># However, this is a bit smaller computational complexity and faster than polyserial_corr.</span>
+    <span class="c1"># NOTE: The estimation is the same as polyserial with dichotomous variables.</span>
+    <span class="c1"># However, this is a bit smaller computational complexity and faster than polyserial.</span>
     <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
     <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
 

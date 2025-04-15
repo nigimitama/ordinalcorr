@@ -15,9 +15,9 @@ correlation coefficients for dichotomous (binary) variables
    :toctree: generated
    :recursive:
 
-   ordinalcorr.biserial_corr
-   ordinalcorr.point_biserial_corr
-   ordinalcorr.tetrachoric_corr
+   ordinalcorr.biserial
+   ordinalcorr.point_biserial
+   ordinalcorr.tetrachoric
 
 
 Polytomous variables
@@ -29,5 +29,5 @@ correlation coefficients for polytomous (ordered categorical) variables
    :toctree: generated
    :recursive:
 
-   ordinalcorr.polychoric_corr
-   ordinalcorr.polyserial_corr
+   ordinalcorr.polychoric
+   ordinalcorr.polyserial

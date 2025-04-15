@@ -3,4 +3,4 @@
 
 .. currentmodule:: ordinalcorr
 
-.. autofunction:: tetrachoric_corr
+.. autofunction:: tetrachoric

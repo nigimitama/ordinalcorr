@@ -202,11 +202,11 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="user_guide.html">User Guide</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="api_reference.html">API Reference</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of API Reference</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="generated/ordinalcorr.biserial_corr.html">ordinalcorr.biserial_corr</a></li>
-<li class="toctree-l2"><a class="reference internal" href="generated/ordinalcorr.point_biserial_corr.html">ordinalcorr.point_biserial_corr</a></li>
-<li class="toctree-l2"><a class="reference internal" href="generated/ordinalcorr.tetrachoric_corr.html">ordinalcorr.tetrachoric_corr</a></li>
-<li class="toctree-l2"><a class="reference internal" href="generated/ordinalcorr.polychoric_corr.html">ordinalcorr.polychoric_corr</a></li>
-<li class="toctree-l2"><a class="reference internal" href="generated/ordinalcorr.polyserial_corr.html">ordinalcorr.polyserial_corr</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/ordinalcorr.biserial.html">ordinalcorr.biserial</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/ordinalcorr.point_biserial.html">ordinalcorr.point_biserial</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/ordinalcorr.tetrachoric.html">ordinalcorr.tetrachoric</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/ordinalcorr.polychoric.html">ordinalcorr.polychoric</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/ordinalcorr.polyserial.html">ordinalcorr.polyserial</a></li>
 </ul>
 </li>
 </ul>
@@ -261,10 +261,10 @@
 <section id="example">
 <h2>Example<a class="headerlink" href="#example" title="Link to this heading">¶</a></h2>
 <p>Compute correlation coefficient between two ordinal variables</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">ordinalcorr</span><span class="w"> </span><span class="kn">import</span> <span class="n">polychoric_corr</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">ordinalcorr</span><span class="w"> </span><span class="kn">import</span> <span class="n">polychoric</span>
 <span class="n">x</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
 <span class="n">y</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
-<span class="n">rho</span> <span class="o">=</span> <span class="n">polychoric_corr</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="n">rho</span> <span class="o">=</span> <span class="n">polychoric</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Polychoric correlation: </span><span class="si">{</span><span class="n">rho</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>

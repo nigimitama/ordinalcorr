@@ -201,11 +201,11 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../user_guide.html">User Guide</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../api_reference.html">API Reference</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of API Reference</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../generated/ordinalcorr.biserial_corr.html">ordinalcorr.biserial_corr</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../generated/ordinalcorr.point_biserial_corr.html">ordinalcorr.point_biserial_corr</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../generated/ordinalcorr.tetrachoric_corr.html">ordinalcorr.tetrachoric_corr</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../generated/ordinalcorr.polychoric_corr.html">ordinalcorr.polychoric_corr</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../generated/ordinalcorr.polyserial_corr.html">ordinalcorr.polyserial_corr</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../generated/ordinalcorr.biserial.html">ordinalcorr.biserial</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../generated/ordinalcorr.point_biserial.html">ordinalcorr.point_biserial</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../generated/ordinalcorr.tetrachoric.html">ordinalcorr.tetrachoric</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../generated/ordinalcorr.polychoric.html">ordinalcorr.polychoric</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../generated/ordinalcorr.polyserial.html">ordinalcorr.polyserial</a></li>
 </ul>
 </li>
 </ul>
@@ -297,9 +297,9 @@
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">vectorize</span><span class="p">(</span><span class="n">value_to_code</span><span class="o">.</span><span class="n">get</span><span class="p">)(</span><span class="n">x</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="polychoric_corr">
-<a class="viewcode-back" href="../../generated/ordinalcorr.polychoric_corr.html#ordinalcorr.polychoric_corr">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">polychoric_corr</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">y</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">[</span><span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<div class="viewcode-block" id="polychoric">
+<a class="viewcode-back" href="../../generated/ordinalcorr.polychoric_corr.html#ordinalcorr.polychoric">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">polychoric</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">y</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">[</span><span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Estimate the polychoric correlation coefficient between two ordinal variables.</span>
 
@@ -317,10 +317,10 @@
 
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
-<span class="sd">    &gt;&gt;&gt; from ordinalcorr import polychoric_corr</span>
+<span class="sd">    &gt;&gt;&gt; from ordinalcorr import polychoric</span>
 <span class="sd">    &gt;&gt;&gt; x = [1, 1, 2, 2, 3, 3]</span>
 <span class="sd">    &gt;&gt;&gt; y = [0, 0, 0, 1, 1, 1]</span>
-<span class="sd">    &gt;&gt;&gt; polychoric_corr(x, y)</span>
+<span class="sd">    &gt;&gt;&gt; polychoric(x, y)</span>
 
 <span class="sd">    References</span>
 <span class="sd">    ----------</span>
@@ -388,9 +388,9 @@
 
 
 
-<div class="viewcode-block" id="polyserial_corr">
-<a class="viewcode-back" href="../../generated/ordinalcorr.polyserial_corr.html#ordinalcorr.polyserial_corr">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">polyserial_corr</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">[</span><span class="nb">float</span> <span class="o">|</span> <span class="nb">int</span><span class="p">],</span> <span class="n">y</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">[</span><span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<div class="viewcode-block" id="polyserial">
+<a class="viewcode-back" href="../../generated/ordinalcorr.polyserial_corr.html#ordinalcorr.polyserial">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">polyserial</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">[</span><span class="nb">float</span> <span class="o">|</span> <span class="nb">int</span><span class="p">],</span> <span class="n">y</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">[</span><span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Estimate the polyserial correlation coefficient between a continuous variable x</span>
 <span class="sd">    and an ordinal variable y using the two-step maximum likelihood estimation.</span>
@@ -409,10 +409,10 @@
 
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
-<span class="sd">    &gt;&gt;&gt; from ordinalcorr import polyserial_corr</span>
+<span class="sd">    &gt;&gt;&gt; from ordinalcorr import polyserial</span>
 <span class="sd">    &gt;&gt;&gt; x = [0.1, 0.1, 0.2, 0.2, 0.3, 0.3]</span>
 <span class="sd">    &gt;&gt;&gt; y = [0, 0, 0, 1, 1, 2]</span>
-<span class="sd">    &gt;&gt;&gt; polyserial_corr(x, y)</span>
+<span class="sd">    &gt;&gt;&gt; polyserial(x, y)</span>
 
 <span class="sd">    References</span>
 <span class="sd">    ----------</span>

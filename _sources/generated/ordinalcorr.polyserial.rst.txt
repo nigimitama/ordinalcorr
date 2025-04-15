@@ -1,5 +1,5 @@
-﻿ordinalcorr.polyserial\_corr
-============================
+﻿ordinalcorr.polyserial
+======================
 
 .. currentmodule:: ordinalcorr
 
