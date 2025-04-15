@@ -18,3 +18,8 @@ def check_if_data_is_dichotomous(y):
         raise ValidationError(
             "dichotomous (binary) variable 'y' must be consist of {0, 1}"
         )
+
+
+def check_length_are_same(x, y):
+    if len(x) != len(y):
+        raise ValidationError("length of x and y must be the same")

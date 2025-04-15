@@ -34,6 +34,12 @@ class TestPolyserialCorr(unittest.TestCase):
             f"Expected undefined or near-zero rho, got {rho}",
         )
 
+    def test_different_length(self):
+        x = np.repeat([0, 1, 2], 10)
+        y = np.repeat([2, 0, 1], 11)
+        rho = polyserial_corr(x, y)
+        self.assertTrue(np.isnan(rho), f"Expected nan, got {rho}")
+
     def test_different_rho(self):
         for bins in [2]:
             for rho in np.arange(0, 1 + 0.1, 0.1):
