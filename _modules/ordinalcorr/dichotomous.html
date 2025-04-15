@@ -402,6 +402,8 @@
 <span class="sd">    &gt;&gt;&gt; tetrachoric_corr(x, y)</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># NOTE: The estimation is the same as polyserial_corr with dichotomous variables.</span>
+    <span class="c1"># However, this is a bit smaller computational complexity and faster than polyserial_corr.</span>
     <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
     <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
 
@@ -427,11 +429,14 @@
     <span class="n">tau_y</span> <span class="o">=</span> <span class="n">norm</span><span class="o">.</span><span class="n">ppf</span><span class="p">(</span><span class="n">py0</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">neg_log_likelihood</span><span class="p">(</span><span class="n">rho</span><span class="p">):</span>
+        <span class="n">phi_x</span> <span class="o">=</span> <span class="n">norm</span><span class="o">.</span><span class="n">cdf</span><span class="p">(</span><span class="n">tau_x</span><span class="p">)</span>
+        <span class="n">phi_y</span> <span class="o">=</span> <span class="n">norm</span><span class="o">.</span><span class="n">cdf</span><span class="p">(</span><span class="n">tau_y</span><span class="p">)</span>
+
         <span class="n">cov</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="n">rho</span><span class="p">],</span> <span class="p">[</span><span class="n">rho</span><span class="p">,</span> <span class="mi">1</span><span class="p">]])</span>
         <span class="n">p00</span> <span class="o">=</span> <span class="n">multivariate_normal</span><span class="o">.</span><span class="n">cdf</span><span class="p">([</span><span class="n">tau_x</span><span class="p">,</span> <span class="n">tau_y</span><span class="p">],</span> <span class="n">mean</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">cov</span><span class="o">=</span><span class="n">cov</span><span class="p">)</span>
-        <span class="n">p01</span> <span class="o">=</span> <span class="n">norm</span><span class="o">.</span><span class="n">cdf</span><span class="p">(</span><span class="n">tau_x</span><span class="p">)</span> <span class="o">-</span> <span class="n">p00</span>
-        <span class="n">p10</span> <span class="o">=</span> <span class="n">norm</span><span class="o">.</span><span class="n">cdf</span><span class="p">(</span><span class="n">tau_y</span><span class="p">)</span> <span class="o">-</span> <span class="n">p00</span>
-        <span class="n">p11</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">norm</span><span class="o">.</span><span class="n">cdf</span><span class="p">(</span><span class="n">tau_x</span><span class="p">)</span> <span class="o">-</span> <span class="n">norm</span><span class="o">.</span><span class="n">cdf</span><span class="p">(</span><span class="n">tau_y</span><span class="p">)</span> <span class="o">+</span> <span class="n">p00</span>
+        <span class="n">p01</span> <span class="o">=</span> <span class="n">phi_x</span> <span class="o">-</span> <span class="n">p00</span>
+        <span class="n">p10</span> <span class="o">=</span> <span class="n">phi_y</span> <span class="o">-</span> <span class="n">p00</span>
+        <span class="n">p11</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">phi_x</span> <span class="o">-</span> <span class="n">phi_y</span> <span class="o">+</span> <span class="n">p00</span>
 
         <span class="n">probs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">p00</span><span class="p">,</span> <span class="n">p01</span><span class="p">,</span> <span class="n">p10</span><span class="p">,</span> <span class="n">p11</span><span class="p">])</span>
         <span class="n">counts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">n00</span><span class="p">,</span> <span class="n">n01</span><span class="p">,</span> <span class="n">n10</span><span class="p">,</span> <span class="n">n11</span><span class="p">])</span>
