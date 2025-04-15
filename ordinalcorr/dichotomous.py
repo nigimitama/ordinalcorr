@@ -36,35 +36,16 @@ def biserial(x: ArrayLike[float | int], y: ArrayLike[int]) -> float:
     >>> biserial(x, y)
 
     """
-    x = np.asarray(x)
-    y = np.asarray(y)
-
-    try:
-        check_length_are_same(x, y)
-        check_if_zero_variance(x)
-        check_if_zero_variance(y)
-    except ValidationError as e:
-        warnings.warn(str(e))
+    rho_pbi = point_biserial(x, y)
+    if np.isnan(rho_pbi):
         return np.nan
 
-    try:
-        check_if_data_is_dichotomous(y)
-    except ValidationError as e:
-        warnings.warn(str(e))
-        return np.nan
-
-    x1 = x[y == 1]
-    x0 = x[y == 0]
-    M1 = np.mean(x1)
-    M0 = np.mean(x0)
-    s = np.std(x, ddof=1)
-
+    # calculate the correction factor
     p = np.mean(y)
     q = 1 - p
     z = norm.ppf(p)
-    phi = norm.pdf(z)
-
-    return (M1 - M0) / s * (p * q) / phi
+    c = np.sqrt(p * q) / norm.pdf(z)
+    return rho_pbi * c
 
 
 def point_biserial(x: ArrayLike, y: ArrayLike) -> float:
