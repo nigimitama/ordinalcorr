@@ -2,7 +2,7 @@ import pandas as pd
 from pathlib import Path
 
 from ordinalcorr import polychoric
-from semopy.polycorr import polychoric as semopy_corr
+from semopy.polycorr import polychoric_corr as semopy_corr
 
 
 data_dir = Path("./data")
