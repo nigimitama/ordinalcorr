@@ -3,4 +3,4 @@
 
 .. currentmodule:: ordinalcorr
 
-.. autofunction:: point_biserial_corr
+.. autofunction:: point_biserial

@@ -11,7 +11,7 @@ from ordinalcorr.validation import (
 )
 
 
-def biserial_corr(x: ArrayLike[float | int], y: ArrayLike[int]) -> float:
+def biserial(x: ArrayLike[float | int], y: ArrayLike[int]) -> float:
     """
     Compute the biserial correlation coefficient between a continuous variable x
     and a dichotomized variable y (0 or 1), assuming y was split from a latent continuous variable.
@@ -30,10 +30,10 @@ def biserial_corr(x: ArrayLike[float | int], y: ArrayLike[int]) -> float:
 
     Examples
     --------
-    >>> from ordinalcorr import biserial_corr
+    >>> from ordinalcorr import biserial
     >>> x = [0.1, 0.2, 0.3, 0.4, 0.5]
     >>> y = [0, 0, 1, 1, 1]
-    >>> biserial_corr(x, y)
+    >>> biserial(x, y)
 
     """
     x = np.asarray(x)
@@ -67,7 +67,7 @@ def biserial_corr(x: ArrayLike[float | int], y: ArrayLike[int]) -> float:
     return (M1 - M0) / s * (p * q) / phi
 
 
-def point_biserial_corr(x: ArrayLike, y: ArrayLike) -> float:
+def point_biserial(x: ArrayLike, y: ArrayLike) -> float:
     """
     Compute the point-biserial correlation between a continuous variable x
     and a dichotomous variable y (0 or 1), assuming y is a true dichotomous variable.
@@ -87,10 +87,10 @@ def point_biserial_corr(x: ArrayLike, y: ArrayLike) -> float:
 
     Examples
     --------
-    >>> from ordinalcorr import point_biserial_corr
+    >>> from ordinalcorr import point_biserial
     >>> x = [0.1, 0.2, 0.3, 0.4, 0.5]
     >>> y = [0, 0, 1, 1, 1]
-    >>> point_biserial_corr(x, y)
+    >>> point_biserial(x, y)
 
     References
     ----------
@@ -127,7 +127,7 @@ def point_biserial_corr(x: ArrayLike, y: ArrayLike) -> float:
     return (M1 - M0) / s * np.sqrt(p * q)
 
 
-def tetrachoric_corr(x: ArrayLike[int], y: ArrayLike[int]) -> float:
+def tetrachoric(x: ArrayLike[int], y: ArrayLike[int]) -> float:
     """
     Compute the tetrachoric correlation coefficient between two dichotomous variables.
 
@@ -146,14 +146,14 @@ def tetrachoric_corr(x: ArrayLike[int], y: ArrayLike[int]) -> float:
 
     Examples
     --------
-    >>> from ordinalcorr import tetrachoric_corr
+    >>> from ordinalcorr import tetrachoric
     >>> x = [0, 0, 1, 1, 1]
     >>> y = [0, 1, 0, 1, 1]
-    >>> tetrachoric_corr(x, y)
+    >>> tetrachoric(x, y)
 
     """
-    # NOTE: The estimation is the same as polyserial_corr with dichotomous variables.
-    # However, this is a bit smaller computational complexity and faster than polyserial_corr.
+    # NOTE: The estimation is the same as polyserial with dichotomous variables.
+    # However, this is a bit smaller computational complexity and faster than polyserial.
     x = np.asarray(x)
     y = np.asarray(y)
 
