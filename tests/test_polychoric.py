@@ -2,7 +2,7 @@ import unittest
 import numpy as np
 import pandas as pd
 from scipy.stats import multivariate_normal
-from ordinalcorr import polychoric_corr  # Assuming this package is installed
+from ordinalcorr import polychoric  # Assuming this package is installed
 
 
 class TestPolychoricCorr(unittest.TestCase):
@@ -10,25 +10,25 @@ class TestPolychoricCorr(unittest.TestCase):
     def test_known_result(self):
         x = np.repeat([1, 2, 3], 10)
         y = np.repeat([1, 2, 3], 10)
-        rho = polychoric_corr(x, y)
+        rho = polychoric(x, y)
         self.assertTrue(0.9 < rho < 1.0, f"Expected high rho, got {rho}")
 
     def test_inverse_correlation(self):
         x = np.tile([1, 2, 3], 10)
         y = np.tile([6, 4, 2], 10)
-        rho = polychoric_corr(x, y)
+        rho = polychoric(x, y)
         self.assertTrue(-1.0 < rho < -0.9, f"Expected strong negative rho, got {rho}")
 
     def test_no_correlation(self):
         x = np.tile([1, 2, 3], 20)
         y = np.repeat([1, 2, 3], 20)
-        rho = polychoric_corr(x, y)
+        rho = polychoric(x, y)
         self.assertTrue(-0.1 < rho < 0.1, f"Expected close to zero rho, got {rho}")
 
     def test_single_category(self):
         x = np.repeat([1], 10)
         y = np.repeat([0], 10)
-        rho = polychoric_corr(x, y)
+        rho = polychoric(x, y)
         self.assertTrue(
             np.isnan(rho) or abs(rho) < 1e-6,
             f"Expected undefined or near-zero rho, got {rho}",
@@ -37,7 +37,7 @@ class TestPolychoricCorr(unittest.TestCase):
     def test_different_length(self):
         x = np.repeat([0, 1, 2], 10)
         y = np.repeat([2, 0, 1], 11)
-        rho = polychoric_corr(x, y)
+        rho = polychoric(x, y)
         self.assertTrue(np.isnan(rho), f"Expected nan, got {rho}")
 
     def test_different_rho(self):
@@ -47,7 +47,7 @@ class TestPolychoricCorr(unittest.TestCase):
                 tolerance = 0.3 if rho < 0.5 else 0.1
 
                 df = gen_data_for_polychoric(rho=rho, bins=bins, size=1000)
-                rho_hat = polychoric_corr(df["x1"], df["x2"])
+                rho_hat = polychoric(df["x1"], df["x2"])
                 # print(f"{bins=} {rho=:>.3f} {rho_hat=:>.3f}")
                 self.assertTrue(
                     np.isclose(rho, rho_hat, atol=tolerance),

@@ -1,7 +1,7 @@
 import pandas as pd
 from pathlib import Path
 
-from ordinalcorr import polyserial_corr
+from ordinalcorr import polyserial
 from semopy.polycorr import polyserial_corr as semopy_corr
 
 
@@ -11,7 +11,7 @@ csv_paths = data_dir.glob("*.csv")
 results = []
 for csv_path in sorted(csv_paths):
     df = pd.read_csv(csv_path)
-    rho = polyserial_corr(df["x"], df["y"])
+    rho = polyserial(df["x"], df["y"])
     rho_semopy = semopy_corr(df["x"], df["y"])
     results.append({"file": csv_path.name, "rho": rho, "rho_semopy": rho_semopy})
 

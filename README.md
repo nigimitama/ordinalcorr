@@ -17,25 +17,25 @@ pip install ordinalcorr
 
 This package provides several correlation coefficients for many types of variables
 
-| Variable X            | Variable Y            | Method                     | Function              |
-| --------------------- | --------------------- | -------------------------- | --------------------- |
-| binary (discretized)  | binary (discretized)  | Tetrachoric correlation    | `tetrachoric_corr`    |
-| ordinal (discretized) | ordinal (discretized) | Polychoric correlation     | `polychoric_corr`     |
-| continuous            | ordinal (discretized) | Polyserial correlation     | `polyserial_corr`     |
-| continuous            | binary (discretized)  | Biserial correlation       | `biserial_corr`       |
-| continuous            | binary                | Point-Biserial correlation | `point_biserial_corr` |
+| Variable X            | Variable Y            | Method                     | Function         |
+| --------------------- | --------------------- | -------------------------- | ---------------- |
+| binary (discretized)  | binary (discretized)  | Tetrachoric correlation    | `tetrachoric`    |
+| ordinal (discretized) | ordinal (discretized) | Polychoric correlation     | `polychoric`     |
+| continuous            | ordinal (discretized) | Polyserial correlation     | `polyserial`     |
+| continuous            | binary (discretized)  | Biserial correlation       | `biserial`       |
+| continuous            | binary                | Point-Biserial correlation | `point_biserial` |
 
 ### Example
 
 Here is an example for computing correlation coefficient between two ordinal variables
 
 ```python
-from ordinalcorr import polychoric_corr
+from ordinalcorr import polychoric
 
 x = [1, 1, 2, 2, 3, 3]
 y = [0, 0, 0, 1, 1, 1]
 
-rho = polychoric_corr(x, y)
+rho = polychoric(x, y)
 print(f"Polychoric correlation: {rho:.3f}")
 ```
 
