@@ -1,5 +1,5 @@
-﻿ordinalcorr.polychoric\_corr
-============================
+﻿ordinalcorr.polychoric
+======================
 
 .. currentmodule:: ordinalcorr
 

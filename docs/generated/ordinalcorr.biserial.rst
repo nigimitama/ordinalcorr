@@ -1,5 +1,5 @@
-﻿ordinalcorr.biserial\_corr
-==========================
+﻿ordinalcorr.biserial
+====================
 
 .. currentmodule:: ordinalcorr
 

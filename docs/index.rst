@@ -21,10 +21,10 @@ Compute correlation coefficient between two ordinal variables
 
 .. code-block:: python
 
-   from ordinalcorr import polychoric_corr
+   from ordinalcorr import polychoric
    x = [1, 1, 2, 2, 3, 3]
    y = [0, 0, 0, 1, 1, 1]
-   rho = polychoric_corr(x, y)
+   rho = polychoric(x, y)
    print(f"Polychoric correlation: {rho:.3f}")
 
 

@@ -52,7 +52,7 @@ def normalize_ordinal(x: np.ndarray[int]) -> np.ndarray[int]:
     return np.vectorize(value_to_code.get)(x)
 
 
-def polychoric_corr(x: ArrayLike[int], y: ArrayLike[int]) -> float:
+def polychoric(x: ArrayLike[int], y: ArrayLike[int]) -> float:
     """
     Estimate the polychoric correlation coefficient between two ordinal variables.
 
@@ -70,10 +70,10 @@ def polychoric_corr(x: ArrayLike[int], y: ArrayLike[int]) -> float:
 
     Examples
     --------
-    >>> from ordinalcorr import polychoric_corr
+    >>> from ordinalcorr import polychoric
     >>> x = [1, 1, 2, 2, 3, 3]
     >>> y = [0, 0, 0, 1, 1, 1]
-    >>> polychoric_corr(x, y)
+    >>> polychoric(x, y)
 
     References
     ----------
@@ -140,7 +140,7 @@ def polychoric_corr(x: ArrayLike[int], y: ArrayLike[int]) -> float:
     return result.x
 
 
-def polyserial_corr(x: ArrayLike[float | int], y: ArrayLike[int]) -> float:
+def polyserial(x: ArrayLike[float | int], y: ArrayLike[int]) -> float:
     """
     Estimate the polyserial correlation coefficient between a continuous variable x
     and an ordinal variable y using the two-step maximum likelihood estimation.
@@ -159,10 +159,10 @@ def polyserial_corr(x: ArrayLike[float | int], y: ArrayLike[int]) -> float:
 
     Examples
     --------
-    >>> from ordinalcorr import polyserial_corr
+    >>> from ordinalcorr import polyserial
     >>> x = [0.1, 0.1, 0.2, 0.2, 0.3, 0.3]
     >>> y = [0, 0, 0, 1, 1, 2]
-    >>> polyserial_corr(x, y)
+    >>> polyserial(x, y)
 
     References
     ----------
