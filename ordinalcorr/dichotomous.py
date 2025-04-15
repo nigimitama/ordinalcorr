@@ -7,6 +7,7 @@ from ordinalcorr.validation import (
     ValidationError,
     check_if_data_is_dichotomous,
     check_if_zero_variance,
+    check_length_are_same,
 )
 
 
@@ -39,6 +40,7 @@ def biserial_corr(x: ArrayLike[float | int], y: ArrayLike[int]) -> float:
     y = np.asarray(y)
 
     try:
+        check_length_are_same(x, y)
         check_if_zero_variance(x)
         check_if_zero_variance(y)
     except ValidationError as e:
@@ -99,6 +101,7 @@ def point_biserial_corr(x: ArrayLike, y: ArrayLike) -> float:
     y = np.asarray(y)
 
     try:
+        check_length_are_same(x, y)
         check_if_zero_variance(x)
         check_if_zero_variance(y)
     except ValidationError as e:
@@ -155,6 +158,7 @@ def tetrachoric_corr(x: ArrayLike[int], y: ArrayLike[int]) -> float:
     y = np.asarray(y)
 
     try:
+        check_length_are_same(x, y)
         check_if_zero_variance(x)
         check_if_zero_variance(y)
         check_if_data_is_dichotomous(x)

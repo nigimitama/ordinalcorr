@@ -2,7 +2,11 @@ import warnings
 import numpy as np
 from scipy.stats import norm, multivariate_normal
 from scipy.optimize import minimize_scalar
-from ordinalcorr.validation import ValidationError, check_if_zero_variance
+from ordinalcorr.validation import (
+    ValidationError,
+    check_if_zero_variance,
+    check_length_are_same,
+)
 from ordinalcorr.types import ArrayLike
 
 
@@ -82,6 +86,7 @@ def polychoric_corr(x: ArrayLike[int], y: ArrayLike[int]) -> float:
     y = np.asarray(y)
 
     try:
+        check_length_are_same(x, y)
         check_if_zero_variance(x)
         check_if_zero_variance(y)
     except ValidationError as e:
@@ -167,6 +172,7 @@ def polyserial_corr(x: ArrayLike[float | int], y: ArrayLike[int]) -> float:
     y = np.asarray(y)
 
     try:
+        check_length_are_same(x, y)
         check_if_zero_variance(x)
         check_if_zero_variance(y)
     except ValidationError as e:

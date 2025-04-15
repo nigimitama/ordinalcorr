@@ -32,6 +32,12 @@ class TestTetrachoricCorr(unittest.TestCase):
             f"Expected undefined or near-zero rho, got {rho}",
         )
 
+    def test_different_length(self):
+        x = np.repeat([0, 1], 10)
+        y = np.repeat([1, 0], 11)
+        rho = tetrachoric_corr(x, y)
+        self.assertTrue(np.isnan(rho), f"Expected nan, got {rho}")
+
     def test_validation_for_zero_variance(self):
         x = np.repeat([0], 10)
         y = np.repeat([1], 10)
