@@ -1,17 +1,11 @@
 # ordinalcorr: correlation coefficients for ordinal variables
 
-![PyPI - Python Version](https://img.shields.io/pypi/pyversions/ordinalcorr)
+[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/ordinalcorr)](https://pypi.org/project/ordinalcorr/)
 [![PyPI version](https://img.shields.io/pypi/v/ordinalcorr.svg)](https://pypi.org/project/ordinalcorr/)
-![License](https://img.shields.io/pypi/l/ordinalcorr)
+[![License](https://img.shields.io/pypi/l/ordinalcorr)](https://github.com/nigimitama/ordinalcorr/blob/main/LICENSE)
 
 `ordinalcorr` is a Python package designed to compute correlation coefficients tailored for ordinal-scale data (e.g., Likert items).
 It supports polychoric correlation coefficients and other coefficients for ordinal data.
-
-## 📦 Installation
-
-```bash
-pip install ordinalcorr
-```
 
 ## ✨ Features
 
@@ -39,9 +33,24 @@ rho = polychoric(x, y)
 print(f"Polychoric correlation: {rho:.3f}")
 ```
 
-## 📒 Document
+## 📦 Installation
 
-[Full document is here](https://nigimitama.github.io/ordinalcorr/index.html)
+ordinalcorr is available at the [PyPI](https://pypi.org/project/ordinalcorr/)
+
+```bash
+pip install ordinalcorr
+```
+
+### Requirements
+
+- Python 3.10 or later
+- Dependencies:
+  - numpy >= 1.23.0
+  - scipy >= 1.8.0
+
+## 📒 Documentation
+
+[ordinalcorr documentation](https://nigimitama.github.io/ordinalcorr/index.html)
 
 ## ⚖️ License
 

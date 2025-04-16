@@ -2,7 +2,7 @@
 ordinalcorr - A Python package for ordinal correlation analysis
 """
 
-__version__ = "0.5.0"
+__version__ = "0.5.1"
 
 from ordinalcorr.polytomous import polychoric, polyserial
 from ordinalcorr.dichotomous import biserial, point_biserial, tetrachoric
