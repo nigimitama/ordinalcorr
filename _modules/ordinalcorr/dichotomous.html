@@ -282,6 +282,29 @@
 <span class="sd">    &gt;&gt;&gt; y = [0, 0, 1, 1, 1]</span>
 <span class="sd">    &gt;&gt;&gt; biserial(x, y)</span>
 
+<span class="sd">    :Details:</span>
+
+<span class="sd">    The biserial correlation coefficient is defined as:</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        r_{b} = r_{pb} \\cdot \\frac{\\sqrt{p (1 - p)}}{\\phi(z)}</span>
+<span class="sd">        = \\frac{\\bar{X}_1 - \\bar{X}_0}{s_X} \\cdot \\frac{p (1 - p)}{\\phi(z)}</span>
+
+<span class="sd">    where</span>
+
+<span class="sd">    - :math:`r_{pb}` is the point-biserial correlation coefficient</span>
+<span class="sd">    - :math:`\\bar{X}_1` and :math:`\\bar{X}_0` are the means of the continuous variable for the two categories of the dichotomous variable</span>
+<span class="sd">        - :math:`\\bar{X}_1 = \\frac{1}{n_1} \\sum_{i:Y_i = 1} X_i, \\quad n_1 = |\\{i: Y_i = 1\\}|`</span>
+<span class="sd">        - :math:`\\bar{X}_0 = \\frac{1}{n_0} \\sum_{i:Y_i = 0} X_i, \\quad n_0 = |\\{i: Y_i = 0\\}|`</span>
+<span class="sd">    - :math:`s_X` is the standard deviation of the continuous variable</span>
+<span class="sd">        - :math:`s_X = \\sqrt{\\frac{1}{n} \\sum_{i=1}^{n} (X_i - \\bar{X})^2}, \\quad n = n_1 + n_0`</span>
+<span class="sd">    - :math:`p` is the proportion of `Y = 1` of the dichotomous variable</span>
+<span class="sd">        - :math:`p = \\frac{n_1}{n}`</span>
+<span class="sd">    - :math:`\\phi(z)` is the probability density function of the standard normal distribution</span>
+<span class="sd">    - :math:`z` is the percentile of :math:`p` in the standard normal distribution</span>
+
+
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">rho_pbi</span> <span class="o">=</span> <span class="n">point_biserial</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">rho_pbi</span><span class="p">):</span>
@@ -310,6 +333,7 @@
 <span class="sd">    y : array-like</span>
 <span class="sd">        Dichotomous variable (0 and 1).</span>
 
+
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    float</span>
@@ -322,6 +346,27 @@
 <span class="sd">    &gt;&gt;&gt; x = [0.1, 0.2, 0.3, 0.4, 0.5]</span>
 <span class="sd">    &gt;&gt;&gt; y = [0, 0, 1, 1, 1]</span>
 <span class="sd">    &gt;&gt;&gt; point_biserial(x, y)</span>
+
+
+<span class="sd">    :Details:</span>
+
+<span class="sd">    The point-biserial correlation coefficient is defined as:</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        r_{pb} = \\frac{\\bar{X}_1 - \\bar{X}_0}{s_X} \\sqrt{p \\times (1 - p)}</span>
+
+<span class="sd">    where</span>
+
+<span class="sd">    - :math:`\\bar{X}_1` and :math:`\\bar{X}_0` are the means of the continuous variable for the two categories of the dichotomous variable</span>
+<span class="sd">        - :math:`\\bar{X}_1 = \\frac{1}{n_1} \\sum_{i:Y_i = 1} X_i, \\quad n_1 = |\\{i: Y_i = 1\\}|`</span>
+<span class="sd">        - :math:`\\bar{X}_0 = \\frac{1}{n_0} \\sum_{i:Y_i = 0} X_i, \\quad n_0 = |\\{i: Y_i = 0\\}|`</span>
+<span class="sd">    - :math:`s_X` is the standard deviation of the continuous variable</span>
+<span class="sd">        - :math:`s_X = \\sqrt{\\frac{1}{n} \\sum_{i=1}^{n} (X_i - \\bar{X})^2}, \\quad n = n_1 + n_0`</span>
+<span class="sd">    - :math:`p` is the proportion of `Y = 1` of the dichotomous variable</span>
+<span class="sd">        - :math:`p = \\frac{n_1}{n}`</span>
+
+<span class="sd">    Note that the point-biserial correlation coefficient is equivalent to the Pearson correlation coefficient between the continuous variable and the dichotomous variable.</span>
 
 <span class="sd">    References</span>
 <span class="sd">    ----------</span>

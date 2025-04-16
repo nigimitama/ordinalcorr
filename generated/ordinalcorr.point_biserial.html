@@ -277,6 +277,41 @@ and a dichotomous variable y (0 or 1), assuming y is a true dichotomous variable
 <span class="gp">&gt;&gt;&gt; </span><span class="n">point_biserial</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
 </pre></div>
 </div>
+<dl class="field-list simple">
+<dt class="field-odd">Details<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+<p>The point-biserial correlation coefficient is defined as:</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[r_{pb} = \frac{\bar{X}_1 - \bar{X}_0}{s_X} \sqrt{p \times (1 - p)}\]</div>
+</div>
+<p>where</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt><span class="math notranslate nohighlight">\(\bar{X}_1\)</span> and <span class="math notranslate nohighlight">\(\bar{X}_0\)</span> are the means of the continuous variable for the two categories of the dichotomous variable</dt><dd><ul>
+<li><p><span class="math notranslate nohighlight">\(\bar{X}_1 = \frac{1}{n_1} \sum_{i:Y_i = 1} X_i, \quad n_1 = |\{i: Y_i = 1\}|\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\bar{X}_0 = \frac{1}{n_0} \sum_{i:Y_i = 0} X_i, \quad n_0 = |\{i: Y_i = 0\}|\)</span></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><span class="math notranslate nohighlight">\(s_X\)</span> is the standard deviation of the continuous variable</dt><dd><ul>
+<li><p><span class="math notranslate nohighlight">\(s_X = \sqrt{\frac{1}{n} \sum_{i=1}^{n} (X_i - \bar{X})^2}, \quad n = n_1 + n_0\)</span></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><span class="math notranslate nohighlight">\(p\)</span> is the proportion of <cite>Y = 1</cite> of the dichotomous variable</dt><dd><ul>
+<li><p><span class="math notranslate nohighlight">\(p = \frac{n_1}{n}\)</span></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+<p>Note that the point-biserial correlation coefficient is equivalent to the Pearson correlation coefficient between the continuous variable and the dichotomous variable.</p>
 <p class="rubric">References</p>
 <aside class="footnote-list brackets">
 <aside class="footnote brackets" id="id1" role="doc-footnote">
@@ -364,5 +399,6 @@ and a dichotomous variable y (0 or 1), assuming y is a true dichotomous variable
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/scripts/furo.js?v=5fa4622c"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     </body>
 </html>
