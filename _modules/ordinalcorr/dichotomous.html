@@ -408,7 +408,16 @@
 <a class="viewcode-back" href="../../generated/ordinalcorr.tetrachoric_corr.html#ordinalcorr.tetrachoric">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">tetrachoric</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">y</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">[</span><span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Compute the tetrachoric correlation coefficient between two dichotomous variables.</span>
+<span class="sd">    Estimate the tetrachoric correlation coefficient between two dichotomous variables.</span>
+
+<span class="sd">    The tetrachoric correlation assumes that the two observed dichotomous variables</span>
+<span class="sd">    are thresholded representations of underlying continuous variables that follow</span>
+<span class="sd">    a bivariate normal distribution.</span>
+
+<span class="sd">    This method is appropriate when both variables are dichotomous (e.g., yes/no,</span>
+<span class="sd">    success/failure) but believed to originate from an underlying normally</span>
+<span class="sd">    distributed process.</span>
+
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>

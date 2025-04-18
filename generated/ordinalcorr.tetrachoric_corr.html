@@ -254,7 +254,13 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="ordinalcorr.tetrachoric">
 <span class="sig-prename descclassname"><span class="pre">ordinalcorr.</span></span><span class="sig-name descname"><span class="pre">tetrachoric</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="../_modules/ordinalcorr/dichotomous.html#tetrachoric"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ordinalcorr.tetrachoric" title="Link to this definition">¶</a></dt>
-<dd><p>Compute the tetrachoric correlation coefficient between two dichotomous variables.</p>
+<dd><p>Estimate the tetrachoric correlation coefficient between two dichotomous variables.</p>
+<p>The tetrachoric correlation assumes that the two observed dichotomous variables
+are thresholded representations of underlying continuous variables that follow
+a bivariate normal distribution.</p>
+<p>This method is appropriate when both variables are dichotomous (e.g., yes/no,
+success/failure) but believed to originate from an underlying normally
+distributed process.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
