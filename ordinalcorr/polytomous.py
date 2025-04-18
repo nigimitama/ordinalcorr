@@ -56,6 +56,11 @@ def polychoric(x: ArrayLike[int], y: ArrayLike[int]) -> float:
     """
     Estimate the polychoric correlation coefficient between two ordinal variables.
 
+    The polychoric correlation assumes that the two observed ordinal variables
+    are thresholded representations of underlying continuous variables that follow
+    a bivariate normal distribution.
+
+
     Parameters
     ----------
     x : array_like (int)
@@ -144,6 +149,10 @@ def polyserial(x: ArrayLike[float | int], y: ArrayLike[int]) -> float:
     """
     Estimate the polyserial correlation coefficient between a continuous variable x
     and an ordinal variable y using the two-step maximum likelihood estimation.
+
+    The polyserial correlation assumes that the ordinal variable y is a thresholded
+    representation of latent continuous variable that follows a normal distribution.
+
 
     Parameters
     ----------

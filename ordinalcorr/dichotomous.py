@@ -155,7 +155,16 @@ def point_biserial(x: ArrayLike, y: ArrayLike) -> float:
 
 def tetrachoric(x: ArrayLike[int], y: ArrayLike[int]) -> float:
     """
-    Compute the tetrachoric correlation coefficient between two dichotomous variables.
+    Estimate the tetrachoric correlation coefficient between two dichotomous variables.
+
+    The tetrachoric correlation assumes that the two observed dichotomous variables
+    are thresholded representations of underlying continuous variables that follow
+    a bivariate normal distribution.
+
+    This method is appropriate when both variables are dichotomous (e.g., yes/no,
+    success/failure) but believed to originate from an underlying normally
+    distributed process.
+
 
     Parameters
     ----------

@@ -15,7 +15,7 @@ def generate_data(rho=0.5, bins=3):
     Cov = np.array([[std[0] ** 2, cov], [cov, std[1] ** 2]])
     X = multivariate_normal.rvs(mean=mean, cov=Cov, size=n, random_state=0)
     df = pd.DataFrame(X, columns=["x", "y"])
-    df["y"], _ = pd.cut(df["y"], bins=bins).factorize()
+    df["y"] = pd.cut(df["y"], bins=bins, labels=range(bins)).astype(int)
     df["y"] = df["y"] + 1  # Start from 1 instead of 0
     return df
 
