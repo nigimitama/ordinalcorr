@@ -64,7 +64,7 @@ def gen_data_for_polychoric(rho=0.5, bins=3, size=1000):
     X = multivariate_normal.rvs(mean=mean, cov=Cov, size=size, random_state=0)
     df = pd.DataFrame(X, columns=["x1", "x2"])
     for col in df.columns:
-        df[col], _ = pd.cut(df[col], bins=bins).factorize()
+        df[col] = pd.cut(df[col], bins=bins, labels=range(bins)).astype(int)
     return df
 
 
