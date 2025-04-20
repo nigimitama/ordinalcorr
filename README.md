@@ -9,28 +9,42 @@ It supports polychoric correlation coefficients and other coefficients for ordin
 
 ## ✨ Features
 
-This package provides several correlation coefficients for many types of variables
+### 1️⃣ Correlation Coefficients
 
-| Variable X            | Variable Y            | Method                     | Function         |
-| --------------------- | --------------------- | -------------------------- | ---------------- |
-| binary (discretized)  | binary (discretized)  | Tetrachoric correlation    | `tetrachoric`    |
-| ordinal (discretized) | ordinal (discretized) | Polychoric correlation     | `polychoric`     |
-| continuous            | ordinal (discretized) | Polyserial correlation     | `polyserial`     |
-| continuous            | binary (discretized)  | Biserial correlation       | `biserial`       |
-| continuous            | binary                | Point-Biserial correlation | `point_biserial` |
+This package provides several correlation coefficients (e.g. Polyserial and Polychoric)
 
-### Example
+| Variable X            | Variable Y            | Method                 | Function     |
+| --------------------- | --------------------- | ---------------------- | ------------ |
+| continuous            | ordinal (discretized) | Polyserial correlation | `polyserial` |
+| ordinal (discretized) | ordinal (discretized) | Polychoric correlation | `polychoric` |
 
-Here is an example for computing correlation coefficient between two ordinal variables
+Here is an example:
 
 ```python
-from ordinalcorr import polychoric
+>>> from ordinalcorr import polychoric
+>>> x = [1, 1, 2, 2, 3, 3]
+>>> y = [0, 0, 0, 1, 1, 1]
+>>> polychoric(x, y)
+0.9986287922233864
+```
 
-x = [1, 1, 2, 2, 3, 3]
-y = [0, 0, 0, 1, 1, 1]
+### 2️⃣ Heterogeneous Correlation Matrix
 
-rho = polychoric(x, y)
-print(f"Polychoric correlation: {rho:.3f}")
+A function for computing the _heterogeneous correlation matrix_—a correlation matrix that includes both continuous and ordinal variables—is also provided.
+
+```python
+>>> from ordinalcorr import hetcor
+>>> import pandas as pd
+>>> data = pd.DataFrame({
+...     "continuous": [0.1, 0.1, 0.2, 0.2, 0.3, 0.3],
+...     "dichotomous": [0, 0, 0, 1, 1, 1],
+...     "polytomous": [1, 1, 3, 3, 2, 2],
+... })
+>>> hetcor(data)
+             continuous  dichotomous  polytomous
+continuous     1.000000     0.989335    0.514870
+dichotomous    0.989335     1.000000    0.549231
+polytomous     0.514870     0.549231    1.000000
 ```
 
 ## 📦 Installation

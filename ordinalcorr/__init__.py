@@ -1,8 +1,8 @@
 """
-ordinalcorr - A Python package for ordinal correlation analysis
+ordinalcorr - correlation coefficients for ordinal-scale variables
 """
 
-__version__ = "0.6.0"
+__version__ = "0.6.1"
 
 from ordinalcorr.polytomous import polychoric, polyserial
 from ordinalcorr.dichotomous import biserial, point_biserial, tetrachoric
