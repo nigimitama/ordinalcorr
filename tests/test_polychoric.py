@@ -42,7 +42,7 @@ class TestPolychoricCorr(unittest.TestCase):
 
     def test_different_rho(self):
         for bins in [2, 3]:
-            for rho in np.arange(0, 1 + 0.1, 0.1):
+            for rho in np.arange(-1, 1, 0.1):
                 # change tolerance because estimation error is large for small rho
                 tolerance = 0.3 if rho < 0.5 else 0.1
 

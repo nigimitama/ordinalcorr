@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "ordinalcorr"
-version = "0.5.2"
+version = "0.6.0"
 authors = [
     { name = "Masayoshi Mita", email = "nigimitama16@gmail.com" },
 ]
@@ -24,6 +24,7 @@ classifiers = [
 dependencies = [
     "numpy>=1.23.0",
     "scipy>=1.8.0",
+    "pandas>=1.0.0",
 ]
 
 

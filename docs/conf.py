@@ -20,6 +20,11 @@ extensions = [
     "sphinx.ext.napoleon",
     "sphinx.ext.viewcode",
     "sphinx.ext.githubpages",
+    "myst_nb",
+]
+
+myst_enable_extensions = [
+    "dollarmath",
 ]
 
 templates_path = ["_templates"]

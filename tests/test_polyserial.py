@@ -42,7 +42,7 @@ class TestPolyserialCorr(unittest.TestCase):
 
     def test_different_rho(self):
         for bins in [2]:
-            for rho in np.arange(0, 1 + 0.1, 0.1):
+            for rho in np.arange(-1, 1, 0.1):
                 tolerance = 0.2
 
                 df = gen_data_for_polyserial(rho=rho, bins=bins, size=1000)

@@ -22,7 +22,6 @@ def generate_data(rho=0.5, bins=3):
 if __name__ == "__main__":
     data_dir.mkdir()
     bins = 2
-    for rho_10x in list(range(0, 11, 1)):
-        rho = rho_10x / 10
+    for rho in np.arange(-1, 1, 0.1):
         df = generate_data(rho=rho, bins=bins)
         df.to_csv(data_dir / f"normal_rho={rho:.2f}_bins={bins}.csv", index=False)

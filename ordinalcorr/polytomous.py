@@ -11,7 +11,12 @@ from ordinalcorr.types import ArrayLike
 
 
 def univariate_cdf(lower, upper):
-    """Compute the univariate cumulative distribution function (CDF) for a standard normal distribution."""
+    """Compute the univariate cumulative distribution function (CDF) for a standard normal distribution.
+
+    P(lower < X <= upper) = Φ(upper) - Φ(lower)
+
+    where Φ is the CDF of the standard normal distribution.
+    """
     mean = 0.0
     var = 1.0
     std = np.sqrt(var)
@@ -19,13 +24,16 @@ def univariate_cdf(lower, upper):
 
 
 def bivariate_cdf(lower, upper, rho: float) -> float:
-    """Compute the bivariate cumulative distribution function (CDF) for a standard normal distribution."""
+    """Compute the bivariate cumulative distribution function (CDF) for a standard normal distribution.
+
+    P(lower_x < X <= upper_x, lower_y < Y <= upper_y)
+        = Φ₂(upper_x, upper_y) - Φ₂(lower_x, upper_y) - Φ₂(upper_x, lower_y) + Φ₂(lower_x, lower_y)
+
+    where Φ₂ is the CDF of the bivariate normal distribution with correlation coefficient ρ.
+    """
     var = 1
     cov = np.array([[var, rho], [rho, var]])
-
-    # Compute probability as difference of CDFs
-    # P_ij = Φ₂(τ_{i}, τ_{j}) - Φ₂(τ_{i-1}, τ_{j}) - Φ₂(τ_{i}, τ_{j-1}) + Φ₂(τ_{i-1}, τ_{j-1})
-    Phi2 = multivariate_normal(mean=[0, 0], cov=cov).cdf
+    Phi2 = multivariate_normal(mean=[0, 0], cov=cov, allow_singular=True).cdf
     return (
         Phi2(upper)
         - Phi2([upper[0], lower[1]])
@@ -85,8 +93,6 @@ def polychoric(x: ArrayLike[int], y: ArrayLike[int]) -> float:
     .. [1] Olsson, U. (1979). Maximum likelihood estimation of the polychoric correlation coefficient. Psychometrika, 44(4), 443-460.
     .. [2] Drasgow, F. (1986). Polychoric and polyserial correlations In: Kotz S, Johnson N, editors. The Encyclopedia of Statistics.
     """
-
-    # Step 1: Ensure inputs are numpy arrays and integer-coded
     x = np.asarray(x)
     y = np.asarray(y)
 
@@ -98,7 +104,6 @@ def polychoric(x: ArrayLike[int], y: ArrayLike[int]) -> float:
         warnings.warn(str(e))
         return np.nan
 
-    # Step 2: Identify unique ordinal levels
     x_levels = np.sort(np.unique(x))
     y_levels = np.sort(np.unique(y))
 
@@ -106,17 +111,14 @@ def polychoric(x: ArrayLike[int], y: ArrayLike[int]) -> float:
         Warning("Both x and y must have at least two unique ordinal levels.")
         return np.nan
 
-    # Step 3: Estimate thresholds from empirical marginal proportions
     tau_x = estimate_thresholds(x)  # thresholds for X: τ_X
     tau_y = estimate_thresholds(y)  # thresholds for Y: τ_Y
 
-    # Step 4: Construct contingency table n_ij
     contingency = np.zeros((len(tau_x) - 1, len(tau_y) - 1), dtype=int)
     for i, xi in enumerate(x_levels):
         for j, yj in enumerate(y_levels):
             contingency[i, j] = np.sum((x == xi) & (y == yj))  # n_ij
 
-    # Step 5: Define negative log-likelihood function based on P_ij = Φ₂(τ_i, τ_j; ρ)
     def neg_log_likelihood(rho):
         log_likelihood = 0.0
         for i in range(len(tau_x) - 1):
@@ -137,11 +139,7 @@ def polychoric(x: ArrayLike[int], y: ArrayLike[int]) -> float:
 
         return -log_likelihood
 
-    # Step 6: Optimize to find MLE for rho
-    eps = 1e-10
-    result = minimize_scalar(
-        neg_log_likelihood, bounds=(-1 + eps, 1 - eps), method="bounded"
-    )
+    result = minimize_scalar(neg_log_likelihood, bounds=(-1, 1), method="bounded")
     return result.x
 
 
@@ -208,8 +206,5 @@ def polyserial(x: ArrayLike[float | int], y: ArrayLike[int]) -> float:
 
         return -log_likelihood
 
-    eps = 1e-10
-    result = minimize_scalar(
-        neg_log_likelihood, bounds=(-1 + eps, 1 - eps), method="bounded"
-    )
+    result = minimize_scalar(neg_log_likelihood, bounds=(-1, 1), method="bounded")
     return result.x
