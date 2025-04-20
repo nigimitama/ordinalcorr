@@ -37,5 +37,14 @@ docker run -it --rm test bash -c "
     python3 -u compare.py
 " 
 
+# hetcor
+docker run -it --rm test bash -c "
+    cd hetcor && \
+    mkdir data && \
+    Rscript gen_data.R && \
+    Rscript test.R && \
+    python3 -u test.py && \
+    python3 -u compare.py
+"
 
 rm -r "$THIS_DIR/ordinalcorr" "$THIS_DIR/pyproject.toml" "$THIS_DIR/README.md"
