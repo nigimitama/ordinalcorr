@@ -31,3 +31,13 @@ correlation coefficients for polytomous (ordered categorical) variables
 
    ordinalcorr.polychoric
    ordinalcorr.polyserial
+
+
+Correlation Matrix
+------------------
+
+.. autosummary::
+   :toctree: generated
+   :recursive:
+
+   ordinalcorr.hetcor
