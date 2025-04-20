@@ -8,6 +8,7 @@
         <title>ordinalcorr.polytomous - ordinalcorr documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=354aac6f" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=302659d7" />
     
     
@@ -199,13 +200,18 @@
 <div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
   <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../user_guide.html">User Guide</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../api_reference.html">API Reference</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of API Reference</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../user_guide.html">User Guide</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of User Guide</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../why_we_need_ordinalcorr.html">Why and when should we use correlation coefficients designed for ordinal-scale data?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../method_selection_guide.html">Method Selection Guide</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../api_reference.html">API Reference</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of API Reference</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../generated/ordinalcorr.biserial.html">ordinalcorr.biserial</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../generated/ordinalcorr.point_biserial.html">ordinalcorr.point_biserial</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../generated/ordinalcorr.tetrachoric.html">ordinalcorr.tetrachoric</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../generated/ordinalcorr.polychoric.html">ordinalcorr.polychoric</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../generated/ordinalcorr.polyserial.html">ordinalcorr.polyserial</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../generated/ordinalcorr.hetcor.html">ordinalcorr.hetcor</a></li>
 </ul>
 </li>
 </ul>
@@ -256,7 +262,12 @@
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">univariate_cdf</span><span class="p">(</span><span class="n">lower</span><span class="p">,</span> <span class="n">upper</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute the univariate cumulative distribution function (CDF) for a standard normal distribution.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute the univariate cumulative distribution function (CDF) for a standard normal distribution.</span>
+
+<span class="sd">    P(lower &lt; X &lt;= upper) = Φ(upper) - Φ(lower)</span>
+
+<span class="sd">    where Φ is the CDF of the standard normal distribution.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">mean</span> <span class="o">=</span> <span class="mf">0.0</span>
     <span class="n">var</span> <span class="o">=</span> <span class="mf">1.0</span>
     <span class="n">std</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">var</span><span class="p">)</span>
@@ -264,13 +275,16 @@
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">bivariate_cdf</span><span class="p">(</span><span class="n">lower</span><span class="p">,</span> <span class="n">upper</span><span class="p">,</span> <span class="n">rho</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute the bivariate cumulative distribution function (CDF) for a standard normal distribution.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute the bivariate cumulative distribution function (CDF) for a standard normal distribution.</span>
+
+<span class="sd">    P(lower_x &lt; X &lt;= upper_x, lower_y &lt; Y &lt;= upper_y)</span>
+<span class="sd">        = Φ₂(upper_x, upper_y) - Φ₂(lower_x, upper_y) - Φ₂(upper_x, lower_y) + Φ₂(lower_x, lower_y)</span>
+
+<span class="sd">    where Φ₂ is the CDF of the bivariate normal distribution with correlation coefficient ρ.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">var</span> <span class="o">=</span> <span class="mi">1</span>
     <span class="n">cov</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">var</span><span class="p">,</span> <span class="n">rho</span><span class="p">],</span> <span class="p">[</span><span class="n">rho</span><span class="p">,</span> <span class="n">var</span><span class="p">]])</span>
-
-    <span class="c1"># Compute probability as difference of CDFs</span>
-    <span class="c1"># P_ij = Φ₂(τ_{i}, τ_{j}) - Φ₂(τ_{i-1}, τ_{j}) - Φ₂(τ_{i}, τ_{j-1}) + Φ₂(τ_{i-1}, τ_{j-1})</span>
-    <span class="n">Phi2</span> <span class="o">=</span> <span class="n">multivariate_normal</span><span class="p">(</span><span class="n">mean</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">cov</span><span class="o">=</span><span class="n">cov</span><span class="p">)</span><span class="o">.</span><span class="n">cdf</span>
+    <span class="n">Phi2</span> <span class="o">=</span> <span class="n">multivariate_normal</span><span class="p">(</span><span class="n">mean</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">cov</span><span class="o">=</span><span class="n">cov</span><span class="p">,</span> <span class="n">allow_singular</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">cdf</span>
     <span class="k">return</span> <span class="p">(</span>
         <span class="n">Phi2</span><span class="p">(</span><span class="n">upper</span><span class="p">)</span>
         <span class="o">-</span> <span class="n">Phi2</span><span class="p">([</span><span class="n">upper</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">lower</span><span class="p">[</span><span class="mi">1</span><span class="p">]])</span>
@@ -332,8 +346,6 @@
 <span class="sd">    .. [1] Olsson, U. (1979). Maximum likelihood estimation of the polychoric correlation coefficient. Psychometrika, 44(4), 443-460.</span>
 <span class="sd">    .. [2] Drasgow, F. (1986). Polychoric and polyserial correlations In: Kotz S, Johnson N, editors. The Encyclopedia of Statistics.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="c1"># Step 1: Ensure inputs are numpy arrays and integer-coded</span>
     <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
     <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
 
@@ -345,7 +357,6 @@
         <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
 
-    <span class="c1"># Step 2: Identify unique ordinal levels</span>
     <span class="n">x_levels</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
     <span class="n">y_levels</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">y</span><span class="p">))</span>
 
@@ -353,17 +364,14 @@
         <span class="ne">Warning</span><span class="p">(</span><span class="s2">&quot;Both x and y must have at least two unique ordinal levels.&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
 
-    <span class="c1"># Step 3: Estimate thresholds from empirical marginal proportions</span>
     <span class="n">tau_x</span> <span class="o">=</span> <span class="n">estimate_thresholds</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>  <span class="c1"># thresholds for X: τ_X</span>
     <span class="n">tau_y</span> <span class="o">=</span> <span class="n">estimate_thresholds</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>  <span class="c1"># thresholds for Y: τ_Y</span>
 
-    <span class="c1"># Step 4: Construct contingency table n_ij</span>
     <span class="n">contingency</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">tau_x</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">tau_y</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">xi</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">x_levels</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">yj</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">y_levels</span><span class="p">):</span>
             <span class="n">contingency</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">x</span> <span class="o">==</span> <span class="n">xi</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">y</span> <span class="o">==</span> <span class="n">yj</span><span class="p">))</span>  <span class="c1"># n_ij</span>
 
-    <span class="c1"># Step 5: Define negative log-likelihood function based on P_ij = Φ₂(τ_i, τ_j; ρ)</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">neg_log_likelihood</span><span class="p">(</span><span class="n">rho</span><span class="p">):</span>
         <span class="n">log_likelihood</span> <span class="o">=</span> <span class="mf">0.0</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">tau_x</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
@@ -384,11 +392,7 @@
 
         <span class="k">return</span> <span class="o">-</span><span class="n">log_likelihood</span>
 
-    <span class="c1"># Step 6: Optimize to find MLE for rho</span>
-    <span class="n">eps</span> <span class="o">=</span> <span class="mf">1e-10</span>
-    <span class="n">result</span> <span class="o">=</span> <span class="n">minimize_scalar</span><span class="p">(</span>
-        <span class="n">neg_log_likelihood</span><span class="p">,</span> <span class="n">bounds</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span> <span class="o">+</span> <span class="n">eps</span><span class="p">,</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">eps</span><span class="p">),</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;bounded&quot;</span>
-    <span class="p">)</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">minimize_scalar</span><span class="p">(</span><span class="n">neg_log_likelihood</span><span class="p">,</span> <span class="n">bounds</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;bounded&quot;</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">result</span><span class="o">.</span><span class="n">x</span></div>
 
 
@@ -458,10 +462,7 @@
 
         <span class="k">return</span> <span class="o">-</span><span class="n">log_likelihood</span>
 
-    <span class="n">eps</span> <span class="o">=</span> <span class="mf">1e-10</span>
-    <span class="n">result</span> <span class="o">=</span> <span class="n">minimize_scalar</span><span class="p">(</span>
-        <span class="n">neg_log_likelihood</span><span class="p">,</span> <span class="n">bounds</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span> <span class="o">+</span> <span class="n">eps</span><span class="p">,</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">eps</span><span class="p">),</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;bounded&quot;</span>
-    <span class="p">)</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">minimize_scalar</span><span class="p">(</span><span class="n">neg_log_likelihood</span><span class="p">,</span> <span class="n">bounds</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;bounded&quot;</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">result</span><span class="o">.</span><span class="n">x</span></div>
 
 </pre></div>

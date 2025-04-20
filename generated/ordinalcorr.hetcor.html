@@ -3,10 +3,10 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="ordinalcorr.hetcor" href="ordinalcorr.hetcor.html" /><link rel="prev" title="ordinalcorr.polychoric" href="ordinalcorr.polychoric.html" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="prev" title="ordinalcorr.polyserial" href="ordinalcorr.polyserial.html" />
 
     <!-- Generated with Sphinx 8.1.3 and Furo 2024.08.06 -->
-        <title>ordinalcorr.polyserial - ordinalcorr documentation</title>
+        <title>ordinalcorr.hetcor - ordinalcorr documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=354aac6f" />
     <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
@@ -211,8 +211,8 @@
 <li class="toctree-l2"><a class="reference internal" href="ordinalcorr.point_biserial.html">ordinalcorr.point_biserial</a></li>
 <li class="toctree-l2"><a class="reference internal" href="ordinalcorr.tetrachoric.html">ordinalcorr.tetrachoric</a></li>
 <li class="toctree-l2"><a class="reference internal" href="ordinalcorr.polychoric.html">ordinalcorr.polychoric</a></li>
-<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">ordinalcorr.polyserial</a></li>
-<li class="toctree-l2"><a class="reference internal" href="ordinalcorr.hetcor.html">ordinalcorr.hetcor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ordinalcorr.polyserial.html">ordinalcorr.polyserial</a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">ordinalcorr.hetcor</a></li>
 </ul>
 </li>
 </ul>
@@ -235,7 +235,7 @@
         </a>
         <div class="content-icon-container">
           <div class="view-this-page">
-  <a class="muted-link" href="../_sources/generated/ordinalcorr.polyserial.rst.txt" title="View this page">
+  <a class="muted-link" href="../_sources/generated/ordinalcorr.hetcor.rst.txt" title="View this page">
     <svg><use href="#svg-eye"></use></svg>
     <span class="visually-hidden">View this page</span>
   </a>
@@ -255,43 +255,51 @@
           </label>
         </div>
         <article role="main" id="furo-main-content">
-          <section id="ordinalcorr-polyserial">
-<h1>ordinalcorr.polyserial<a class="headerlink" href="#ordinalcorr-polyserial" title="Link to this heading">¶</a></h1>
+          <section id="ordinalcorr-hetcor">
+<h1>ordinalcorr.hetcor<a class="headerlink" href="#ordinalcorr-hetcor" title="Link to this heading">¶</a></h1>
 <dl class="py function">
-<dt class="sig sig-object py" id="ordinalcorr.polyserial">
-<span class="sig-prename descclassname"><span class="pre">ordinalcorr.</span></span><span class="sig-name descname"><span class="pre">polyserial</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="../_modules/ordinalcorr/polytomous.html#polyserial"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ordinalcorr.polyserial" title="Link to this definition">¶</a></dt>
-<dd><p>Estimate the polyserial correlation coefficient between a continuous variable x
-and an ordinal variable y using the two-step maximum likelihood estimation.</p>
-<p>The polyserial correlation assumes that the ordinal variable y is a thresholded
-representation of latent continuous variable that follows a normal distribution.</p>
+<dt class="sig sig-object py" id="ordinalcorr.hetcor">
+<span class="sig-prename descclassname"><span class="pre">ordinalcorr.</span></span><span class="sig-name descname"><span class="pre">hetcor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_unique</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">20</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DataFrame</span></span></span><a class="reference internal" href="../_modules/ordinalcorr/corrmatrix.html#hetcor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ordinalcorr.hetcor" title="Link to this definition">¶</a></dt>
+<dd><p>Estimate the heterogeneous correlation matrix.</p>
+<p>The heterogeneous correlation matrix includes:</p>
+<ul class="simple">
+<li><p>Pearson product-moment correlations between continuous variables</p></li>
+<li><p>Polychoric correlations between ordinal variables</p></li>
+<li><p>Polyserial correlations between continuous and ordinal variables</p></li>
+</ul>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>x</strong> (<em>array_like</em><em> (</em><em>float</em><em> | </em><em>int</em><em>)</em>) – Continuous variable.</p></li>
-<li><p><strong>y</strong> (<em>array_like</em><em> (</em><em>int</em><em>)</em>) – Ordinal variable.</p></li>
+<li><p><strong>data</strong> (<em>pd.DataFrame</em>) – <p>A DataFrame containing continuous and/or ordinal variables.
+Appropriate correlation coefficients are automatically selected based on the types of variables.</p>
+<ul>
+<li><p>Columns with dtype <cite>float</cite> are treated as continuous variables.</p></li>
+<li><p>Columns with dtype <cite>int</cite> and number of unique values less than or equal to <cite>n_unique</cite>
+are treated as ordinal variables.</p></li>
+<li><p>Columns with dtype <cite>category</cite> are treated as ordinal variables if they are ordered.</p></li>
+</ul>
+</p></li>
+<li><p><strong>n_unique</strong> (<em>int</em><em>, </em><em>default=20</em>) – The maximum number of unique values for an integer column to be considered ordinal.
+If the number of unique values exceeds <cite>n_unique</cite>, the column is treated as continuous.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Estimated polyserial correlation coefficient.</p>
+<dd class="field-even"><p>Estimated heterogeneous correlation matrix.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>float</p>
+<dd class="field-odd"><p>pd.DataFrame</p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">ordinalcorr</span><span class="w"> </span><span class="kn">import</span> <span class="n">polyserial</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">polyserial</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">ordinalcorr</span><span class="w"> </span><span class="kn">import</span> <span class="n">hetcor</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+<span class="gp">... </span>    <span class="s2">&quot;continuous&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">],</span>
+<span class="gp">... </span>    <span class="s2">&quot;ordinal&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span>
+<span class="gp">... </span><span class="p">})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">hetcor</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
 </pre></div>
 </div>
-<p class="rubric">References</p>
-<aside class="footnote-list brackets">
-<aside class="footnote brackets" id="id1" role="doc-footnote">
-<span class="label"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></span>
-<p>Drasgow, F. (1986). Polychoric and polyserial correlations In: Kotz S, Johnson N, editors. The Encyclopedia of Statistics.</p>
-</aside>
-</aside>
 </dd></dl>
 
 </section>
@@ -301,23 +309,15 @@ representation of latent continuous variable that follows a normal distribution.
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="ordinalcorr.hetcor.html">
-              <div class="page-info">
-                <div class="context">
-                  <span>Next</span>
-                </div>
-                <div class="title">ordinalcorr.hetcor</div>
-              </div>
-              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
-            </a>
-          <a class="prev-page" href="ordinalcorr.polychoric.html">
+          
+          <a class="prev-page" href="ordinalcorr.polyserial.html">
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">ordinalcorr.polychoric</div>
+                <div class="title">ordinalcorr.polyserial</div>
                 
               </div>
             </a>
@@ -351,8 +351,8 @@ representation of latent continuous variable that follows a normal distribution.
         <div class="toc-tree-container">
           <div class="toc-tree">
             <ul>
-<li><a class="reference internal" href="#">ordinalcorr.polyserial</a><ul>
-<li><a class="reference internal" href="#ordinalcorr.polyserial"><code class="docutils literal notranslate"><span class="pre">polyserial()</span></code></a></li>
+<li><a class="reference internal" href="#">ordinalcorr.hetcor</a><ul>
+<li><a class="reference internal" href="#ordinalcorr.hetcor"><code class="docutils literal notranslate"><span class="pre">hetcor()</span></code></a></li>
 </ul>
 </li>
 </ul>
