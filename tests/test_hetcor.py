@@ -73,7 +73,7 @@ class TestIsColsOrdinal(unittest.TestCase):
     def test_two_cols(self):
         data = pd.DataFrame(
             {
-                "continuous": np.repeat([0.1, 0.2, 0.3], 10),
+                "continuous": np.random.normal(size=30),
                 "dichotomous": np.repeat([0, 1, 1], 10),
                 "polytomous_int": np.repeat([7, 5, 3], 10),
                 "polytomous_float": np.repeat([7.0, 5.0, 3.0], 10),
