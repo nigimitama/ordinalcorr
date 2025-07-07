@@ -92,12 +92,14 @@ def is_cols_ordinal(data: pd.DataFrame, n_unique: int) -> list[bool]:
 
 def is_col_ordinal(x: pd.Series, n_unique: int) -> bool:
     """Check if the input is ordinal."""
-    if "int" in x.dtype.name.lower() and x.unique().size <= n_unique:
-        return True
 
     if x.dtype.name == "category":
         if x.cat.ordered:
             return True
         raise TypeError(f"The column '{x.name}' is unoredered category.")
+
+    # Judge by the number of unique values, even if the data type is 'float'
+    if x.unique().size <= n_unique:
+        return True
 
     return False
