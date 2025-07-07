@@ -35,8 +35,8 @@ class TestHetcor(unittest.TestCase):
         data = pd.DataFrame(
             {
                 "continuous": multi_normal["x1"],
-                "dichotomous": pd.cut(multi_normal["x2"], bins=2, labels=range(2)).astype(int),
-                "polytomous": pd.cut(multi_normal["x2"], bins=3, labels=range(2)).astype(int),
+                "dichotomous": pd.cut(multi_normal["x2"], bins=2, labels=list(range(2))).astype(int),
+                "polytomous": pd.cut(multi_normal["x2"], bins=3, labels=list(range(3))).astype(int),
             }
         )
         actual = hetcor(data).to_numpy()
