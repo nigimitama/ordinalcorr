@@ -27,10 +27,14 @@ dependencies = [
     "pandas>=1.0.0",
 ]
 
-
 [project.urls]
 Homepage = "https://github.com/nigimitama/ordinalcorr"
 Repository = "https://github.com/nigimitama/ordinalcorr.git"
 
 [tool.hatch.build.targets.wheel]
 packages = ["ordinalcorr"]
+
+[tool.pytest.ini_options]
+testpaths = [
+    "tests",
+]
