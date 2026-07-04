@@ -33,7 +33,8 @@ def biserial(x: ArrayLike[float | int], y: ArrayLike[int]) -> float:
     >>> from ordinalcorr import biserial
     >>> x = [0.1, 0.2, 0.3, 0.4, 0.5]
     >>> y = [0, 0, 1, 1, 1]
-    >>> biserial(x, y)
+    >>> round(biserial(x, y), 4)
+    1.0982
 
     :Details:
 
@@ -68,7 +69,9 @@ def biserial(x: ArrayLike[float | int], y: ArrayLike[int]) -> float:
     q = 1 - p
     z = norm.ppf(p)
     c = np.sqrt(p * q) / norm.pdf(z)
-    return rho_pbi * c
+
+    r: np.float64 = rho_pbi * c
+    return float(r)
 
 
 def point_biserial(x: ArrayLike, y: ArrayLike) -> float:
@@ -95,7 +98,8 @@ def point_biserial(x: ArrayLike, y: ArrayLike) -> float:
     >>> from ordinalcorr import point_biserial
     >>> x = [0.1, 0.2, 0.3, 0.4, 0.5]
     >>> y = [0, 0, 1, 1, 1]
-    >>> point_biserial(x, y)
+    >>> round(point_biserial(x, y), 4)
+    0.866
 
 
     :Details:
@@ -150,7 +154,8 @@ def point_biserial(x: ArrayLike, y: ArrayLike) -> float:
     p = np.mean(y)
     q = 1 - p
 
-    return (M1 - M0) / s * np.sqrt(p * q)
+    r: np.float64 = (M1 - M0) / s * np.sqrt(p * q)
+    return float(r)
 
 
 def tetrachoric(x: ArrayLike[int], y: ArrayLike[int]) -> float:
@@ -184,7 +189,8 @@ def tetrachoric(x: ArrayLike[int], y: ArrayLike[int]) -> float:
     >>> from ordinalcorr import tetrachoric
     >>> x = [0, 0, 1, 1, 1]
     >>> y = [0, 1, 0, 1, 1]
-    >>> tetrachoric(x, y)
+    >>> round(tetrachoric(x, y), 4)
+    0.2629
 
     """
     # NOTE: The estimation is the same as polyserial with dichotomous variables.
@@ -235,4 +241,4 @@ def tetrachoric(x: ArrayLike[int], y: ArrayLike[int]) -> float:
     result = minimize_scalar(
         neg_log_likelihood, bounds=(-1 + eps, 1 - eps), method="bounded"
     )
-    return result.x
+    return float(result.x)
