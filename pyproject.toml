@@ -40,3 +40,14 @@ packages = ["ordinalcorr"]
 testpaths = [
     "tests",
 ]
+
+[dependency-groups]
+test = [
+    "pytest>=6.0.0",
+]
+docs = [
+    "sphinx",
+    "myst-nb",
+    "furo",
+    "seaborn",
+]

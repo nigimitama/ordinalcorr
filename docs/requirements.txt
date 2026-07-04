@@ -1,9 +1,0 @@
-# sphinx requirements
-sphinx
-myst-nb
-furo  # sphinx theme
-
-# notebook requirements
-pandas
-seaborn
-scipy
