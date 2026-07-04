@@ -1,8 +1,8 @@
 import warnings
 import numpy as np
+import numpy.typing as npt
 from scipy.stats import norm, multivariate_normal
 from scipy.optimize import minimize_scalar
-from ordinalcorr.types import ArrayLike
 from ordinalcorr.validation import (
     ValidationError,
     check_if_data_is_dichotomous,
@@ -11,7 +11,7 @@ from ordinalcorr.validation import (
 )
 
 
-def biserial(x: ArrayLike[float | int], y: ArrayLike[int]) -> float:
+def biserial(x: npt.ArrayLike, y: npt.ArrayLike) -> float:
     """
     Compute the biserial correlation coefficient between a continuous variable x
     and a dichotomized variable y (0 or 1), assuming y was split from a latent continuous variable.
@@ -65,7 +65,7 @@ def biserial(x: ArrayLike[float | int], y: ArrayLike[int]) -> float:
         return np.nan
 
     # calculate the correction factor
-    p = np.mean(y)
+    p = np.mean(np.asarray(y))
     q = 1 - p
     z = norm.ppf(p)
     c = np.sqrt(p * q) / norm.pdf(z)
@@ -74,7 +74,7 @@ def biserial(x: ArrayLike[float | int], y: ArrayLike[int]) -> float:
     return float(r)
 
 
-def point_biserial(x: ArrayLike, y: ArrayLike) -> float:
+def point_biserial(x: npt.ArrayLike, y: npt.ArrayLike) -> float:
     """
     Compute the point-biserial correlation between a continuous variable x
     and a dichotomous variable y (0 or 1), assuming y is a true dichotomous variable.
@@ -158,7 +158,7 @@ def point_biserial(x: ArrayLike, y: ArrayLike) -> float:
     return float(r)
 
 
-def tetrachoric(x: ArrayLike[int], y: ArrayLike[int]) -> float:
+def tetrachoric(x: npt.ArrayLike, y: npt.ArrayLike) -> float:
     """
     Estimate the tetrachoric correlation coefficient between two dichotomous variables.
 

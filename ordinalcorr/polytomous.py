@@ -1,5 +1,6 @@
 import warnings
 import numpy as np
+import numpy.typing as npt
 from scipy.stats import norm, multivariate_normal
 from scipy.optimize import minimize_scalar
 from ordinalcorr.validation import (
@@ -7,7 +8,6 @@ from ordinalcorr.validation import (
     check_if_zero_variance,
     check_length_are_same,
 )
-from ordinalcorr.types import ArrayLike
 
 
 def univariate_cdf(lower, upper):
@@ -60,7 +60,7 @@ def normalize_ordinal(x: np.ndarray[int]) -> np.ndarray[int]:
     return np.vectorize(value_to_code.get)(x)
 
 
-def polychoric(x: ArrayLike[int], y: ArrayLike[int]) -> float:
+def polychoric(x: npt.ArrayLike, y: npt.ArrayLike) -> float:
     """
     Estimate the polychoric correlation coefficient between two ordinal variables.
 
@@ -144,7 +144,7 @@ def polychoric(x: ArrayLike[int], y: ArrayLike[int]) -> float:
     return float(result.x)
 
 
-def polyserial(x: ArrayLike[float | int], y: ArrayLike[int]) -> float:
+def polyserial(x: npt.ArrayLike, y: npt.ArrayLike) -> float:
     """
     Estimate the polyserial correlation coefficient between a continuous variable x
     and an ordinal variable y using the two-step maximum likelihood estimation.
