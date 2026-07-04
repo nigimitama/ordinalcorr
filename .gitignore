@@ -3,3 +3,5 @@ notebooks/
 venv/
 docs/_build/
 CLAUDE.md
+tests/with_r/*/data/
+tests/with_r/*/results_r.csv

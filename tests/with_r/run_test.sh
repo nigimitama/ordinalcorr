@@ -10,41 +10,7 @@ cp "$PROJECT_ROOT_DIR/README.md" $THIS_DIR
 
 docker build -t test .
 
-# point biserial
-docker run -it --rm test bash -c "
-    cd point_biserial && \
-    python3 -u gen_data.py && \
-    Rscript test.R && \
-    python3 -u test.py && \
-    python3 -u compare.py
-" 
-
-# polychoric
-docker run -it --rm test bash -c "
-    cd polychoric && \
-    python3 -u gen_data.py && \
-    Rscript test.R && \
-    python3 -u test.py && \
-    python3 -u compare.py
-" 
-
-# polyserial
-docker run -it --rm test bash -c "
-    cd polyserial && \
-    python3 -u gen_data.py && \
-    Rscript test.R && \
-    python3 -u test.py && \
-    python3 -u compare.py
-" 
-
-# hetcor
-docker run -it --rm test bash -c "
-    cd hetcor && \
-    mkdir data && \
-    Rscript gen_data.R && \
-    Rscript test.R && \
-    python3 -u test.py && \
-    python3 -u compare.py
-"
+# run the R-vs-Python comparison tests (each test regenerates its own data and R results)
+docker run -it --rm test bash -c "python3 -m pytest polychoric polyserial point_biserial hetcor -v"
 
 rm -r "$THIS_DIR/ordinalcorr" "$THIS_DIR/pyproject.toml" "$THIS_DIR/README.md"
