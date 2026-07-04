@@ -235,7 +235,7 @@ def tetrachoric(x: npt.ArrayLike, y: npt.ArrayLike) -> float:
 
         assert np.all(probs >= 0), f"{probs=}"
 
-        return -(counts @ np.log(probs))
+        return float(-(counts @ np.log(probs)))
 
     eps = 1e-10
     result = minimize_scalar(

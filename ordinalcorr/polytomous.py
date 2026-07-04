@@ -21,7 +21,9 @@ def univariate_cdf(lower: float, upper: float) -> float:
     mean = 0.0
     var = 1.0
     std = np.sqrt(var)
-    return norm.cdf(upper, loc=mean, scale=std) - norm.cdf(lower, loc=mean, scale=std)
+    return float(
+        norm.cdf(upper, loc=mean, scale=std) - norm.cdf(lower, loc=mean, scale=std)
+    )
 
 
 def bivariate_cdf(lower: Sequence[float], upper: Sequence[float], rho: float) -> float:
