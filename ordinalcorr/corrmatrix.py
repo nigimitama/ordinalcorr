@@ -87,10 +87,10 @@ def hetcor(data: pd.DataFrame, n_unique: int = 20) -> pd.DataFrame:
 
 def is_cols_ordinal(data: pd.DataFrame, n_unique: int) -> list[bool]:
     """Check if the columns of the DataFrame are ordinal."""
-    results = [None] * len(data.columns)
-    for j in range(len(data.columns)):
-        results[j] = is_col_ordinal(x=data.iloc[:, j], n_unique=n_unique)
-    return results
+    return [
+        is_col_ordinal(x=data.iloc[:, j], n_unique=n_unique)
+        for j in range(len(data.columns))
+    ]
 
 
 def is_col_ordinal(x: pd.Series, n_unique: int) -> bool:
