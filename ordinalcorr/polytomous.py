@@ -54,7 +54,7 @@ def estimate_thresholds(values: npt.NDArray[Any]) -> npt.NDArray[np.float64]:
     return np.concatenate(([-inf], thresholds, [inf]))
 
 
-def normalize_ordinal(x: np.ndarray[int]) -> np.ndarray[int]:
+def normalize_ordinal(x: npt.NDArray[Any]) -> npt.NDArray[np.int_]:
     """Normalize ordinal variable to be integer-coded starting from 0."""
     unique_values = np.unique(x)
     value_to_code = {value: code for code, value in enumerate(unique_values)}
