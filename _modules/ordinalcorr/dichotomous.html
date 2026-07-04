@@ -241,9 +241,9 @@
           <h1>Source code for ordinalcorr.dichotomous</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy.typing</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">npt</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">scipy.stats</span><span class="w"> </span><span class="kn">import</span> <span class="n">norm</span><span class="p">,</span> <span class="n">multivariate_normal</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">scipy.optimize</span><span class="w"> </span><span class="kn">import</span> <span class="n">minimize_scalar</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">ordinalcorr.types</span><span class="w"> </span><span class="kn">import</span> <span class="n">ArrayLike</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">ordinalcorr.validation</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">ValidationError</span><span class="p">,</span>
     <span class="n">check_if_data_is_dichotomous</span><span class="p">,</span>
@@ -254,7 +254,7 @@
 
 <div class="viewcode-block" id="biserial">
 <a class="viewcode-back" href="../../generated/ordinalcorr.biserial_corr.html#ordinalcorr.biserial">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">biserial</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">[</span><span class="nb">float</span> <span class="o">|</span> <span class="nb">int</span><span class="p">],</span> <span class="n">y</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">[</span><span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">biserial</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">ArrayLike</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">ArrayLike</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Compute the biserial correlation coefficient between a continuous variable x</span>
 <span class="sd">    and a dichotomized variable y (0 or 1), assuming y was split from a latent continuous variable.</span>
@@ -308,19 +308,19 @@
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
 
     <span class="c1"># calculate the correction factor</span>
-    <span class="n">p</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">y</span><span class="p">))</span>
     <span class="n">q</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">p</span>
     <span class="n">z</span> <span class="o">=</span> <span class="n">norm</span><span class="o">.</span><span class="n">ppf</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
     <span class="n">c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">p</span> <span class="o">*</span> <span class="n">q</span><span class="p">)</span> <span class="o">/</span> <span class="n">norm</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
 
-    <span class="n">r</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span> <span class="o">=</span> <span class="n">rho_pbi</span> <span class="o">*</span> <span class="n">c</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">rho_pbi</span> <span class="o">*</span> <span class="n">c</span>
     <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">r</span><span class="p">)</span></div>
 
 
 
 <div class="viewcode-block" id="point_biserial">
 <a class="viewcode-back" href="../../generated/ordinalcorr.point_biserial_corr.html#ordinalcorr.point_biserial">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">point_biserial</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">point_biserial</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">ArrayLike</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">ArrayLike</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Compute the point-biserial correlation between a continuous variable x</span>
 <span class="sd">    and a dichotomous variable y (0 or 1), assuming y is a true dichotomous variable.</span>
@@ -400,14 +400,14 @@
     <span class="n">p</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
     <span class="n">q</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">p</span>
 
-    <span class="n">r</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span> <span class="o">=</span> <span class="p">(</span><span class="n">M1</span> <span class="o">-</span> <span class="n">M0</span><span class="p">)</span> <span class="o">/</span> <span class="n">s</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">p</span> <span class="o">*</span> <span class="n">q</span><span class="p">)</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="p">(</span><span class="n">M1</span> <span class="o">-</span> <span class="n">M0</span><span class="p">)</span> <span class="o">/</span> <span class="n">s</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">p</span> <span class="o">*</span> <span class="n">q</span><span class="p">)</span>
     <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">r</span><span class="p">)</span></div>
 
 
 
 <div class="viewcode-block" id="tetrachoric">
 <a class="viewcode-back" href="../../generated/ordinalcorr.tetrachoric_corr.html#ordinalcorr.tetrachoric">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">tetrachoric</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">y</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">[</span><span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">tetrachoric</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">ArrayLike</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">ArrayLike</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Estimate the tetrachoric correlation coefficient between two dichotomous variables.</span>
 
@@ -469,7 +469,7 @@
     <span class="n">tau_x</span> <span class="o">=</span> <span class="n">norm</span><span class="o">.</span><span class="n">ppf</span><span class="p">(</span><span class="n">px0</span><span class="p">)</span>
     <span class="n">tau_y</span> <span class="o">=</span> <span class="n">norm</span><span class="o">.</span><span class="n">ppf</span><span class="p">(</span><span class="n">py0</span><span class="p">)</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">neg_log_likelihood</span><span class="p">(</span><span class="n">rho</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">neg_log_likelihood</span><span class="p">(</span><span class="n">rho</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
         <span class="n">phi_x</span> <span class="o">=</span> <span class="n">norm</span><span class="o">.</span><span class="n">cdf</span><span class="p">(</span><span class="n">tau_x</span><span class="p">)</span>
         <span class="n">phi_y</span> <span class="o">=</span> <span class="n">norm</span><span class="o">.</span><span class="n">cdf</span><span class="p">(</span><span class="n">tau_y</span><span class="p">)</span>
 
@@ -484,7 +484,7 @@
 
         <span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">probs</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">probs</span><span class="si">=}</span><span class="s2">&quot;</span>
 
-        <span class="k">return</span> <span class="o">-</span><span class="p">(</span><span class="n">counts</span> <span class="o">@</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">probs</span><span class="p">))</span>
+        <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="n">counts</span> <span class="o">@</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">probs</span><span class="p">)))</span>
 
     <span class="n">eps</span> <span class="o">=</span> <span class="mf">1e-10</span>
     <span class="n">result</span> <span class="o">=</span> <span class="n">minimize_scalar</span><span class="p">(</span>
