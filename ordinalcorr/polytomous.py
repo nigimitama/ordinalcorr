@@ -1,5 +1,7 @@
 import warnings
+from typing import Any, Sequence
 import numpy as np
+import numpy.typing as npt
 from scipy.stats import norm, multivariate_normal
 from scipy.optimize import minimize_scalar
 from ordinalcorr.validation import (
@@ -7,10 +9,9 @@ from ordinalcorr.validation import (
     check_if_zero_variance,
     check_length_are_same,
 )
-from ordinalcorr.types import ArrayLike
 
 
-def univariate_cdf(lower, upper):
+def univariate_cdf(lower: float, upper: float) -> float:
     """Compute the univariate cumulative distribution function (CDF) for a standard normal distribution.
 
     P(lower < X <= upper) = Φ(upper) - Φ(lower)
@@ -20,10 +21,12 @@ def univariate_cdf(lower, upper):
     mean = 0.0
     var = 1.0
     std = np.sqrt(var)
-    return norm.cdf(upper, loc=mean, scale=std) - norm.cdf(lower, loc=mean, scale=std)
+    return float(
+        norm.cdf(upper, loc=mean, scale=std) - norm.cdf(lower, loc=mean, scale=std)
+    )
 
 
-def bivariate_cdf(lower, upper, rho: float) -> float:
+def bivariate_cdf(lower: Sequence[float], upper: Sequence[float], rho: float) -> float:
     """Compute the bivariate cumulative distribution function (CDF) for a standard normal distribution.
 
     P(lower_x < X <= upper_x, lower_y < Y <= upper_y)
@@ -42,7 +45,7 @@ def bivariate_cdf(lower, upper, rho: float) -> float:
     )
 
 
-def estimate_thresholds(values):
+def estimate_thresholds(values: npt.NDArray[Any]) -> npt.NDArray[np.float64]:
     """Estimate thresholds from empirical marginal proportions"""
     inf = 100  # to make log-likelihood smooth, use large value instead of np.inf
     thresholds = []
@@ -53,14 +56,14 @@ def estimate_thresholds(values):
     return np.concatenate(([-inf], thresholds, [inf]))
 
 
-def normalize_ordinal(x: np.ndarray[int]) -> np.ndarray[int]:
+def normalize_ordinal(x: npt.NDArray[Any]) -> npt.NDArray[np.int_]:
     """Normalize ordinal variable to be integer-coded starting from 0."""
     unique_values = np.unique(x)
     value_to_code = {value: code for code, value in enumerate(unique_values)}
     return np.vectorize(value_to_code.get)(x)
 
 
-def polychoric(x: ArrayLike[int], y: ArrayLike[int]) -> float:
+def polychoric(x: npt.ArrayLike, y: npt.ArrayLike) -> float:
     """
     Estimate the polychoric correlation coefficient between two ordinal variables.
 
@@ -120,7 +123,7 @@ def polychoric(x: ArrayLike[int], y: ArrayLike[int]) -> float:
         for j, yj in enumerate(y_levels):
             contingency[i, j] = np.sum((x == xi) & (y == yj))  # n_ij
 
-    def neg_log_likelihood(rho):
+    def neg_log_likelihood(rho: float) -> float:
         log_likelihood = 0.0
         for i in range(len(tau_x) - 1):
             for j in range(len(tau_y) - 1):
@@ -144,7 +147,7 @@ def polychoric(x: ArrayLike[int], y: ArrayLike[int]) -> float:
     return float(result.x)
 
 
-def polyserial(x: ArrayLike[float | int], y: ArrayLike[int]) -> float:
+def polyserial(x: npt.ArrayLike, y: npt.ArrayLike) -> float:
     """
     Estimate the polyserial correlation coefficient between a continuous variable x
     and an ordinal variable y using the two-step maximum likelihood estimation.
@@ -192,7 +195,7 @@ def polyserial(x: ArrayLike[float | int], y: ArrayLike[int]) -> float:
     y = normalize_ordinal(y)
     tau = estimate_thresholds(y)
 
-    def neg_log_likelihood(rho):
+    def neg_log_likelihood(rho: float) -> float:
         log_likelihood = 0.0
         for i in range(len(z)):
             j = y[i]

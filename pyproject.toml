@@ -53,3 +53,8 @@ docs = [
     "furo",
     "seaborn",
 ]
+typecheck = [
+    "pyright>=1.1.0",
+    "pandas-stubs",
+    "scipy-stubs",
+]

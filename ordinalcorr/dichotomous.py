@@ -1,8 +1,8 @@
 import warnings
 import numpy as np
+import numpy.typing as npt
 from scipy.stats import norm, multivariate_normal
 from scipy.optimize import minimize_scalar
-from ordinalcorr.types import ArrayLike
 from ordinalcorr.validation import (
     ValidationError,
     check_if_data_is_dichotomous,
@@ -11,7 +11,7 @@ from ordinalcorr.validation import (
 )
 
 
-def biserial(x: ArrayLike[float | int], y: ArrayLike[int]) -> float:
+def biserial(x: npt.ArrayLike, y: npt.ArrayLike) -> float:
     """
     Compute the biserial correlation coefficient between a continuous variable x
     and a dichotomized variable y (0 or 1), assuming y was split from a latent continuous variable.
@@ -65,16 +65,16 @@ def biserial(x: ArrayLike[float | int], y: ArrayLike[int]) -> float:
         return np.nan
 
     # calculate the correction factor
-    p = np.mean(y)
+    p = np.mean(np.asarray(y))
     q = 1 - p
     z = norm.ppf(p)
     c = np.sqrt(p * q) / norm.pdf(z)
 
-    r: np.float64 = rho_pbi * c
+    r = rho_pbi * c
     return float(r)
 
 
-def point_biserial(x: ArrayLike, y: ArrayLike) -> float:
+def point_biserial(x: npt.ArrayLike, y: npt.ArrayLike) -> float:
     """
     Compute the point-biserial correlation between a continuous variable x
     and a dichotomous variable y (0 or 1), assuming y is a true dichotomous variable.
@@ -154,11 +154,11 @@ def point_biserial(x: ArrayLike, y: ArrayLike) -> float:
     p = np.mean(y)
     q = 1 - p
 
-    r: np.float64 = (M1 - M0) / s * np.sqrt(p * q)
+    r = (M1 - M0) / s * np.sqrt(p * q)
     return float(r)
 
 
-def tetrachoric(x: ArrayLike[int], y: ArrayLike[int]) -> float:
+def tetrachoric(x: npt.ArrayLike, y: npt.ArrayLike) -> float:
     """
     Estimate the tetrachoric correlation coefficient between two dichotomous variables.
 
@@ -220,7 +220,7 @@ def tetrachoric(x: ArrayLike[int], y: ArrayLike[int]) -> float:
     tau_x = norm.ppf(px0)
     tau_y = norm.ppf(py0)
 
-    def neg_log_likelihood(rho):
+    def neg_log_likelihood(rho: float) -> float:
         phi_x = norm.cdf(tau_x)
         phi_y = norm.cdf(tau_y)
 
@@ -235,7 +235,7 @@ def tetrachoric(x: ArrayLike[int], y: ArrayLike[int]) -> float:
 
         assert np.all(probs >= 0), f"{probs=}"
 
-        return -(counts @ np.log(probs))
+        return float(-(counts @ np.log(probs)))
 
     eps = 1e-10
     result = minimize_scalar(

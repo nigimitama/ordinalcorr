@@ -25,3 +25,21 @@ jobs:
 
       - name: Run test
         run: uv run pytest -v
+
+  typecheck:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v3
+        with:
+          python-version: "3.13"
+
+      - name: Install dependencies
+        run: uv sync --group typecheck
+
+      - name: Run pyright
+        run: uv run pyright ordinalcorr/
