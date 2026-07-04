@@ -43,7 +43,10 @@ def hetcor(data: pd.DataFrame, n_unique: int = 20) -> pd.DataFrame:
     ...     "continuous": [0.1, 0.1, 0.2, 0.2, 0.3, 0.3],
     ...     "ordinal": [0, 0, 0, 1, 1, 2],
     ... })
-    >>> hetcor(data)
+    >>> hetcor(data).round(4)
+                continuous  ordinal
+    continuous      1.0000   0.9984
+    ordinal         0.9984   1.0000
     """
     # NOTE: np.ndarray uses single dtype, so it cannot be a input. so we accept pd.DataFrame only
     if not isinstance(data, pd.DataFrame):

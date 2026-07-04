@@ -86,7 +86,8 @@ def polychoric(x: ArrayLike[int], y: ArrayLike[int]) -> float:
     >>> from ordinalcorr import polychoric
     >>> x = [1, 1, 2, 2, 3, 3]
     >>> y = [0, 0, 0, 1, 1, 1]
-    >>> polychoric(x, y)
+    >>> round(float(polychoric(x, y)), 4)
+    0.9986
 
     References
     ----------
@@ -169,7 +170,8 @@ def polyserial(x: ArrayLike[float | int], y: ArrayLike[int]) -> float:
     >>> from ordinalcorr import polyserial
     >>> x = [0.1, 0.1, 0.2, 0.2, 0.3, 0.3]
     >>> y = [0, 0, 0, 1, 1, 2]
-    >>> polyserial(x, y)
+    >>> round(polyserial(x, y), 4)
+    0.9017
 
     References
     ----------

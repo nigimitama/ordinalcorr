@@ -39,7 +39,9 @@ packages = ["ordinalcorr"]
 [tool.pytest.ini_options]
 testpaths = [
     "tests",
+    "ordinalcorr",
 ]
+addopts = "--doctest-modules"
 
 [dependency-groups]
 test = [
