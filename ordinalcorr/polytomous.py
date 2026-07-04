@@ -1,4 +1,5 @@
 import warnings
+from typing import Any, Sequence
 import numpy as np
 import numpy.typing as npt
 from scipy.stats import norm, multivariate_normal
@@ -10,7 +11,7 @@ from ordinalcorr.validation import (
 )
 
 
-def univariate_cdf(lower, upper):
+def univariate_cdf(lower: float, upper: float) -> float:
     """Compute the univariate cumulative distribution function (CDF) for a standard normal distribution.
 
     P(lower < X <= upper) = Φ(upper) - Φ(lower)
@@ -23,7 +24,7 @@ def univariate_cdf(lower, upper):
     return norm.cdf(upper, loc=mean, scale=std) - norm.cdf(lower, loc=mean, scale=std)
 
 
-def bivariate_cdf(lower, upper, rho: float) -> float:
+def bivariate_cdf(lower: Sequence[float], upper: Sequence[float], rho: float) -> float:
     """Compute the bivariate cumulative distribution function (CDF) for a standard normal distribution.
 
     P(lower_x < X <= upper_x, lower_y < Y <= upper_y)
@@ -42,7 +43,7 @@ def bivariate_cdf(lower, upper, rho: float) -> float:
     )
 
 
-def estimate_thresholds(values):
+def estimate_thresholds(values: npt.NDArray[Any]) -> npt.NDArray[np.float64]:
     """Estimate thresholds from empirical marginal proportions"""
     inf = 100  # to make log-likelihood smooth, use large value instead of np.inf
     thresholds = []
@@ -120,7 +121,7 @@ def polychoric(x: npt.ArrayLike, y: npt.ArrayLike) -> float:
         for j, yj in enumerate(y_levels):
             contingency[i, j] = np.sum((x == xi) & (y == yj))  # n_ij
 
-    def neg_log_likelihood(rho):
+    def neg_log_likelihood(rho: float) -> float:
         log_likelihood = 0.0
         for i in range(len(tau_x) - 1):
             for j in range(len(tau_y) - 1):
@@ -192,7 +193,7 @@ def polyserial(x: npt.ArrayLike, y: npt.ArrayLike) -> float:
     y = normalize_ordinal(y)
     tau = estimate_thresholds(y)
 
-    def neg_log_likelihood(rho):
+    def neg_log_likelihood(rho: float) -> float:
         log_likelihood = 0.0
         for i in range(len(z)):
             j = y[i]

@@ -220,7 +220,7 @@ def tetrachoric(x: npt.ArrayLike, y: npt.ArrayLike) -> float:
     tau_x = norm.ppf(px0)
     tau_y = norm.ppf(py0)
 
-    def neg_log_likelihood(rho):
+    def neg_log_likelihood(rho: float) -> float:
         phi_x = norm.cdf(tau_x)
         phi_y = norm.cdf(tau_y)
 
