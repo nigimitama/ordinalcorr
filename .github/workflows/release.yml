@@ -2,10 +2,8 @@
 name: release
 
 on:
-  workflow_run:
-    workflows: ["test"] # NOTE: set the same value as the name of test.yml
-    types:
-      - completed
+  release:
+    types: [published]
 
 permissions:
   id-token: write # for OIDC with PyPI
@@ -13,15 +11,8 @@ permissions:
 
 jobs:
   release:
-    # This job will only run if the test job was successful and the branch is "main"
-    if: >-
-      github.event.workflow_run.conclusion == 'success' &&
-      github.event.workflow_run.head_branch == 'main'
     runs-on: ubuntu-latest
     steps:
-      - name: Deploy
-        run: echo "🚀 Deploying to production!"
-
       - name: Checkout repository
         uses: actions/checkout@v3
 
@@ -29,6 +20,12 @@ jobs:
         uses: astral-sh/setup-uv@v3
         with:
           python-version: "3.13"
+
+      - name: Install dependencies
+        run: uv sync --group test
+
+      - name: Run test
+        run: uv run pytest tests/ -v
 
       - name: Build
         run: uv build
