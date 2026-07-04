@@ -287,7 +287,10 @@ If the number of unique values exceeds <cite>n_unique</cite>, the column is trea
 <span class="gp">... </span>    <span class="s2">&quot;continuous&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">],</span>
 <span class="gp">... </span>    <span class="s2">&quot;ordinal&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span>
 <span class="gp">... </span><span class="p">})</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">hetcor</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">hetcor</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+<span class="go">            continuous  ordinal</span>
+<span class="go">continuous      1.0000   0.9984</span>
+<span class="go">ordinal         0.9984   1.0000</span>
 </pre></div>
 </div>
 </dd></dl>

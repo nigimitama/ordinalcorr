@@ -276,7 +276,8 @@
 <span class="sd">    &gt;&gt;&gt; from ordinalcorr import biserial</span>
 <span class="sd">    &gt;&gt;&gt; x = [0.1, 0.2, 0.3, 0.4, 0.5]</span>
 <span class="sd">    &gt;&gt;&gt; y = [0, 0, 1, 1, 1]</span>
-<span class="sd">    &gt;&gt;&gt; biserial(x, y)</span>
+<span class="sd">    &gt;&gt;&gt; round(biserial(x, y), 4)</span>
+<span class="sd">    1.0982</span>
 
 <span class="sd">    :Details:</span>
 
@@ -311,7 +312,9 @@
     <span class="n">q</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">p</span>
     <span class="n">z</span> <span class="o">=</span> <span class="n">norm</span><span class="o">.</span><span class="n">ppf</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
     <span class="n">c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">p</span> <span class="o">*</span> <span class="n">q</span><span class="p">)</span> <span class="o">/</span> <span class="n">norm</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">rho_pbi</span> <span class="o">*</span> <span class="n">c</span></div>
+
+    <span class="n">r</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span> <span class="o">=</span> <span class="n">rho_pbi</span> <span class="o">*</span> <span class="n">c</span>
+    <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">r</span><span class="p">)</span></div>
 
 
 
@@ -341,7 +344,8 @@
 <span class="sd">    &gt;&gt;&gt; from ordinalcorr import point_biserial</span>
 <span class="sd">    &gt;&gt;&gt; x = [0.1, 0.2, 0.3, 0.4, 0.5]</span>
 <span class="sd">    &gt;&gt;&gt; y = [0, 0, 1, 1, 1]</span>
-<span class="sd">    &gt;&gt;&gt; point_biserial(x, y)</span>
+<span class="sd">    &gt;&gt;&gt; round(point_biserial(x, y), 4)</span>
+<span class="sd">    0.866</span>
 
 
 <span class="sd">    :Details:</span>
@@ -396,7 +400,8 @@
     <span class="n">p</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
     <span class="n">q</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">p</span>
 
-    <span class="k">return</span> <span class="p">(</span><span class="n">M1</span> <span class="o">-</span> <span class="n">M0</span><span class="p">)</span> <span class="o">/</span> <span class="n">s</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">p</span> <span class="o">*</span> <span class="n">q</span><span class="p">)</span></div>
+    <span class="n">r</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span> <span class="o">=</span> <span class="p">(</span><span class="n">M1</span> <span class="o">-</span> <span class="n">M0</span><span class="p">)</span> <span class="o">/</span> <span class="n">s</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">p</span> <span class="o">*</span> <span class="n">q</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">r</span><span class="p">)</span></div>
 
 
 
@@ -433,7 +438,8 @@
 <span class="sd">    &gt;&gt;&gt; from ordinalcorr import tetrachoric</span>
 <span class="sd">    &gt;&gt;&gt; x = [0, 0, 1, 1, 1]</span>
 <span class="sd">    &gt;&gt;&gt; y = [0, 1, 0, 1, 1]</span>
-<span class="sd">    &gt;&gt;&gt; tetrachoric(x, y)</span>
+<span class="sd">    &gt;&gt;&gt; round(tetrachoric(x, y), 4)</span>
+<span class="sd">    0.2629</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># NOTE: The estimation is the same as polyserial with dichotomous variables.</span>
@@ -484,7 +490,7 @@
     <span class="n">result</span> <span class="o">=</span> <span class="n">minimize_scalar</span><span class="p">(</span>
         <span class="n">neg_log_likelihood</span><span class="p">,</span> <span class="n">bounds</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span> <span class="o">+</span> <span class="n">eps</span><span class="p">,</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">eps</span><span class="p">),</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;bounded&quot;</span>
     <span class="p">)</span>
-    <span class="k">return</span> <span class="n">result</span><span class="o">.</span><span class="n">x</span></div>
+    <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">x</span><span class="p">)</span></div>
 
 </pre></div>
         </article>

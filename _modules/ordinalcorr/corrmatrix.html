@@ -286,7 +286,10 @@
 <span class="sd">    ...     &quot;continuous&quot;: [0.1, 0.1, 0.2, 0.2, 0.3, 0.3],</span>
 <span class="sd">    ...     &quot;ordinal&quot;: [0, 0, 0, 1, 1, 2],</span>
 <span class="sd">    ... })</span>
-<span class="sd">    &gt;&gt;&gt; hetcor(data)</span>
+<span class="sd">    &gt;&gt;&gt; hetcor(data).round(4)</span>
+<span class="sd">                continuous  ordinal</span>
+<span class="sd">    continuous      1.0000   0.9984</span>
+<span class="sd">    ordinal         0.9984   1.0000</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># NOTE: np.ndarray uses single dtype, so it cannot be a input. so we accept pd.DataFrame only</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>

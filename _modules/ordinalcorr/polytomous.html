@@ -329,7 +329,8 @@
 <span class="sd">    &gt;&gt;&gt; from ordinalcorr import polychoric</span>
 <span class="sd">    &gt;&gt;&gt; x = [1, 1, 2, 2, 3, 3]</span>
 <span class="sd">    &gt;&gt;&gt; y = [0, 0, 0, 1, 1, 1]</span>
-<span class="sd">    &gt;&gt;&gt; polychoric(x, y)</span>
+<span class="sd">    &gt;&gt;&gt; round(float(polychoric(x, y)), 4)</span>
+<span class="sd">    0.9986</span>
 
 <span class="sd">    References</span>
 <span class="sd">    ----------</span>
@@ -383,7 +384,7 @@
         <span class="k">return</span> <span class="o">-</span><span class="n">log_likelihood</span>
 
     <span class="n">result</span> <span class="o">=</span> <span class="n">minimize_scalar</span><span class="p">(</span><span class="n">neg_log_likelihood</span><span class="p">,</span> <span class="n">bounds</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;bounded&quot;</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">result</span><span class="o">.</span><span class="n">x</span></div>
+    <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">x</span><span class="p">)</span></div>
 
 
 
@@ -415,7 +416,8 @@
 <span class="sd">    &gt;&gt;&gt; from ordinalcorr import polyserial</span>
 <span class="sd">    &gt;&gt;&gt; x = [0.1, 0.1, 0.2, 0.2, 0.3, 0.3]</span>
 <span class="sd">    &gt;&gt;&gt; y = [0, 0, 0, 1, 1, 2]</span>
-<span class="sd">    &gt;&gt;&gt; polyserial(x, y)</span>
+<span class="sd">    &gt;&gt;&gt; round(polyserial(x, y), 4)</span>
+<span class="sd">    0.9017</span>
 
 <span class="sd">    References</span>
 <span class="sd">    ----------</span>
@@ -453,7 +455,7 @@
         <span class="k">return</span> <span class="o">-</span><span class="n">log_likelihood</span>
 
     <span class="n">result</span> <span class="o">=</span> <span class="n">minimize_scalar</span><span class="p">(</span><span class="n">neg_log_likelihood</span><span class="p">,</span> <span class="n">bounds</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;bounded&quot;</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">result</span><span class="o">.</span><span class="n">x</span></div>
+    <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">x</span><span class="p">)</span></div>
 
 </pre></div>
         </article>
