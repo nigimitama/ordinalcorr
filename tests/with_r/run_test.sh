@@ -1,50 +1,54 @@
 #!/bin/bash -eux
+#
+# Regenerate the R fixtures used by tests/test_r_comparison_*.py.
+#
+# This script only produces CSV files (input data and R's estimation
+# results); it does not run or compare against the Python implementation.
+# The pytest tests read the committed CSVs directly and do not need R or
+# Docker to run. Re-run this script (and commit the resulting CSV changes)
+# whenever the data-generation or R estimation logic changes.
 
-# copy source code to test/with_r directory
 THIS_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-TEST_DIR="$( cd "$( dirname "${THIS_DIR}" )" && pwd )"
-PROJECT_ROOT_DIR="$( cd "$( dirname "${TEST_DIR}" )" && pwd )"
-cp -r "$PROJECT_ROOT_DIR/ordinalcorr" $THIS_DIR
-cp "$PROJECT_ROOT_DIR/pyproject.toml" $THIS_DIR
-cp "$PROJECT_ROOT_DIR/README.md" $THIS_DIR
+cd "$THIS_DIR"
 
-docker build -t test .
+docker build -t ordinalcorr-r-fixtures .
 
 # point biserial
-docker run -it --rm test bash -c "
+docker run -it --rm \
+    -v "$THIS_DIR/point_biserial:/point_biserial" \
+    ordinalcorr-r-fixtures bash -c "
     cd point_biserial && \
-    python3 -u gen_data.py && \
-    Rscript test.R && \
-    python3 -u test.py && \
-    python3 -u compare.py
-" 
-
-# polychoric
-docker run -it --rm test bash -c "
-    cd polychoric && \
-    python3 -u gen_data.py && \
-    Rscript test.R && \
-    python3 -u test.py && \
-    python3 -u compare.py
-" 
-
-# polyserial
-docker run -it --rm test bash -c "
-    cd polyserial && \
-    python3 -u gen_data.py && \
-    Rscript test.R && \
-    python3 -u test.py && \
-    python3 -u compare.py
-" 
-
-# hetcor
-docker run -it --rm test bash -c "
-    cd hetcor && \
-    mkdir data && \
+    rm -rf data results_r.csv && \
     Rscript gen_data.R && \
-    Rscript test.R && \
-    python3 -u test.py && \
-    python3 -u compare.py
+    Rscript test.R
 "
 
-rm -r "$THIS_DIR/ordinalcorr" "$THIS_DIR/pyproject.toml" "$THIS_DIR/README.md"
+# polychoric
+docker run -it --rm \
+    -v "$THIS_DIR/polychoric:/polychoric" \
+    ordinalcorr-r-fixtures bash -c "
+    cd polychoric && \
+    rm -rf data results_r.csv && \
+    Rscript gen_data.R && \
+    Rscript test.R
+"
+
+# polyserial
+docker run -it --rm \
+    -v "$THIS_DIR/polyserial:/polyserial" \
+    ordinalcorr-r-fixtures bash -c "
+    cd polyserial && \
+    rm -rf data results_r.csv && \
+    Rscript gen_data.R && \
+    Rscript test.R
+"
+
+# hetcor
+docker run -it --rm \
+    -v "$THIS_DIR/hetcor:/hetcor" \
+    ordinalcorr-r-fixtures bash -c "
+    cd hetcor && \
+    rm -rf data results_r.csv && \
+    Rscript gen_data.R && \
+    Rscript test.R
+"
