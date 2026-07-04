@@ -141,7 +141,7 @@ def polychoric(x: ArrayLike[int], y: ArrayLike[int]) -> float:
         return -log_likelihood
 
     result = minimize_scalar(neg_log_likelihood, bounds=(-1, 1), method="bounded")
-    return result.x
+    return float(result.x)
 
 
 def polyserial(x: ArrayLike[float | int], y: ArrayLike[int]) -> float:
@@ -209,4 +209,4 @@ def polyserial(x: ArrayLike[float | int], y: ArrayLike[int]) -> float:
         return -log_likelihood
 
     result = minimize_scalar(neg_log_likelihood, bounds=(-1, 1), method="bounded")
-    return result.x
+    return float(result.x)

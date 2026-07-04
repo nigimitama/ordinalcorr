@@ -69,7 +69,9 @@ def biserial(x: ArrayLike[float | int], y: ArrayLike[int]) -> float:
     q = 1 - p
     z = norm.ppf(p)
     c = np.sqrt(p * q) / norm.pdf(z)
-    return rho_pbi * c
+
+    r: np.float64 = rho_pbi * c
+    return float(r)
 
 
 def point_biserial(x: ArrayLike, y: ArrayLike) -> float:
@@ -152,7 +154,8 @@ def point_biserial(x: ArrayLike, y: ArrayLike) -> float:
     p = np.mean(y)
     q = 1 - p
 
-    return (M1 - M0) / s * np.sqrt(p * q)
+    r: np.float64 = (M1 - M0) / s * np.sqrt(p * q)
+    return float(r)
 
 
 def tetrachoric(x: ArrayLike[int], y: ArrayLike[int]) -> float:
@@ -238,4 +241,4 @@ def tetrachoric(x: ArrayLike[int], y: ArrayLike[int]) -> float:
     result = minimize_scalar(
         neg_log_likelihood, bounds=(-1 + eps, 1 - eps), method="bounded"
     )
-    return result.x
+    return float(result.x)
