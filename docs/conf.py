@@ -25,7 +25,14 @@ extensions = [
 
 myst_enable_extensions = [
     "dollarmath",
+    "colon_fence",
 ]
+
+source_suffix = {
+    ".rst": "restructuredtext",
+    ".md": "myst-nb",
+    ".myst": "myst-nb",
+}
 
 templates_path = ["_templates"]
 exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
