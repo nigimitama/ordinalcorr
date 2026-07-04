@@ -70,7 +70,7 @@ def biserial(x: npt.ArrayLike, y: npt.ArrayLike) -> float:
     z = norm.ppf(p)
     c = np.sqrt(p * q) / norm.pdf(z)
 
-    r: np.float64 = rho_pbi * c
+    r = rho_pbi * c
     return float(r)
 
 
@@ -154,7 +154,7 @@ def point_biserial(x: npt.ArrayLike, y: npt.ArrayLike) -> float:
     p = np.mean(y)
     q = 1 - p
 
-    r: np.float64 = (M1 - M0) / s * np.sqrt(p * q)
+    r = (M1 - M0) / s * np.sqrt(p * q)
     return float(r)
 
 
