@@ -1,9 +1,15 @@
+import warnings
+
 import pandas as pd
 import numpy as np
 from ordinalcorr.polytomous import polychoric, polyserial
 
 
-def hetcor(data: pd.DataFrame, n_unique: int = 20) -> pd.DataFrame:
+def hetcor(
+    data: pd.DataFrame,
+    n_categories: int = 20,
+    n_unique: int | None = None,
+) -> pd.DataFrame:
     """
     Estimate the heterogeneous correlation matrix.
 
@@ -20,13 +26,16 @@ def hetcor(data: pd.DataFrame, n_unique: int = 20) -> pd.DataFrame:
         Appropriate correlation coefficients are automatically selected based on the types of variables.
 
         - Columns with dtype `float` are treated as continuous variables.
-        - Columns with dtype `int` and number of unique values less than or equal to `n_unique`
+        - Columns with dtype `int` and number of unique values less than or equal to `n_categories`
           are treated as ordinal variables.
         - Columns with dtype `category` are treated as ordinal variables if they are ordered.
 
-    n_unique : int, default=20
+    n_categories : int, default=20
         The maximum number of unique values for an integer column to be considered ordinal.
-        If the number of unique values exceeds `n_unique`, the column is treated as continuous.
+        If the number of unique values exceeds `n_categories`, the column is treated as continuous.
+
+    n_unique : int, optional
+        Deprecated alias for `n_categories`. Will be removed in a future release.
 
 
     Returns
@@ -52,7 +61,16 @@ def hetcor(data: pd.DataFrame, n_unique: int = 20) -> pd.DataFrame:
     if not isinstance(data, pd.DataFrame):
         raise TypeError("Input data must be a pandas.DataFrame")
 
-    is_col_ordinal = is_cols_ordinal(data, n_unique=n_unique)
+    if n_unique is not None:
+        warnings.warn(
+            "The `n_unique` parameter is deprecated and will be removed in a "
+            "future release. Use `n_categories` instead.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+        n_categories = n_unique
+
+    is_col_ordinal = is_cols_ordinal(data, n_categories=n_categories)
 
     ncols = len(data.columns)
     corr = np.zeros((ncols, ncols), dtype=float)
@@ -85,15 +103,15 @@ def hetcor(data: pd.DataFrame, n_unique: int = 20) -> pd.DataFrame:
     return corr_df
 
 
-def is_cols_ordinal(data: pd.DataFrame, n_unique: int) -> list[bool]:
+def is_cols_ordinal(data: pd.DataFrame, n_categories: int) -> list[bool]:
     """Check if the columns of the DataFrame are ordinal."""
     return [
-        is_col_ordinal(x=data.iloc[:, j], n_unique=n_unique)
+        is_col_ordinal(x=data.iloc[:, j], n_categories=n_categories)
         for j in range(len(data.columns))
     ]
 
 
-def is_col_ordinal(x: pd.Series, n_unique: int) -> bool:
+def is_col_ordinal(x: pd.Series, n_categories: int) -> bool:
     """Check if the input is ordinal."""
 
     if x.dtype.name == "category":
@@ -102,7 +120,7 @@ def is_col_ordinal(x: pd.Series, n_unique: int) -> bool:
         raise TypeError(f"The column '{x.name}' is unoredered category.")
 
     # Judge by the number of unique values, even if the data type is 'float'
-    if x.unique().size <= n_unique:
+    if x.unique().size <= n_categories:
         return True
 
     return False

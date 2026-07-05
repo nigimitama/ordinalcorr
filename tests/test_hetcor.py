@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+import pytest
 from scipy.stats import multivariate_normal
 from ordinalcorr.corrmatrix import (
     hetcor,
@@ -75,6 +76,19 @@ def test_two_cols():
             "polytomous_float": np.repeat([7.0, 5.0, 3.0], 10),
         }
     )
-    actual = is_cols_ordinal(data, n_unique=10)
+    actual = is_cols_ordinal(data, n_categories=10)
     expected = [False, True, True, True]
     assert list(actual) == expected
+
+
+def test_hetcor_n_unique_is_deprecated():
+    data = pd.DataFrame(
+        {
+            "continuous": [0.1, 0.1, 0.2, 0.2, 0.3, 0.3],
+            "ordinal": [0, 0, 0, 1, 1, 2],
+        }
+    )
+    with pytest.deprecated_call():
+        actual = hetcor(data, n_unique=10)
+    expected = hetcor(data, n_categories=10)
+    pd.testing.assert_frame_equal(actual, expected)
