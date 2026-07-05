@@ -239,14 +239,20 @@
         </div>
         <article role="main" id="furo-main-content">
           <h1>Source code for ordinalcorr.corrmatrix</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">ordinalcorr.polytomous</span><span class="w"> </span><span class="kn">import</span> <span class="n">polychoric</span><span class="p">,</span> <span class="n">polyserial</span>
 
 
 <div class="viewcode-block" id="hetcor">
 <a class="viewcode-back" href="../../generated/ordinalcorr.hetcor.html#ordinalcorr.hetcor">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">hetcor</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">n_unique</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">20</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">hetcor</span><span class="p">(</span>
+    <span class="n">data</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
+    <span class="n">n_categories</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">20</span><span class="p">,</span>
+    <span class="n">n_unique</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Estimate the heterogeneous correlation matrix.</span>
 
@@ -263,13 +269,16 @@
 <span class="sd">        Appropriate correlation coefficients are automatically selected based on the types of variables.</span>
 
 <span class="sd">        - Columns with dtype `float` are treated as continuous variables.</span>
-<span class="sd">        - Columns with dtype `int` and number of unique values less than or equal to `n_unique`</span>
+<span class="sd">        - Columns with dtype `int` and number of unique values less than or equal to `n_categories`</span>
 <span class="sd">          are treated as ordinal variables.</span>
 <span class="sd">        - Columns with dtype `category` are treated as ordinal variables if they are ordered.</span>
 
-<span class="sd">    n_unique : int, default=20</span>
+<span class="sd">    n_categories : int, default=20</span>
 <span class="sd">        The maximum number of unique values for an integer column to be considered ordinal.</span>
-<span class="sd">        If the number of unique values exceeds `n_unique`, the column is treated as continuous.</span>
+<span class="sd">        If the number of unique values exceeds `n_categories`, the column is treated as continuous.</span>
+
+<span class="sd">    n_unique : int, optional</span>
+<span class="sd">        Deprecated alias for `n_categories`. Will be removed in a future release.</span>
 
 
 <span class="sd">    Returns</span>
@@ -295,7 +304,16 @@
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Input data must be a pandas.DataFrame&quot;</span><span class="p">)</span>
 
-    <span class="n">is_col_ordinal</span> <span class="o">=</span> <span class="n">is_cols_ordinal</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">n_unique</span><span class="o">=</span><span class="n">n_unique</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">n_unique</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+            <span class="s2">&quot;The `n_unique` parameter is deprecated and will be removed in a &quot;</span>
+            <span class="s2">&quot;future release. Use `n_categories` instead.&quot;</span><span class="p">,</span>
+            <span class="ne">DeprecationWarning</span><span class="p">,</span>
+            <span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">n_categories</span> <span class="o">=</span> <span class="n">n_unique</span>
+
+    <span class="n">is_col_ordinal</span> <span class="o">=</span> <span class="n">is_cols_ordinal</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">n_categories</span><span class="o">=</span><span class="n">n_categories</span><span class="p">)</span>
 
     <span class="n">ncols</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
     <span class="n">corr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">ncols</span><span class="p">,</span> <span class="n">ncols</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
@@ -329,15 +347,15 @@
 
 
 
-<span class="k">def</span><span class="w"> </span><span class="nf">is_cols_ordinal</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">n_unique</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">bool</span><span class="p">]:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">is_cols_ordinal</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">n_categories</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">bool</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Check if the columns of the DataFrame are ordinal.&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="p">[</span>
-        <span class="n">is_col_ordinal</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="n">j</span><span class="p">],</span> <span class="n">n_unique</span><span class="o">=</span><span class="n">n_unique</span><span class="p">)</span>
+        <span class="n">is_col_ordinal</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="n">j</span><span class="p">],</span> <span class="n">n_categories</span><span class="o">=</span><span class="n">n_categories</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">columns</span><span class="p">))</span>
     <span class="p">]</span>
 
 
-<span class="k">def</span><span class="w"> </span><span class="nf">is_col_ordinal</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">,</span> <span class="n">n_unique</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">is_col_ordinal</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">,</span> <span class="n">n_categories</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Check if the input is ordinal.&quot;&quot;&quot;</span>
 
     <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">dtype</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;category&quot;</span><span class="p">:</span>
@@ -346,7 +364,7 @@
         <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The column &#39;</span><span class="si">{</span><span class="n">x</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&#39; is unoredered category.&quot;</span><span class="p">)</span>
 
     <span class="c1"># Judge by the number of unique values, even if the data type is &#39;float&#39;</span>
-    <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span><span class="o">.</span><span class="n">size</span> <span class="o">&lt;=</span> <span class="n">n_unique</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span><span class="o">.</span><span class="n">size</span> <span class="o">&lt;=</span> <span class="n">n_categories</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">True</span>
 
     <span class="k">return</span> <span class="kc">False</span>

@@ -249,7 +249,7 @@
 <h1>ordinalcorr.hetcor<a class="headerlink" href="#ordinalcorr-hetcor" title="Link to this heading">¶</a></h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="ordinalcorr.hetcor">
-<span class="sig-prename descclassname"><span class="pre">ordinalcorr.</span></span><span class="sig-name descname"><span class="pre">hetcor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_unique</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">20</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DataFrame</span></span></span><a class="reference internal" href="../_modules/ordinalcorr/corrmatrix.html#hetcor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ordinalcorr.hetcor" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">ordinalcorr.</span></span><span class="sig-name descname"><span class="pre">hetcor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_categories</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_unique</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DataFrame</span></span></span><a class="reference internal" href="../_modules/ordinalcorr/corrmatrix.html#hetcor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ordinalcorr.hetcor" title="Link to this definition">¶</a></dt>
 <dd><p>Estimate the heterogeneous correlation matrix.</p>
 <p>The heterogeneous correlation matrix includes:</p>
 <ul class="simple">
@@ -264,13 +264,14 @@
 Appropriate correlation coefficients are automatically selected based on the types of variables.</p>
 <ul>
 <li><p>Columns with dtype <cite>float</cite> are treated as continuous variables.</p></li>
-<li><p>Columns with dtype <cite>int</cite> and number of unique values less than or equal to <cite>n_unique</cite>
+<li><p>Columns with dtype <cite>int</cite> and number of unique values less than or equal to <cite>n_categories</cite>
 are treated as ordinal variables.</p></li>
 <li><p>Columns with dtype <cite>category</cite> are treated as ordinal variables if they are ordered.</p></li>
 </ul>
 </p></li>
-<li><p><strong>n_unique</strong> (<em>int</em><em>, </em><em>default=20</em>) – The maximum number of unique values for an integer column to be considered ordinal.
-If the number of unique values exceeds <cite>n_unique</cite>, the column is treated as continuous.</p></li>
+<li><p><strong>n_categories</strong> (<em>int</em><em>, </em><em>default=20</em>) – The maximum number of unique values for an integer column to be considered ordinal.
+If the number of unique values exceeds <cite>n_categories</cite>, the column is treated as continuous.</p></li>
+<li><p><strong>n_unique</strong> (<em>int</em><em>, </em><em>optional</em>) – Deprecated alias for <cite>n_categories</cite>. Will be removed in a future release.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
