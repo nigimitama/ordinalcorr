@@ -250,13 +250,14 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="ordinalcorr.point_biserial">
 <span class="sig-prename descclassname"><span class="pre">ordinalcorr.</span></span><span class="sig-name descname"><span class="pre">point_biserial</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ArrayLike</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ArrayLike</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="../_modules/ordinalcorr/dichotomous.html#point_biserial"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ordinalcorr.point_biserial" title="Link to this definition">¶</a></dt>
-<dd><p>Compute the point-biserial correlation between a continuous variable x
-and a dichotomous variable y (0 or 1), assuming y is a true dichotomous variable.</p>
+<dd><p>Compute the point-biserial correlation between a continuous variable <span class="math notranslate nohighlight">\(x\)</span>
+and a dichotomous variable <span class="math notranslate nohighlight">\(y\in\{0,1\}\)</span>, assuming <span class="math notranslate nohighlight">\(y\)</span> is a true dichotomous variable
+(i.e. <span class="math notranslate nohighlight">\(y\)</span> is not generated from a latent continuous variable).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>x</strong> (<em>array-like</em>) – Continuous variable.</p></li>
-<li><p><strong>y</strong> (<em>array-like</em>) – Dichotomous variable (0 and 1).</p></li>
+<li><p><strong>y</strong> (<em>array-like</em>) – Dichotomous variable.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -301,7 +302,7 @@ and a dichotomous variable y (0 or 1), assuming y is a true dichotomous variable
 </dl>
 </li>
 <li><dl class="simple">
-<dt><span class="math notranslate nohighlight">\(p\)</span> is the proportion of <cite>Y = 1</cite> of the dichotomous variable</dt><dd><ul>
+<dt><span class="math notranslate nohighlight">\(p\)</span> is the proportion of observations where <span class="math notranslate nohighlight">\(Y = 1\)</span></dt><dd><ul>
 <li><p><span class="math notranslate nohighlight">\(p = \frac{n_1}{n}\)</span></p></li>
 </ul>
 </dd>
@@ -353,7 +354,7 @@ and a dichotomous variable y (0 or 1), assuming y is a true dichotomous variable
         <div class="bottom-of-page">
           <div class="left-details">
             <div class="copyright">
-                Copyright &#169; 2025, Masayoshi Mita
+                Copyright &#169; © Masayoshi Mita
             </div>
             Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
             

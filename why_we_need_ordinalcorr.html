@@ -247,13 +247,84 @@
         <article role="main" id="furo-main-content">
           <section class="tex2jax_ignore mathjax_ignore" id="why-and-when-should-we-use-correlation-coefficients-designed-for-ordinal-scale-data">
 <h1>Why and when should we use correlation coefficients designed for ordinal-scale data?<a class="headerlink" href="#why-and-when-should-we-use-correlation-coefficients-designed-for-ordinal-scale-data" title="Link to this heading">¶</a></h1>
-<p>In some cases, standard correlation coefficients like Pearson’s are not appropriate for ordinal data, because they assume interval scale measurements and linear relationships. For some ordinal data—such as Likert scale responses or exam grades—this assumption may not hold.</p>
-<p><strong>Polyserial</strong> and <strong>Polychoric</strong> correlation coefficients are designed to handle this situation. They assume that the <strong>observed ordinal or categorical variables arise from underlying latent continuous variables</strong> that have been discretized by thresholds.</p>
-<p>For example, if you are working with survey or questionnaire data, where participants respond using ordered categories (e.g., “strongly disagree” to “strongly agree”), polyserial or polychoric correlations can capture the latent relationships between attitudes or traits that those responses reflect.</p>
-<p>Using correlation coefficients tailored for ordinal scale data helps preserve the meaningful order of categories and avoids misleading results from inappropriately applying Pearson or Spearman correlations.</p>
+<p>Standard correlation coefficients such as Pearson’s are not appropriate for ordinal data, because they assume interval-scale measurements and linear relationships between variables. For ordinal data—such as Likert-scale responses or exam grades—these assumptions do not hold, and applying Pearson’s coefficient can produce biased (typically underestimated) correlation estimates.</p>
+<p>This page first demonstrates the problem through simulation, then introduces polyserial and polychoric correlation coefficients as the appropriate alternative for ordinal data.</p>
+<section id="the-problem-pearson-s-correlation-underestimates-the-true-relationship">
+<h2>The Problem: Pearson’s Correlation Underestimates the True Relationship<a class="headerlink" href="#the-problem-pearson-s-correlation-underestimates-the-true-relationship" title="Link to this heading">¶</a></h2>
+<p>To see the issue concretely, consider a continuous variable <span class="math notranslate nohighlight">\(X\)</span> and a variable <span class="math notranslate nohighlight">\(Y\)</span> that is dichotomized (split into two categories) from an underlying continuous variable. We simulate data with a true correlation of <span class="math notranslate nohighlight">\(\rho=0.5\)</span> between <span class="math notranslate nohighlight">\(X\)</span> and the latent variable behind <span class="math notranslate nohighlight">\(Y\)</span>, then repeatedly estimate Pearson’s correlation coefficient between <span class="math notranslate nohighlight">\(X\)</span> and the observed, dichotomized <span class="math notranslate nohighlight">\(Y\)</span>.</p>
+<p>The histogram below shows the distribution of these estimates across 1,000 simulated datasets.</p>
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.stats</span><span class="w"> </span><span class="kn">import</span> <span class="n">pearsonr</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s1">&#39;ggplot&#39;</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">generate_data</span><span class="p">(</span><span class="n">rho</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">100000</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">multivariate_normal</span><span class="p">(</span><span class="n">mean</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">cov</span><span class="o">=</span><span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="n">rho</span><span class="p">],</span> <span class="p">[</span><span class="n">rho</span><span class="p">,</span> <span class="mi">1</span><span class="p">]],</span> <span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">)</span>
+    <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">data</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">data</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span>
+    <span class="n">yd</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">*</span> <span class="p">(</span><span class="n">y</span> <span class="o">&gt;=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">y</span><span class="p">))</span>  <span class="c1"># dichotomize y by mean</span>
+    <span class="k">return</span> <span class="n">x</span><span class="p">,</span> <span class="n">yd</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">simulate_estimates</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">10000</span><span class="p">,</span> <span class="n">n_trials</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">true_rho</span><span class="o">=</span><span class="mf">0.5</span><span class="p">):</span>
+    <span class="n">estimates</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">seed</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_trials</span><span class="p">):</span>
+        <span class="n">x</span><span class="p">,</span> <span class="n">yd</span> <span class="o">=</span> <span class="n">generate_data</span><span class="p">(</span><span class="n">rho</span><span class="o">=</span><span class="n">true_rho</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">n</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="n">seed</span><span class="p">)</span>
+        <span class="n">estimate</span> <span class="o">=</span> <span class="n">pearsonr</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">yd</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">estimates</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">estimate</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">estimates</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">plot</span><span class="p">(</span><span class="n">estimates</span><span class="p">,</span> <span class="n">true_rho</span><span class="p">):</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">[</span><span class="mi">6</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Distribution of estimates of Pearson&#39;s correlation coefficient&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;#333333&quot;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Estimate of ρ&quot;</span><span class="p">)</span>
+
+    <span class="n">hist</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">histplot</span><span class="p">(</span><span class="n">estimates</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;#7abcff&quot;</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s2">&quot;#7abcff&quot;</span><span class="p">,</span> <span class="n">kde</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">stat</span><span class="o">=</span><span class="s2">&quot;density&quot;</span><span class="p">)</span>
+
+    <span class="n">max_height</span> <span class="o">=</span> <span class="nb">max</span><span class="p">([</span><span class="n">p</span><span class="o">.</span><span class="n">get_height</span><span class="p">()</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">hist</span><span class="o">.</span><span class="n">patches</span><span class="p">])</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">true_rho</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;#FF00AA&quot;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">true_rho</span><span class="p">,</span> <span class="n">max_height</span> <span class="o">*</span> <span class="mf">0.95</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;True ρ=</span><span class="si">{</span><span class="n">true_rho</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2"> &quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;#FF00AA&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.9</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s2">&quot;right&quot;</span><span class="p">)</span>
+
+    <span class="n">r</span> <span class="o">=</span> <span class="n">estimates</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;#007fff&quot;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;:&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">max_height</span> <span class="o">*</span> <span class="mf">0.95</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Mean=</span><span class="si">{</span><span class="n">r</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2"> &quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;#007fff&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.9</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s2">&quot;right&quot;</span><span class="p">)</span>
+
+
+<span class="n">estimates</span> <span class="o">=</span> <span class="n">simulate_estimates</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">10000</span><span class="p">,</span> <span class="n">n_trials</span><span class="o">=</span><span class="mi">5000</span><span class="p">,</span> <span class="n">true_rho</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">plot</span><span class="p">(</span><span class="n">estimates</span><span class="p">,</span> <span class="n">true_rho</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<img alt="_images/82fecee2cdf1766512acdd4caa55db881e6d00e0ad02e15551fb00d35456cceb.png" src="_images/82fecee2cdf1766512acdd4caa55db881e6d00e0ad02e15551fb00d35456cceb.png" />
+</div>
+</div>
+<p>As the plot shows, the mean of the estimates is noticeably below the true value of <span class="math notranslate nohighlight">\(\rho=0.5\)</span>. Dichotomizing a continuous variable induces this downward (attenuation) bias in Pearson’s correlation coefficient—and the same kind of bias arises whenever the observed data are ordinal categories derived from an underlying continuous trait, such as survey responses.</p>
+</section>
+<section id="the-solution-polyserial-and-polychoric-correlation">
+<h2>The Solution: Polyserial and Polychoric Correlation<a class="headerlink" href="#the-solution-polyserial-and-polychoric-correlation" title="Link to this heading">¶</a></h2>
+<p><strong>Polyserial</strong> and <strong>polychoric</strong> correlation coefficients (Drasgow, 1986) are designed to handle this situation. They assume that the <strong>observed ordinal or categorical variables arise from underlying latent continuous variables</strong> that have been discretized by thresholds:</p>
+<ul class="simple">
+<li><p><strong>Polyserial correlation</strong> estimates the relationship between one continuous variable and one ordinal variable.</p></li>
+<li><p><strong>Polychoric correlation</strong> estimates the relationship between two ordinal variables.</p></li>
+</ul>
+<p>For example, if you are working with survey or questionnaire data, where participants respond using ordered categories (e.g., “strongly disagree” to “strongly agree”), polyserial or polychoric correlations can capture the latent relationship between the attitudes or traits that those responses reflect.</p>
+<p>Using correlation coefficients tailored for ordinal-scale data helps preserve the meaningful order of categories and avoids the misleading results that come from inappropriately applying Pearson or Spearman correlation.</p>
+</section>
 <section id="numerical-example">
 <h2>Numerical Example<a class="headerlink" href="#numerical-example" title="Link to this heading">¶</a></h2>
-<p>Here is a numerical example to illustrate the concept.</p>
+<p>Here is a numerical example to illustrate the concept, using the polychoric correlation.</p>
 <p>Suppose there are latent variables <span class="math notranslate nohighlight">\(X^*\)</span> and <span class="math notranslate nohighlight">\(Y^*\)</span> that follow a bivariate standard normal distribution:</p>
 <div class="math-wrapper docutils container">
 <div class="math notranslate nohighlight">
@@ -270,82 +341,172 @@
 \right)
 \end{split}\]</div>
 </div>
-<p>The observable categorical variables <span class="math notranslate nohighlight">\(X\)</span> and <span class="math notranslate nohighlight">\(Y\)</span> are obtained by discretizing the latent variables using certain thresholds.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.stats</span><span class="w"> </span><span class="kn">import</span> <span class="n">multivariate_normal</span>
-
-<span class="c1"># generate data by 2-variate normal distribution</span>
-<span class="n">rho</span> <span class="o">=</span> <span class="mf">0.5</span>
-<span class="n">n</span> <span class="o">=</span> <span class="mi">1000</span>
-<span class="n">Cov</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="n">rho</span><span class="p">],</span> <span class="p">[</span><span class="n">rho</span><span class="p">,</span> <span class="mi">1</span><span class="p">]])</span>
-<span class="n">X</span> <span class="o">=</span> <span class="n">multivariate_normal</span><span class="o">.</span><span class="n">rvs</span><span class="p">(</span><span class="n">cov</span><span class="o">=</span><span class="n">Cov</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">n</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-<span class="n">continuous_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">])</span>
-
-<span class="c1"># plot the data</span>
-<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
-<span class="n">sns</span><span class="o">.</span><span class="n">scatterplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">continuous_data</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
-<span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Samples from Normal Distribution (ρ=</span><span class="si">{</span><span class="n">rho</span><span class="si">}</span><span class="s2">, n=</span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<img alt="_images/b05a22130692f5c14a5085a4e66ef859f545d93d71d118d0127f3eb741b37d22.png" src="_images/b05a22130692f5c14a5085a4e66ef859f545d93d71d118d0127f3eb741b37d22.png" />
-</div>
-</div>
-<p>We then calculate correlations from the observed data using the following coefficients:</p>
+<p>The observable ordinal variables <span class="math notranslate nohighlight">\(X\)</span> and <span class="math notranslate nohighlight">\(Y\)</span> are obtained by discretizing the latent variables using certain thresholds.</p>
+<p>We then discretize <span class="math notranslate nohighlight">\(X^*\)</span> and <span class="math notranslate nohighlight">\(Y^*\)</span> into ordinal categories with varying numbers of bins, and compare the following coefficients calculated from the observed, discretized data against the true value of <span class="math notranslate nohighlight">\(\rho\)</span>. To assess the variability of each estimate, we repeat this process across many simulated datasets:</p>
 <ol class="arabic simple">
 <li><p>Polychoric correlation coefficient</p></li>
 <li><p>Pearson correlation coefficient</p></li>
 <li><p>Spearman correlation coefficient</p></li>
 <li><p>Kendall correlation coefficient</p></li>
 </ol>
-<p>The figure below shows the estimated coefficients for different numbers of categories.</p>
-<div class="cell docutils container">
+<p>The figure below shows the mean estimated coefficients (with 95% confidence intervals across simulation trials) for different numbers of categories.</p>
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">ordinalcorr</span><span class="w"> </span><span class="kn">import</span> <span class="n">polychoric</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">joblib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Parallel</span><span class="p">,</span> <span class="n">delayed</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">ordinalcorr</span><span class="w"> </span><span class="kn">import</span> <span class="n">polychoric</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">scipy.stats</span><span class="w"> </span><span class="kn">import</span> <span class="n">pearsonr</span><span class="p">,</span> <span class="n">spearmanr</span><span class="p">,</span> <span class="n">kendalltau</span>
 
-<span class="c1"># calc correlation coefficients for different number of categories</span>
-<span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="k">for</span> <span class="n">n_categories</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">26</span><span class="p">):</span>
-    <span class="c1"># discretize the data</span>
-    <span class="n">x</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">cut</span><span class="p">(</span><span class="n">continuous_data</span><span class="p">[</span><span class="s2">&quot;x&quot;</span><span class="p">],</span> <span class="n">bins</span><span class="o">=</span><span class="n">n_categories</span><span class="p">)</span><span class="o">.</span><span class="n">factorize</span><span class="p">(</span><span class="n">sort</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="n">y</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">cut</span><span class="p">(</span><span class="n">continuous_data</span><span class="p">[</span><span class="s2">&quot;y&quot;</span><span class="p">],</span> <span class="n">bins</span><span class="o">=</span><span class="n">n_categories</span><span class="p">)</span><span class="o">.</span><span class="n">factorize</span><span class="p">(</span><span class="n">sort</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-    <span class="c1"># calculate correlation coefficients</span>
-    <span class="n">results</span> <span class="o">+=</span> <span class="p">[</span>
-        <span class="nb">dict</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s2">&quot;Polychoric&quot;</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">polychoric</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">),</span> <span class="n">n_categories</span><span class="o">=</span><span class="n">n_categories</span><span class="p">),</span>
-        <span class="nb">dict</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s2">&quot;Pearson&quot;</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">pearsonr</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span><span class="o">.</span><span class="n">statistic</span><span class="p">,</span> <span class="n">n_categories</span><span class="o">=</span><span class="n">n_categories</span><span class="p">),</span>
-        <span class="nb">dict</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s2">&quot;Spearman&quot;</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">spearmanr</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span><span class="o">.</span><span class="n">statistic</span><span class="p">,</span> <span class="n">n_categories</span><span class="o">=</span><span class="n">n_categories</span><span class="p">),</span>
-        <span class="nb">dict</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s2">&quot;Kendall&quot;</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">kendalltau</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span><span class="o">.</span><span class="n">statistic</span><span class="p">,</span> <span class="n">n_categories</span><span class="o">=</span><span class="n">n_categories</span><span class="p">),</span>
+<span class="c1"># settings</span>
+<span class="n">n_samples</span> <span class="o">=</span> <span class="mi">500</span>
+<span class="n">n_trials</span> <span class="o">=</span> <span class="mi">500</span>
+<span class="n">rho</span> <span class="o">=</span> <span class="mf">0.5</span>
+<span class="n">random_state</span> <span class="o">=</span> <span class="mi">42</span>
+<span class="n">n_jobs</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>  <span class="c1"># use all CPU cores</span>
+
+<span class="n">cov</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+    <span class="p">[</span>
+        <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">rho</span><span class="p">],</span>
+        <span class="p">[</span><span class="n">rho</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">],</span>
     <span class="p">]</span>
-<span class="n">results</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
+<span class="p">)</span>
 
-<span class="c1"># plot the results</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">run_trial</span><span class="p">(</span><span class="n">trial</span><span class="p">,</span> <span class="n">seed</span><span class="p">):</span>
+    <span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
+
+    <span class="c1"># generate bivariate normal data</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">multivariate_normal</span><span class="p">(</span>
+        <span class="n">mean</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+        <span class="n">cov</span><span class="o">=</span><span class="n">cov</span><span class="p">,</span>
+        <span class="n">size</span><span class="o">=</span><span class="n">n_samples</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">continuous_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">])</span>
+
+    <span class="n">trial_results</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">n_categories</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">21</span><span class="p">):</span>
+        <span class="c1"># discretize the data</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">cut</span><span class="p">(</span>
+            <span class="n">continuous_data</span><span class="p">[</span><span class="s2">&quot;x&quot;</span><span class="p">],</span>
+            <span class="n">bins</span><span class="o">=</span><span class="n">n_categories</span><span class="p">,</span>
+            <span class="n">labels</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
+
+        <span class="n">y</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">cut</span><span class="p">(</span>
+            <span class="n">continuous_data</span><span class="p">[</span><span class="s2">&quot;y&quot;</span><span class="p">],</span>
+            <span class="n">bins</span><span class="o">=</span><span class="n">n_categories</span><span class="p">,</span>
+            <span class="n">labels</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
+
+        <span class="n">trial_results</span> <span class="o">+=</span> <span class="p">[</span>
+            <span class="nb">dict</span><span class="p">(</span>
+                <span class="n">trial</span><span class="o">=</span><span class="n">trial</span><span class="p">,</span>
+                <span class="n">method</span><span class="o">=</span><span class="s2">&quot;Polychoric&quot;</span><span class="p">,</span>
+                <span class="n">value</span><span class="o">=</span><span class="n">polychoric</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">),</span>
+                <span class="n">n_categories</span><span class="o">=</span><span class="n">n_categories</span><span class="p">,</span>
+            <span class="p">),</span>
+            <span class="nb">dict</span><span class="p">(</span>
+                <span class="n">trial</span><span class="o">=</span><span class="n">trial</span><span class="p">,</span>
+                <span class="n">method</span><span class="o">=</span><span class="s2">&quot;Pearson&quot;</span><span class="p">,</span>
+                <span class="n">value</span><span class="o">=</span><span class="n">pearsonr</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span><span class="o">.</span><span class="n">statistic</span><span class="p">,</span>
+                <span class="n">n_categories</span><span class="o">=</span><span class="n">n_categories</span><span class="p">,</span>
+            <span class="p">),</span>
+            <span class="nb">dict</span><span class="p">(</span>
+                <span class="n">trial</span><span class="o">=</span><span class="n">trial</span><span class="p">,</span>
+                <span class="n">method</span><span class="o">=</span><span class="s2">&quot;Spearman&quot;</span><span class="p">,</span>
+                <span class="n">value</span><span class="o">=</span><span class="n">spearmanr</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span><span class="o">.</span><span class="n">statistic</span><span class="p">,</span>
+                <span class="n">n_categories</span><span class="o">=</span><span class="n">n_categories</span><span class="p">,</span>
+            <span class="p">),</span>
+            <span class="nb">dict</span><span class="p">(</span>
+                <span class="n">trial</span><span class="o">=</span><span class="n">trial</span><span class="p">,</span>
+                <span class="n">method</span><span class="o">=</span><span class="s2">&quot;Kendall&quot;</span><span class="p">,</span>
+                <span class="n">value</span><span class="o">=</span><span class="n">kendalltau</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span><span class="o">.</span><span class="n">statistic</span><span class="p">,</span>
+                <span class="n">n_categories</span><span class="o">=</span><span class="n">n_categories</span><span class="p">,</span>
+            <span class="p">),</span>
+        <span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">trial_results</span>
+
+
+<span class="c1"># make independent seeds for each trial</span>
+<span class="n">seed_sequence</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">SeedSequence</span><span class="p">(</span><span class="n">random_state</span><span class="p">)</span>
+<span class="n">child_seeds</span> <span class="o">=</span> <span class="n">seed_sequence</span><span class="o">.</span><span class="n">spawn</span><span class="p">(</span><span class="n">n_trials</span><span class="p">)</span>
+
+<span class="c1"># run trials in parallel</span>
+<span class="n">results_nested</span> <span class="o">=</span> <span class="n">Parallel</span><span class="p">(</span><span class="n">n_jobs</span><span class="o">=</span><span class="n">n_jobs</span><span class="p">)(</span>
+    <span class="n">delayed</span><span class="p">(</span><span class="n">run_trial</span><span class="p">)(</span><span class="n">trial</span><span class="p">,</span> <span class="n">child_seeds</span><span class="p">[</span><span class="n">trial</span><span class="p">])</span>
+    <span class="k">for</span> <span class="n">trial</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_trials</span><span class="p">)</span>
+<span class="p">)</span>
+
+<span class="c1"># flatten</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+    <span class="n">row</span>
+    <span class="k">for</span> <span class="n">trial_results</span> <span class="ow">in</span> <span class="n">results_nested</span>
+    <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">trial_results</span>
+<span class="p">)</span>
+
+<span class="c1"># plot</span>
 <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">[</span><span class="mi">6</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
-<span class="n">sns</span><span class="o">.</span><span class="n">lineplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s2">&quot;n_categories&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;value&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">results</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="s2">&quot;method&quot;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;o&quot;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">rho</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;true value ($\rho=$&quot;</span> <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">rho</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">)</span>
+
+<span class="n">sns</span><span class="o">.</span><span class="n">lineplot</span><span class="p">(</span>
+    <span class="n">x</span><span class="o">=</span><span class="s2">&quot;n_categories&quot;</span><span class="p">,</span>
+    <span class="n">y</span><span class="o">=</span><span class="s2">&quot;value&quot;</span><span class="p">,</span>
+    <span class="n">data</span><span class="o">=</span><span class="n">results</span><span class="p">,</span>
+    <span class="n">hue</span><span class="o">=</span><span class="s2">&quot;method&quot;</span><span class="p">,</span>
+    <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;o&quot;</span><span class="p">,</span>
+    <span class="n">errorbar</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;ci&quot;</span><span class="p">,</span> <span class="mi">95</span><span class="p">),</span>
+    <span class="n">err_style</span><span class="o">=</span><span class="s2">&quot;bars&quot;</span><span class="p">,</span>
+    <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
+    <span class="n">alpha</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span>
+    <span class="n">rho</span><span class="p">,</span>
+    <span class="n">label</span><span class="o">=</span><span class="sa">rf</span><span class="s2">&quot;true value ($\rho=</span><span class="si">{</span><span class="n">rho</span><span class="si">}</span><span class="s2">$)&quot;</span><span class="p">,</span>
+    <span class="n">color</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span>
+    <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+
 <span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span>
     <span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;Number of Categories&quot;</span><span class="p">,</span>
     <span class="n">ylabel</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;Estimated rho $\hat{\rho}$&quot;</span><span class="p">,</span>
-    <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Coefficients of discretized x and y&quot;</span>
+    <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Correlation coefficients of discretized x and y&quot;</span><span class="p">,</span>
 <span class="p">)</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">21</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+
 <span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
+</details>
 <div class="cell_output docutils container">
-<img alt="_images/fed6edf33ca58e8946ef6f4ebc35c1ade21a0e7b4f4d9c3b3af92b225e3c9afa.png" src="_images/fed6edf33ca58e8946ef6f4ebc35c1ade21a0e7b4f4d9c3b3af92b225e3c9afa.png" />
+<img alt="_images/6058a13c25f670f2806cbe49f3467e94401c4c0ab3f8d62685c72371ed0dd3f1.png" src="_images/6058a13c25f670f2806cbe49f3467e94401c4c0ab3f8d62685c72371ed0dd3f1.png" />
 </div>
 </div>
-<p>The polychoric correlation is designed for this situation and performs well.<br />
-In contrast, Pearson correlation tends to underestimate the true correlation, especially when the number of categories is small.
-Spearman and Kendall are not well-suited for this type of data.</p>
+</section>
+<section id="conclusion">
+<h2>Conclusion<a class="headerlink" href="#conclusion" title="Link to this heading">¶</a></h2>
+<p>The polychoric correlation is designed for this situation and, on average, recovers the true correlation well across all numbers of categories.</p>
+<p>In contrast, Pearson correlation tends to underestimate the true correlation, especially when the number of categories is small (i.e., when the data is coarsely discretized). Spearman and Kendall correlations are also affected by discretization and are not well-suited for recovering the underlying linear relationship in this type of data.</p>
+<p>For ordinal-scale data—such as Likert-scale survey items or discretized ratings—polyserial and polychoric correlations are therefore the more appropriate choice.</p>
+</section>
+<section id="references">
+<h2>References<a class="headerlink" href="#references" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>Bedrick, E. J. (1995). A note on the attenuation of correlation. <em>British Journal of Mathematical and Statistical Psychology, 48</em>(2), 271–280.</p></li>
+<li><p>Drasgow, F. (1986). Polychoric and polyserial correlations. In S. Kotz &amp; N. Johnson (Eds.), <em>The Encyclopedia of Statistics</em> (Vol. 7, pp. 68–74). Wiley.</p></li>
+</ul>
 </section>
 </section>
 
@@ -378,7 +539,7 @@ Spearman and Kendall are not well-suited for this type of data.</p>
         <div class="bottom-of-page">
           <div class="left-details">
             <div class="copyright">
-                Copyright &#169; 2025, Masayoshi Mita
+                Copyright &#169; © Masayoshi Mita
             </div>
             Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
             
@@ -405,7 +566,11 @@ Spearman and Kendall are not well-suited for this type of data.</p>
           <div class="toc-tree">
             <ul>
 <li><a class="reference internal" href="#">Why and when should we use correlation coefficients designed for ordinal-scale data?</a><ul>
+<li><a class="reference internal" href="#the-problem-pearson-s-correlation-underestimates-the-true-relationship">The Problem: Pearson’s Correlation Underestimates the True Relationship</a></li>
+<li><a class="reference internal" href="#the-solution-polyserial-and-polychoric-correlation">The Solution: Polyserial and Polychoric Correlation</a></li>
 <li><a class="reference internal" href="#numerical-example">Numerical Example</a></li>
+<li><a class="reference internal" href="#conclusion">Conclusion</a></li>
+<li><a class="reference internal" href="#references">References</a></li>
 </ul>
 </li>
 </ul>

@@ -287,7 +287,7 @@
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">estimate_thresholds</span><span class="p">(</span><span class="n">values</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Estimate thresholds from empirical marginal proportions&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Estimate thresholds from empirical marginal proportions&quot;&quot;&quot;</span>
     <span class="n">inf</span> <span class="o">=</span> <span class="mi">100</span>  <span class="c1"># to make log-likelihood smooth, use large value instead of np.inf</span>
     <span class="n">thresholds</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">levels</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">values</span><span class="p">))</span>
@@ -298,7 +298,7 @@
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">normalize_ordinal</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">int_</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Normalize ordinal variable to be integer-coded starting from 0.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Normalize ordinal variable to be integer-coded starting from 0.&quot;&quot;&quot;</span>
     <span class="n">unique_values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
     <span class="n">value_to_code</span> <span class="o">=</span> <span class="p">{</span><span class="n">value</span><span class="p">:</span> <span class="n">code</span> <span class="k">for</span> <span class="n">code</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">unique_values</span><span class="p">)}</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">vectorize</span><span class="p">(</span><span class="n">value_to_code</span><span class="o">.</span><span class="n">get</span><span class="p">)(</span><span class="n">x</span><span class="p">)</span>
@@ -307,7 +307,7 @@
 <div class="viewcode-block" id="polychoric">
 <a class="viewcode-back" href="../../generated/ordinalcorr.polychoric_corr.html#ordinalcorr.polychoric">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">polychoric</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">ArrayLike</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">ArrayLike</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Estimate the polychoric correlation coefficient between two ordinal variables.</span>
 
 <span class="sd">    The polychoric correlation assumes that the two observed ordinal variables</span>
@@ -394,11 +394,11 @@
 <div class="viewcode-block" id="polyserial">
 <a class="viewcode-back" href="../../generated/ordinalcorr.polyserial_corr.html#ordinalcorr.polyserial">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">polyserial</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">ArrayLike</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">ArrayLike</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Estimate the polyserial correlation coefficient between a continuous variable x</span>
-<span class="sd">    and an ordinal variable y using the two-step maximum likelihood estimation.</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Estimate the polyserial correlation coefficient between a continuous variable :math:`x`</span>
+<span class="sd">    and an ordinal variable :math:`y` using the two-step maximum likelihood estimation.</span>
 
-<span class="sd">    The polyserial correlation assumes that the ordinal variable y is a thresholded</span>
+<span class="sd">    The polyserial correlation assumes that the ordinal variable :math:`y` is a thresholded</span>
 <span class="sd">    representation of latent continuous variable that follows a normal distribution.</span>
 
 
@@ -472,7 +472,7 @@
         <div class="bottom-of-page">
           <div class="left-details">
             <div class="copyright">
-                Copyright &#169; 2025, Masayoshi Mita
+                Copyright &#169; © Masayoshi Mita
             </div>
             Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
             
