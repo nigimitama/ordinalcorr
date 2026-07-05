@@ -52,6 +52,7 @@ docs = [
     "myst-nb",
     "furo",
     "seaborn",
+    "joblib>=1.5.3",
 ]
 typecheck = [
     "pyright>=1.1.0",
