@@ -7,7 +7,7 @@
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
 project = "ordinalcorr"
-copyright = "2025, Masayoshi Mita"
+copyright = "© Masayoshi Mita"
 author = "Masayoshi Mita"
 
 # -- General configuration ---------------------------------------------------
