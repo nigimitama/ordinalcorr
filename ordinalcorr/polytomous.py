@@ -46,7 +46,7 @@ def bivariate_cdf(lower: Sequence[float], upper: Sequence[float], rho: float) ->
 
 
 def estimate_thresholds(values: npt.NDArray[Any]) -> npt.NDArray[np.float64]:
-    """Estimate thresholds from empirical marginal proportions"""
+    r"""Estimate thresholds from empirical marginal proportions"""
     inf = 100  # to make log-likelihood smooth, use large value instead of np.inf
     thresholds = []
     levels = np.sort(np.unique(values))
@@ -57,14 +57,14 @@ def estimate_thresholds(values: npt.NDArray[Any]) -> npt.NDArray[np.float64]:
 
 
 def normalize_ordinal(x: npt.NDArray[Any]) -> npt.NDArray[np.int_]:
-    """Normalize ordinal variable to be integer-coded starting from 0."""
+    r"""Normalize ordinal variable to be integer-coded starting from 0."""
     unique_values = np.unique(x)
     value_to_code = {value: code for code, value in enumerate(unique_values)}
     return np.vectorize(value_to_code.get)(x)
 
 
 def polychoric(x: npt.ArrayLike, y: npt.ArrayLike) -> float:
-    """
+    r"""
     Estimate the polychoric correlation coefficient between two ordinal variables.
 
     The polychoric correlation assumes that the two observed ordinal variables
@@ -148,11 +148,11 @@ def polychoric(x: npt.ArrayLike, y: npt.ArrayLike) -> float:
 
 
 def polyserial(x: npt.ArrayLike, y: npt.ArrayLike) -> float:
-    """
-    Estimate the polyserial correlation coefficient between a continuous variable x
-    and an ordinal variable y using the two-step maximum likelihood estimation.
+    r"""
+    Estimate the polyserial correlation coefficient between a continuous variable :math:`x`
+    and an ordinal variable :math:`y` using the two-step maximum likelihood estimation.
 
-    The polyserial correlation assumes that the ordinal variable y is a thresholded
+    The polyserial correlation assumes that the ordinal variable :math:`y` is a thresholded
     representation of latent continuous variable that follows a normal distribution.
 
 
