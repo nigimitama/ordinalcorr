@@ -2,6 +2,7 @@ import warnings
 from typing import Any, Sequence
 import numpy as np
 import numpy.typing as npt
+from scipy.special import ndtr
 from scipy.stats import norm, multivariate_normal
 from scipy.optimize import minimize_scalar
 from ordinalcorr.validation import (
@@ -11,19 +12,17 @@ from ordinalcorr.validation import (
 )
 
 
-def univariate_cdf(lower: float, upper: float) -> float:
+def univariate_cdf(
+    lower: npt.ArrayLike, upper: npt.ArrayLike
+) -> npt.NDArray[np.float64]:
     """Compute the univariate cumulative distribution function (CDF) for a standard normal distribution.
 
     P(lower < X <= upper) = Φ(upper) - Φ(lower)
 
     where Φ is the CDF of the standard normal distribution.
+    Accepts scalars or arrays (evaluated elementwise).
     """
-    mean = 0.0
-    var = 1.0
-    std = np.sqrt(var)
-    return float(
-        norm.cdf(upper, loc=mean, scale=std) - norm.cdf(lower, loc=mean, scale=std)
-    )
+    return ndtr(upper) - ndtr(lower)
 
 
 def bivariate_cdf(lower: Sequence[float], upper: Sequence[float], rho: float) -> float:
@@ -48,19 +47,16 @@ def bivariate_cdf(lower: Sequence[float], upper: Sequence[float], rho: float) ->
 def estimate_thresholds(values: npt.NDArray[Any]) -> npt.NDArray[np.float64]:
     r"""Estimate thresholds from empirical marginal proportions"""
     inf = 100  # to make log-likelihood smooth, use large value instead of np.inf
-    thresholds = []
-    levels = np.sort(np.unique(values))
-    for level in levels[:-1]:  # exclude top category
-        p = np.mean(values <= level)
-        thresholds.append(norm.ppf(p))  # τ_i = Φ⁻¹(P(X ≤ i))
+    _, counts = np.unique(values, return_counts=True)
+    cum_p = np.cumsum(counts)[:-1] / values.size  # P(X ≤ i), exclude top category
+    thresholds = norm.ppf(cum_p)  # τ_i = Φ⁻¹(P(X ≤ i))
     return np.concatenate(([-inf], thresholds, [inf]))
 
 
 def normalize_ordinal(x: npt.NDArray[Any]) -> npt.NDArray[np.int_]:
     r"""Normalize ordinal variable to be integer-coded starting from 0."""
-    unique_values = np.unique(x)
-    value_to_code = {value: code for code, value in enumerate(unique_values)}
-    return np.vectorize(value_to_code.get)(x)
+    _, codes = np.unique(x, return_inverse=True)
+    return codes
 
 
 def polychoric(x: npt.ArrayLike, y: npt.ArrayLike) -> float:
@@ -194,22 +190,14 @@ def polyserial(x: npt.ArrayLike, y: npt.ArrayLike) -> float:
     z = (x - np.mean(x)) / np.std(x, ddof=0)
     y = normalize_ordinal(y)
     tau = estimate_thresholds(y)
+    tau_lower = tau[y]  # τ_{y_i}
+    tau_upper = tau[y + 1]  # τ_{y_i + 1}
 
     def neg_log_likelihood(rho: float) -> float:
-        log_likelihood = 0.0
-        for i in range(len(z)):
-            j = y[i]
-            tau_lower = (tau[j] - rho * z[i]) / np.sqrt(1 - rho**2)
-            tau_upper = (tau[j + 1] - rho * z[i]) / np.sqrt(1 - rho**2)
-            p_i = univariate_cdf(tau_lower, tau_upper)
-
-            p_i = max(p_i, 1e-6)  # soft clipping
-            if np.isnan(p_i):
-                continue
-
-            log_likelihood += np.log(p_i)
-
-        return -log_likelihood
+        scale = np.sqrt(1 - rho**2)
+        p = univariate_cdf((tau_lower - rho * z) / scale, (tau_upper - rho * z) / scale)
+        p = np.maximum(p, 1e-6)  # soft clipping
+        return -np.sum(np.log(p, where=~np.isnan(p), out=np.zeros_like(p)))
 
     result = minimize_scalar(neg_log_likelihood, bounds=(-1, 1), method="bounded")
     return float(result.x)
