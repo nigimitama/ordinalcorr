@@ -70,7 +70,7 @@ def hetcor(
         )
         n_categories = n_unique
 
-    is_col_ordinal = is_cols_ordinal(data, n_categories=n_categories)
+    is_ordinal = is_cols_ordinal(data, n_categories=n_categories)
 
     ncols = len(data.columns)
     corr = np.zeros((ncols, ncols), dtype=float)
@@ -80,20 +80,20 @@ def hetcor(
                 corr[i, j] = 1.0
                 continue
 
-            if is_col_ordinal[i] and is_col_ordinal[j]:
+            if is_ordinal[i] and is_ordinal[j]:
                 corr[i, j] = polychoric(data.iloc[:, i], data.iloc[:, j])
 
-            if is_col_ordinal[i] and not is_col_ordinal[j]:
+            if is_ordinal[i] and not is_ordinal[j]:
                 ordinal = data.iloc[:, i]
                 continuous = data.iloc[:, j]
                 corr[i, j] = polyserial(continuous, ordinal)
 
-            if not is_col_ordinal[i] and is_col_ordinal[j]:
+            if not is_ordinal[i] and is_ordinal[j]:
                 continuous = data.iloc[:, i]
                 ordinal = data.iloc[:, j]
                 corr[i, j] = polyserial(continuous, ordinal)
 
-            if not is_col_ordinal[i] and not is_col_ordinal[j]:
+            if not is_ordinal[i] and not is_ordinal[j]:
                 from scipy.stats import pearsonr
 
                 corr[i, j] = pearsonr(data.iloc[:, i], data.iloc[:, j]).statistic
