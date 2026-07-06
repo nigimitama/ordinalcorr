@@ -22,7 +22,7 @@ def univariate_cdf(
     where Φ is the CDF of the standard normal distribution.
     Accepts scalars or arrays (evaluated elementwise).
     """
-    return ndtr(upper) - ndtr(lower)
+    return ndtr(np.asarray(upper, dtype=float)) - ndtr(np.asarray(lower, dtype=float))
 
 
 def bivariate_normal_cdf(
