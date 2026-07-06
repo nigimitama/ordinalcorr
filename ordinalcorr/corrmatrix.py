@@ -25,8 +25,7 @@ def hetcor(
         A DataFrame containing continuous and/or ordinal variables.
         Appropriate correlation coefficients are automatically selected based on the types of variables.
 
-        - Columns with dtype `float` are treated as continuous variables.
-        - Columns with dtype `int` and number of unique values less than or equal to `n_categories`
+        - Columns with dtype `int` or `float` and number of unique values less than or equal to `n_categories`
           are treated as ordinal variables.
         - Columns with dtype `category` are treated as ordinal variables if they are ordered.
 
