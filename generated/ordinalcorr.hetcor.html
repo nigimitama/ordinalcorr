@@ -249,7 +249,7 @@
 <h1>ordinalcorr.hetcor<a class="headerlink" href="#ordinalcorr-hetcor" title="Link to this heading">¶</a></h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="ordinalcorr.hetcor">
-<span class="sig-prename descclassname"><span class="pre">ordinalcorr.</span></span><span class="sig-name descname"><span class="pre">hetcor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_categories</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_unique</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DataFrame</span></span></span><a class="reference internal" href="../_modules/ordinalcorr/corrmatrix.html#hetcor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ordinalcorr.hetcor" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">ordinalcorr.</span></span><span class="sig-name descname"><span class="pre">hetcor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_categories</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_unique</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_method</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DataFrame</span></span></span><a class="reference internal" href="../_modules/ordinalcorr/corrmatrix.html#hetcor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ordinalcorr.hetcor" title="Link to this definition">¶</a></dt>
 <dd><p>Estimate the heterogeneous correlation matrix.</p>
 <p>The heterogeneous correlation matrix includes:</p>
 <ul class="simple">
@@ -263,8 +263,7 @@
 <li><p><strong>data</strong> (<em>pd.DataFrame</em>) – <p>A DataFrame containing continuous and/or ordinal variables.
 Appropriate correlation coefficients are automatically selected based on the types of variables.</p>
 <ul>
-<li><p>Columns with dtype <cite>float</cite> are treated as continuous variables.</p></li>
-<li><p>Columns with dtype <cite>int</cite> and number of unique values less than or equal to <cite>n_categories</cite>
+<li><p>Columns with dtype <cite>int</cite> or <cite>float</cite> and number of unique values less than or equal to <cite>n_categories</cite>
 are treated as ordinal variables.</p></li>
 <li><p>Columns with dtype <cite>category</cite> are treated as ordinal variables if they are ordered.</p></li>
 </ul>
@@ -272,10 +271,17 @@ are treated as ordinal variables.</p></li>
 <li><p><strong>n_categories</strong> (<em>int</em><em>, </em><em>default=20</em>) – The maximum number of unique values for an integer column to be considered ordinal.
 If the number of unique values exceeds <cite>n_categories</cite>, the column is treated as continuous.</p></li>
 <li><p><strong>n_unique</strong> (<em>int</em><em>, </em><em>optional</em>) – Deprecated alias for <cite>n_categories</cite>. Will be removed in a future release.</p></li>
+<li><p><strong>show_method</strong> (<em>bool</em><em>, </em><em>default=False</em>) – If True, the upper triangle of the returned matrix contains the name of the
+method used to compute each correlation (<cite>“polychoric”</cite>, <cite>“polyserial”</cite>, or
+<cite>“pearson”</cite>) instead of the numeric value. The diagonal and lower triangle
+remain numeric. Since the result mixes strings and floats, the returned
+DataFrame has <cite>dtype=object</cite> in this case.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Estimated heterogeneous correlation matrix.</p>
+<dd class="field-even"><p>Estimated heterogeneous correlation matrix.
+If <cite>show_method</cite> is True, the upper triangle holds method-name strings and
+the DataFrame has <cite>dtype=object</cite>.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>pd.DataFrame</p>
@@ -284,14 +290,26 @@ If the number of unique values exceeds <cite>n_categories</cite>, the column is 
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">ordinalcorr</span><span class="w"> </span><span class="kn">import</span> <span class="n">hetcor</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
-<span class="gp">... </span>    <span class="s2">&quot;continuous&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">],</span>
-<span class="gp">... </span>    <span class="s2">&quot;ordinal&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span>
+<span class="gp">... </span>    <span class="s2">&quot;continuous&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">90</span><span class="p">),</span>
+<span class="gp">... </span>    <span class="s2">&quot;ordinal_int&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="mi">30</span><span class="p">),</span>
+<span class="gp">... </span>    <span class="s2">&quot;ordinal_float&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">([</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">],</span> <span class="mi">45</span><span class="p">),</span>
+<span class="gp">... </span>    <span class="s2">&quot;ordinal_category&quot;</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="mi">30</span><span class="p">))</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;category&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">cat</span><span class="o">.</span><span class="n">as_ordered</span><span class="p">(),</span>
 <span class="gp">... </span><span class="p">})</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">hetcor</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
-<span class="go">            continuous  ordinal</span>
-<span class="go">continuous      1.0000   0.9984</span>
-<span class="go">ordinal         0.9984   1.0000</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">hetcor</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">                  continuous  ordinal_int  ordinal_float  ordinal_category</span>
+<span class="go">continuous             1.000       -0.257         -0.254            -0.257</span>
+<span class="go">ordinal_int           -0.257        1.000          0.999             1.000</span>
+<span class="go">ordinal_float         -0.254        0.999          1.000             0.999</span>
+<span class="go">ordinal_category      -0.257        1.000          0.999             1.000</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">hetcor</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">show_method</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">                 continuous ordinal_int ordinal_float ordinal_category</span>
+<span class="go">continuous              1.0  polyserial    polyserial       polyserial</span>
+<span class="go">ordinal_int       -0.257389         1.0    polychoric       polychoric</span>
+<span class="go">ordinal_float     -0.253566    0.998635           1.0       polychoric</span>
+<span class="go">ordinal_category  -0.257389    0.999996      0.998647              1.0</span>
 </pre></div>
 </div>
 </dd></dl>

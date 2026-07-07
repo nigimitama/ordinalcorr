@@ -252,6 +252,7 @@
     <span class="n">data</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
     <span class="n">n_categories</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">20</span><span class="p">,</span>
     <span class="n">n_unique</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">show_method</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Estimate the heterogeneous correlation matrix.</span>
@@ -268,8 +269,7 @@
 <span class="sd">        A DataFrame containing continuous and/or ordinal variables.</span>
 <span class="sd">        Appropriate correlation coefficients are automatically selected based on the types of variables.</span>
 
-<span class="sd">        - Columns with dtype `float` are treated as continuous variables.</span>
-<span class="sd">        - Columns with dtype `int` and number of unique values less than or equal to `n_categories`</span>
+<span class="sd">        - Columns with dtype `int` or `float` and number of unique values less than or equal to `n_categories`</span>
 <span class="sd">          are treated as ordinal variables.</span>
 <span class="sd">        - Columns with dtype `category` are treated as ordinal variables if they are ordered.</span>
 
@@ -280,25 +280,46 @@
 <span class="sd">    n_unique : int, optional</span>
 <span class="sd">        Deprecated alias for `n_categories`. Will be removed in a future release.</span>
 
+<span class="sd">    show_method : bool, default=False</span>
+<span class="sd">        If True, the upper triangle of the returned matrix contains the name of the</span>
+<span class="sd">        method used to compute each correlation (`&quot;polychoric&quot;`, `&quot;polyserial&quot;`, or</span>
+<span class="sd">        `&quot;pearson&quot;`) instead of the numeric value. The diagonal and lower triangle</span>
+<span class="sd">        remain numeric. Since the result mixes strings and floats, the returned</span>
+<span class="sd">        DataFrame has `dtype=object` in this case.</span>
+
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    pd.DataFrame</span>
 <span class="sd">        Estimated heterogeneous correlation matrix.</span>
+<span class="sd">        If `show_method` is True, the upper triangle holds method-name strings and</span>
+<span class="sd">        the DataFrame has `dtype=object`.</span>
 
 
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
 <span class="sd">    &gt;&gt;&gt; from ordinalcorr import hetcor</span>
 <span class="sd">    &gt;&gt;&gt; import pandas as pd</span>
+<span class="sd">    &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">    &gt;&gt;&gt; np.random.seed(0)</span>
 <span class="sd">    &gt;&gt;&gt; data = pd.DataFrame({</span>
-<span class="sd">    ...     &quot;continuous&quot;: [0.1, 0.1, 0.2, 0.2, 0.3, 0.3],</span>
-<span class="sd">    ...     &quot;ordinal&quot;: [0, 0, 0, 1, 1, 2],</span>
+<span class="sd">    ...     &quot;continuous&quot;: np.random.normal(size=90),</span>
+<span class="sd">    ...     &quot;ordinal_int&quot;: np.repeat([1, 2, 3], 30),</span>
+<span class="sd">    ...     &quot;ordinal_float&quot;: np.repeat([1.0, 2.0], 45),</span>
+<span class="sd">    ...     &quot;ordinal_category&quot;: pd.Series(np.repeat([1, 2, 3], 30)).astype(&quot;category&quot;).cat.as_ordered(),</span>
 <span class="sd">    ... })</span>
-<span class="sd">    &gt;&gt;&gt; hetcor(data).round(4)</span>
-<span class="sd">                continuous  ordinal</span>
-<span class="sd">    continuous      1.0000   0.9984</span>
-<span class="sd">    ordinal         0.9984   1.0000</span>
+<span class="sd">    &gt;&gt;&gt; hetcor(data).round(3)</span>
+<span class="sd">                      continuous  ordinal_int  ordinal_float  ordinal_category</span>
+<span class="sd">    continuous             1.000       -0.257         -0.254            -0.257</span>
+<span class="sd">    ordinal_int           -0.257        1.000          0.999             1.000</span>
+<span class="sd">    ordinal_float         -0.254        0.999          1.000             0.999</span>
+<span class="sd">    ordinal_category      -0.257        1.000          0.999             1.000</span>
+<span class="sd">    &gt;&gt;&gt; hetcor(data, show_method=True).round(3)</span>
+<span class="sd">                     continuous ordinal_int ordinal_float ordinal_category</span>
+<span class="sd">    continuous              1.0  polyserial    polyserial       polyserial</span>
+<span class="sd">    ordinal_int       -0.257389         1.0    polychoric       polychoric</span>
+<span class="sd">    ordinal_float     -0.253566    0.998635           1.0       polychoric</span>
+<span class="sd">    ordinal_category  -0.257389    0.999996      0.998647              1.0</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># NOTE: np.ndarray uses single dtype, so it cannot be a input. so we accept pd.DataFrame only</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
@@ -317,6 +338,7 @@
 
     <span class="n">ncols</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
     <span class="n">corr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">ncols</span><span class="p">,</span> <span class="n">ncols</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+    <span class="n">method</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">ncols</span><span class="p">,</span> <span class="n">ncols</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">object</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ncols</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">ncols</span><span class="p">):</span>
             <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="n">j</span><span class="p">:</span>
@@ -325,23 +347,35 @@
 
             <span class="k">if</span> <span class="n">is_ordinal</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="ow">and</span> <span class="n">is_ordinal</span><span class="p">[</span><span class="n">j</span><span class="p">]:</span>
                 <span class="n">corr</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">polychoric</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="n">i</span><span class="p">],</span> <span class="n">data</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="n">j</span><span class="p">])</span>
+                <span class="n">method</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;polychoric&quot;</span>
 
             <span class="k">if</span> <span class="n">is_ordinal</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">is_ordinal</span><span class="p">[</span><span class="n">j</span><span class="p">]:</span>
                 <span class="n">ordinal</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span>
                 <span class="n">continuous</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="n">j</span><span class="p">]</span>
                 <span class="n">corr</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">polyserial</span><span class="p">(</span><span class="n">continuous</span><span class="p">,</span> <span class="n">ordinal</span><span class="p">)</span>
+                <span class="n">method</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;polyserial&quot;</span>
 
             <span class="k">if</span> <span class="ow">not</span> <span class="n">is_ordinal</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="ow">and</span> <span class="n">is_ordinal</span><span class="p">[</span><span class="n">j</span><span class="p">]:</span>
                 <span class="n">continuous</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span>
                 <span class="n">ordinal</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="n">j</span><span class="p">]</span>
                 <span class="n">corr</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">polyserial</span><span class="p">(</span><span class="n">continuous</span><span class="p">,</span> <span class="n">ordinal</span><span class="p">)</span>
+                <span class="n">method</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;polyserial&quot;</span>
 
             <span class="k">if</span> <span class="ow">not</span> <span class="n">is_ordinal</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">is_ordinal</span><span class="p">[</span><span class="n">j</span><span class="p">]:</span>
                 <span class="kn">from</span><span class="w"> </span><span class="nn">scipy.stats</span><span class="w"> </span><span class="kn">import</span> <span class="n">pearsonr</span>
 
                 <span class="n">corr</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">pearsonr</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="n">i</span><span class="p">],</span> <span class="n">data</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="n">j</span><span class="p">])</span><span class="o">.</span><span class="n">statistic</span>
+                <span class="n">method</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;pearson&quot;</span>
 
             <span class="n">corr</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">corr</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="n">show_method</span><span class="p">:</span>
+        <span class="n">corr_obj</span> <span class="o">=</span> <span class="n">corr</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">object</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ncols</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">ncols</span><span class="p">):</span>
+                <span class="n">corr_obj</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">method</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">corr_obj</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">columns</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
+
     <span class="n">corr_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">corr</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">columns</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">corr_df</span></div>
 
