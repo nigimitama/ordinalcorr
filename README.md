@@ -35,16 +35,18 @@ A function for computing the _heterogeneous correlation matrix_—a correlation 
 ```python
 >>> from ordinalcorr import hetcor
 >>> import pandas as pd
+>>> import numpy as np
+>>> np.random.seed(0)
 >>> data = pd.DataFrame({
-...     "continuous": [0.1, 0.1, 0.2, 0.2, 0.3, 0.3],
-...     "dichotomous": [0, 0, 0, 1, 1, 1],
-...     "polytomous": [1, 1, 3, 3, 2, 2],
+...     "continuous": np.random.normal(size=90),
+...     "dichotomous": np.repeat([0, 1], 45),
+...     "polytomous": np.repeat([1, 2, 3], 30),
 ... })
->>> hetcor(data)
+>>> hetcor(data).round(3)
              continuous  dichotomous  polytomous
-continuous     1.000000     0.989335    0.514870
-dichotomous    0.989335     1.000000    0.549231
-polytomous     0.514870     0.549231    1.000000
+continuous        1.000       -0.254      -0.257
+dichotomous      -0.254        1.000       0.999
+polytomous       -0.257        0.999       1.000
 ```
 
 ## 📦 Installation
