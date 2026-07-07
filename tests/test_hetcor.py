@@ -81,6 +81,53 @@ def test_two_cols():
     assert list(actual) == expected
 
 
+def test_show_method():
+    multi_normal = generate_data()
+    data = pd.DataFrame(
+        {
+            "continuous": multi_normal["x1"],
+            "dichotomous": pd.cut(multi_normal["x2"], bins=2, labels=list(range(2))).astype(int),
+            "polytomous": pd.cut(multi_normal["x2"], bins=3, labels=list(range(3))).astype(int),
+        }
+    )
+    actual = hetcor(data, show_method=True)
+
+    assert actual.dtypes.eq(object).all()
+
+    expected_upper = pd.DataFrame(
+        {
+            "continuous": [1.0, np.nan, np.nan],
+            "dichotomous": ["polyserial", 1.0, np.nan],
+            "polytomous": ["polyserial", "polychoric", 1.0],
+        },
+        index=["continuous", "dichotomous", "polytomous"],
+    )
+    assert actual.loc["continuous", "dichotomous"] == expected_upper.loc["continuous", "dichotomous"]
+    assert actual.loc["continuous", "polytomous"] == expected_upper.loc["continuous", "polytomous"]
+    assert actual.loc["dichotomous", "polytomous"] == expected_upper.loc["dichotomous", "polytomous"]
+
+    # diagonal stays numeric
+    for col in data.columns:
+        assert actual.loc[col, col] == 1.0
+
+    # lower triangle stays numeric and matches the numeric-only result
+    numeric = hetcor(data)
+    assert np.isclose(actual.loc["dichotomous", "continuous"], numeric.loc["dichotomous", "continuous"])
+    assert np.isclose(actual.loc["polytomous", "continuous"], numeric.loc["polytomous", "continuous"])
+    assert np.isclose(actual.loc["polytomous", "dichotomous"], numeric.loc["polytomous", "dichotomous"])
+
+
+def test_show_method_default_is_false():
+    data = pd.DataFrame(
+        {
+            "continuous": [0.1, 0.1, 0.2, 0.2, 0.3, 0.3],
+            "ordinal": [0, 0, 0, 1, 1, 2],
+        }
+    )
+    actual = hetcor(data)
+    assert actual.dtypes.eq(float).all()
+
+
 def test_hetcor_n_unique_is_deprecated():
     data = pd.DataFrame(
         {
